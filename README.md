@@ -1,6 +1,6 @@
 # A121 Backend
 
-Este é o repositório do projeto A121, um site para venda de iPhones, cursos e oportunidades de negócio.
+"Projeto A121 - Site de iPhones e Cursos".
 
 ## Como executar o projeto
 
