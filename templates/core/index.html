@@ -6,12 +6,16 @@
     <title>A121</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Adiciona Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header com Logo -->
     <header>
         <nav class="container">
-            <div class="logo">A121</div>
+            <div class="logo">
+                <img src="{% static 'images/A121.jpg' %}" alt="A121 Logo" class="logo-img">
+            </div>
             <ul>
                 <li><a href="#iphones">iPhones</a></li>
                 <li><a href="#cursos">Cursos</a></li>
@@ -23,7 +27,7 @@
         </nav>
     </header>
 
-    <!-- Hero Section (inspirado na Apple com imagem grande) -->
+    <!-- Hero Section (estilo Apple com imagem grande) -->
     <section class="hero">
         <div class="hero-image">
             <img src="{% static 'images/Apple-iPhone-16-plus.jpg' %}" alt="A121 iPhones" class="hero-img">
@@ -43,25 +47,25 @@
                 <img src="{% static 'images/Apple-iPhone-13-.jpg' %}" alt="iPhone 13">
                 <h3>iPhone 13 (64GB)</h3>
                 <p class="price">€ 999,00</p>
-                <button>Comprar</button>
+                <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card">
                 <img src="{% static 'images/iphone-15 128gb.jpg' %}" alt="iPhone 13 128GB">
                 <h3>iPhone 13 (128GB)</h3>
                 <p class="price">€ 1.399,00</p>
-                <button>Comprar</button>
+                <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card">
                 <img src="{% static 'images/iphone-14-pro-128-gb-dourado-esim.jpg' %}" alt="iPhone 14 Pro">
                 <h3>iPhone 14 Pro (256GB)</h3>
                 <p class="price">€ 1.499,00</p>
-                <button>Comprar</button>
+                <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card">
                 <img src="{% static 'images/iphone15 256gb rosa.jpg' %}" alt="iPhone 15 Pro Max">
                 <h3>iPhone 15 Pro Max (512GB)</h3>
                 <p class="price">€ 1.599,00</p>
-                <button>Comprar</button>
+                <button class="cta-button">Comprar</button>
             </div>
         </div>
     </section>
