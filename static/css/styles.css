@@ -27,8 +27,9 @@ header {
 
 .logo {
     font-size: 24px;
-    font-weight: 600;
-    color: #0071e3;
+    font-weight: 700;
+    color: #1d1d1f;
+    padding: 5px 0;
 }
 
 header nav {
@@ -61,7 +62,7 @@ header nav ul li a:hover {
     position: relative;
     text-align: center;
     padding: 100px 0;
-    background-color: #f5f5f7;
+    background-color: #fff;
     overflow: hidden;
 }
 
@@ -78,7 +79,7 @@ header nav ul li a:hover {
     width: 100%;
     height: auto;
     object-fit: cover;
-    opacity: 0.5;
+    opacity: 0.3;
 }
 
 .hero-content {
