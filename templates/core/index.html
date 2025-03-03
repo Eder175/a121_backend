@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+    <!-- Header -->
     <header>
         <nav class="container">
             <div class="logo">A121</div>
@@ -21,48 +22,133 @@
             </ul>
         </nav>
     </header>
+
+    <!-- Hero Section (inspirado na Apple com imagem grande) -->
     <section class="hero">
+        <div class="hero-image">
+            <img src="{% static 'images/Apple-iPhone-16-plus.jpg' %}" alt="A121 iPhones" class="hero-img">
+        </div>
         <div class="hero-content">
             <h1>Bem-vindo à A121!</h1>
             <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
     </section>
+
+    <!-- Products Section -->
     <section class="products" id="iphones">
         <h2>Nossos iPhones</h2>
         <div class="product-grid">
             <div class="product-card">
-                <img src="{% static 'images/iphone13.jpg' %}" alt="iPhone 13">
+                <img src="{% static 'images/Apple-iPhone-13-.jpg' %}" alt="iPhone 13">
                 <h3>iPhone 13 (64GB)</h3>
                 <p class="price">€ 999,00</p>
                 <button>Comprar</button>
             </div>
             <div class="product-card">
-                <img src="{% static 'images/iphone13_128gb.jpg' %}" alt="iPhone 13 128GB">
+                <img src="{% static 'images/iphone-15 128gb.jpg' %}" alt="iPhone 13 128GB">
                 <h3>iPhone 13 (128GB)</h3>
                 <p class="price">€ 1.399,00</p>
                 <button>Comprar</button>
             </div>
             <div class="product-card">
-                <img src="{% static 'images/iphone14pro.jpg' %}" alt="iPhone 14 Pro">
+                <img src="{% static 'images/iphone-14-pro-128-gb-dourado-esim.jpg' %}" alt="iPhone 14 Pro">
                 <h3>iPhone 14 Pro (256GB)</h3>
                 <p class="price">€ 1.499,00</p>
                 <button>Comprar</button>
             </div>
             <div class="product-card">
-                <img src="{% static 'images/iphone15promax.jpg' %}" alt="iPhone 15 Pro Max">
+                <img src="{% static 'images/iphone15 256gb rosa.jpg' %}" alt="iPhone 15 Pro Max">
                 <h3>iPhone 15 Pro Max (512GB)</h3>
                 <p class="price">€ 1.599,00</p>
                 <button>Comprar</button>
             </div>
         </div>
     </section>
+
+    <!-- Benefits Section -->
     <section class="benefits" id="negocio">
         <h2>Por que escolher a A121?</h2>
         <p>Na A121, você não apenas compra produtos incríveis, mas também ganha a oportunidade de construir um legado. Junte-se a uma comunidade global de visionários e transforme sua vida.</p>
+        <button class="cta-button">Comece Agora</button>
     </section>
+
+    <!-- Footer (inspirado na Apple) -->
     <footer>
-        <p>© 2025 A121. Todos os direitos reservados.</p>
+        <div class="footer-top">
+            <p>As notícias e atualizações mais recentes, diretamente da A121.</p>
+            <a href="#" class="footer-link">Saiba mais</a>
+        </div>
+        <div class="footer-main container">
+            <div class="footer-section">
+                <h3>Descobrir e comprar</h3>
+                <ul>
+                    <li><a href="#">Loja</a></li>
+                    <li><a href="#">iPhones</a></li>
+                    <li><a href="#">Acessórios</a></li>
+                    <li><a href="#">Vales-oferta</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Formas de Pagamento</h3>
+                <ul>
+                    <li><a href="#">PayPal</a></li>
+                    <li><a href="#">MBWay</a></li>
+                    <li><a href="#">Multibanco (Cartões)</a></li>
+                    <li><a href="#">Criptomoedas (BTC, ETH, XRP)</a></li>
+                    <li><a href="#">Wise</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Conta</h3>
+                <ul>
+                    <li><a href="#">Gerir o seu ID Apple</a></li>
+                    <li><a href="#">iCloud.com</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Entretenimento</h3>
+                <ul>
+                    <li><a href="#">Apple One</a></li>
+                    <li><a href="#">Apple TV+</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ajuda</h3>
+                <ul>
+                    <li><a href="#">Ajuda para comprar</a></li>
+                    <li><a href="#">Contactar a A121</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Valores da A121</h3>
+                <ul>
+                    <li><a href="#">Acessibilidade</a></li>
+                    <li><a href="#">Ambiente</a></li>
+                    <li><a href="#">Privacidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social">
+                <h3>Redes Sociais</h3>
+                <ul>
+                    <li><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 A121. Todos os direitos reservados.</p>
+            <ul>
+                <li><a href="#">Política de Privacidade</a></li>
+                <li><a href="#">Utilização de Cookies</a></li>
+                <li><a href="#">Termos de Utilização</a></li>
+                <li><a href="#">Vendas e Reembolsos</a></li>
+                <li><a href="#">Avisos Legais</a></li>
+                <li><a href="#">Mapa do Site</a></li>
+            </ul>
+        </div>
     </footer>
 </body>
 </html>
