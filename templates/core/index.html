@@ -9,15 +9,15 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="container">
             <div class="logo">A121</div>
             <ul>
-                <li><a href="#">iPhones</a></li>
-                <li><a href="#">Cursos</a></li>
-                <li><a href="#">Negócio</a></li>
-                <li><a href="#">Níveis</a></li>
-                <li><a href="{% url 'cadastro' %}">Cadastro</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="#iphones">iPhones</a></li>
+                <li><a href="#cursos">Cursos</a></li>
+                <li><a href="#negocio">Negócio</a></li>
+                <li><a href="#niveis">Níveis</a></li>
+                <li><a href="#">Cadastro</a></li>
+                <li><a href="#">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -28,32 +28,36 @@
             <button class="cta-button">Comece Agora</button>
         </div>
     </section>
-    <section class="products">
+    <section class="products" id="iphones">
         <h2>Nossos iPhones</h2>
         <div class="product-grid">
             <div class="product-card">
+                <img src="{% static 'images/iphone13.jpg' %}" alt="iPhone 13">
                 <h3>iPhone 13 (64GB)</h3>
                 <p class="price">€ 999,00</p>
                 <button>Comprar</button>
             </div>
             <div class="product-card">
+                <img src="{% static 'images/iphone13_128gb.jpg' %}" alt="iPhone 13 128GB">
                 <h3>iPhone 13 (128GB)</h3>
                 <p class="price">€ 1.399,00</p>
                 <button>Comprar</button>
             </div>
             <div class="product-card">
+                <img src="{% static 'images/iphone14pro.jpg' %}" alt="iPhone 14 Pro">
                 <h3>iPhone 14 Pro (256GB)</h3>
                 <p class="price">€ 1.499,00</p>
                 <button>Comprar</button>
             </div>
             <div class="product-card">
+                <img src="{% static 'images/iphone15promax.jpg' %}" alt="iPhone 15 Pro Max">
                 <h3>iPhone 15 Pro Max (512GB)</h3>
                 <p class="price">€ 1.599,00</p>
                 <button>Comprar</button>
             </div>
         </div>
     </section>
-    <section class="benefits">
+    <section class="benefits" id="negocio">
         <h2>Por que escolher a A121?</h2>
         <p>Na A121, você não apenas compra produtos incríveis, mas também ganha a oportunidade de construir um legado. Junte-se a uma comunidade global de visionários e transforme sua vida.</p>
     </section>
