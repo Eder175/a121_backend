@@ -1,81 +1,75 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121 - iPhones, Cursos e Oportunidades de Negócio</title>
-    <meta name="description" content="Compre iPhones, invista no seu futuro e construa seu negócio com a A121.">
-    <meta name="keywords" content="iPhone, cursos, negócio, comissão, investimento">
-    <meta name="author" content="A121">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>A121</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body class="bg-gray-100">
-    <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-semibold">A121</h1>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="#iphones" class="text-gray-600 hover:text-blue-600">iPhones</a></li>
-                    <li><a href="#cursos" class="text-gray-600 hover:text-blue-600">Cursos</a></li>
-                    <li><a href="#negocio" class="text-gray-600 hover:text-blue-600">Negócio</a></li>
-                    <li><a href="#niveis" class="text-gray-600 hover:text-blue-600">Níveis</a></li>
-                    <li><a href="#cadastro" class="text-gray-600 hover:text-blue-600">Cadastro</a></li>
-                    <li><a href="#login" class="text-gray-600 hover:text-blue-600">Login</a></li>
-                </ul>
-            </nav>
-        </div>
+<body>
+    <header>
+        <nav>
+            <div>A121</div>
+            <ul>
+                <li><a href="#">iPhones</a></li>
+                <li><a href="#">Cursos</a></li>
+                <li><a href="#">Negócio</a></li>
+                <li><a href="#">Níveis</a></li>
+                <li><a href="#">Cadastro</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
     </header>
-
-    <!-- Hero Section -->
-    <section class="hero bg-blue-600 text-white py-16 text-center">
-        <div class="container mx-auto px-6">
-            <h2 class="text-5xl font-bold mb-4">Bem-vindo à A121!</h2>
-            <p class="text-xl mb-8">Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
-            <button class="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold">Comece Agora</button>
+    <section class="hero">
+        <div class="carousel">
+            <div class="carousel-item active">
+                <img src="{% static 'images/iphone1.jpg' %}" alt="iPhone 1">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/iphone2.jpg' %}" alt="iPhone 2">
+            </div>
+        </div>
+        <div class="hero-content">
+            <h1>Bem-vindo à A121!</h1>
+            <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
+            <button>Comece Agora</button>
         </div>
     </section>
-
-    <!-- Seção de iPhones -->
-    <section id="iphones" class="py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-semibold text-center mb-12">Nossos iPhones</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                    <h3 class="text-xl font-medium mb-2">iPhone 13 (64GB)</h3>
-                    <p class="text-blue-600 text-lg mb-4">€ 999,00</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-full">Comprar</button>
-                </div>
-                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                    <h3 class="text-xl font-medium mb-2">iPhone 13 (128GB)</h3>
-                    <p class="text-blue-600 text-lg mb-4">€ 1.399,00</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-full">Comprar</button>
-                </div>
-                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                    <h3 class="text-xl font-medium mb-2">iPhone 14 Pro (256GB)</h3>
-                    <p class="text-blue-600 text-lg mb-4">€ 1.499,00</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-full">Comprar</button>
-                </div>
-                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                    <h3 class="text-xl font-medium mb-2">iPhone 15 Pro Max (512GB)</h3>
-                    <p class="text-blue-600 text-lg mb-4">€ 1.599,00</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-full">Comprar</button>
-                </div>
+    <section class="products">
+        <h2>Nossos iPhones</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <h3>iPhone 13 (64GB)</h3>
+                <p class="price">€ 999,00</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product-card">
+                <h3>iPhone 13 (128GB)</h3>
+                <p class="price">€ 1.399,00</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product-card">
+                <h3>iPhone 14 Pro (256GB)</h3>
+                <p class="price">€ 1.499,00</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product-card">
+                <h3>iPhone 15 Pro Max (512GB)</h3>
+                <p class="price">€ 1.599,00</p>
+                <button>Comprar</button>
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2025 A121. Todos os direitos reservados.</p>
-            <div class="mt-4 flex justify-center space-x-4">
-                <a href="https://facebook.com" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
-                <a href="https://instagram.com" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                <a href="https://twitter.com" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
-    </footer>
+    <script>
+        let currentIndex = 0;
+        const items = document.querySelectorAll('.carousel-item');
+        setInterval(() => {
+            items[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % items.length;
+            items[currentIndex].classList.add('active');
+        }, 3000);
+    </script>
 </body>
 </html>
+
