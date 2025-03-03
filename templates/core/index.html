@@ -10,30 +10,22 @@
 <body>
     <header>
         <nav>
-            <div>A121</div>
+            <div class="logo">A121</div>
             <ul>
                 <li><a href="#">iPhones</a></li>
                 <li><a href="#">Cursos</a></li>
                 <li><a href="#">Negócio</a></li>
                 <li><a href="#">Níveis</a></li>
-                <li><a href="#">Cadastro</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="{% url 'cadastro' %}">Cadastro</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
             </ul>
         </nav>
     </header>
     <section class="hero">
-        <div class="carousel">
-            <div class="carousel-item active">
-                <img src="{% static 'images/iphone1.jpg' %}" alt="iPhone 1">
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'images/iphone2.jpg' %}" alt="iPhone 2">
-            </div>
-        </div>
         <div class="hero-content">
             <h1>Bem-vindo à A121!</h1>
             <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
-            <button>Comece Agora</button>
+            <button class="cta-button">Comece Agora</button>
         </div>
     </section>
     <section class="products">
@@ -61,15 +53,12 @@
             </div>
         </div>
     </section>
-    <script>
-        let currentIndex = 0;
-        const items = document.querySelectorAll('.carousel-item');
-        setInterval(() => {
-            items[currentIndex].classList.remove('active');
-            currentIndex = (currentIndex + 1) % items.length;
-            items[currentIndex].classList.add('active');
-        }, 3000);
-    </script>
+    <section class="benefits">
+        <h2>Por que escolher a A121?</h2>
+        <p>Na A121, você não apenas compra produtos incríveis, mas também ganha a oportunidade de construir um legado. Junte-se a uma comunidade global de visionários e transforme sua vida.</p>
+    </section>
+    <footer>
+        <p>© 2025 A121. Todos os direitos reservados.</p>
+    </footer>
 </body>
 </html>
-

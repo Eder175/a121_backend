@@ -1,0 +1,179 @@
+/* Estilos Globais */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Cabeçalho */
+header {
+  background-color: #fff;
+  padding: 20px 0;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007aff;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+header nav ul li a:hover {
+  color: #007aff;
+}
+
+/* Hero Section */
+.hero {
+  background-color: #007aff;
+  color: #fff;
+  padding: 100px 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.hero .cta-button {
+  background-color: #fff;
+  color: #007aff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero .cta-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Seção de Produtos */
+.products {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.products h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.product-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #1d1d1f;
+}
+
+.product-card .price {
+  font-size: 18px;
+  color: #007aff;
+  margin-bottom: 20px;
+}
+
+.product-card button {
+  background-color: #007aff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.product-card button:hover {
+  background-color: #005bb5;
+}
+
+/* Seção de Benefícios */
+.benefits {
+  background-color: #f9f9f9;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.benefits h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.benefits p {
+  font-size: 18px;
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Rodapé */
+footer {
+  background-color: #1d1d1f;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+}
+
+footer p {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
