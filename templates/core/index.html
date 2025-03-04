@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Header com Navegação Apple-like -->
+    <!-- Header com Navegação Ajustada -->
     <header>
         <nav class="container">
-            <div class="logo"><i class="fab fa-apple"></i> A121</div>
+            <div class="logo">A121</div> <!-- Removido ícone da maçã -->
             <ul class="nav-categories">
                 <li><a href="#">Loja</a></li>
                 <li><a href="#">Mac</a></li>
@@ -21,16 +21,16 @@
                 <li><a href="#">iPhone</a></li>
                 <li><a href="#">Watch</a></li>
                 <li><a href="#">AirPods</a></li>
-                <li><a href="#">Entretenimento</a></li>
+                <li><a href="#">Campanhas para Vendedores</a></li> <!-- Substituído Entretenimento -->
                 <li><a href="#">Acessórios</a></li>
                 <li><a href="#">Suporte</a></li>
             </ul>
-            <form class="search-bar">
-                <input type="text" placeholder="Pesquisar iPhones..." class="search-input">
+            <form class="search-bar" style="margin-left: auto;">
+                <input type="text" placeholder="Pesquisar..." class="search-input">
                 <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
             </form>
             <ul class="nav-links">
-                <li><a href="#iphones">iPhones</a></li>
+                <li><a href="#iphones">Produtos</a></li>
                 <li><a href="#cursos">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
                 <li><a href="#niveis">Níveis</a></li>
@@ -40,13 +40,14 @@
         </nav>
     </header>
 
-    <!-- Hero Section com Vídeo -->
+    <!-- Hero Section com Imagem da Maçã Brilhante e Vídeo Opcional -->
     <section class="hero">
         <div class="hero-content-top">
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
         </div>
-        <div class="hero-video">
-            <video autoplay muted loop poster="{% static 'images/video-placeholder1.jpg' %}">
+        <div class="hero-image">
+            <img src="{% static 'images/apple_brilliant.jpg' %}" alt="A121 Hero" class="hero-img" onerror="this.src='{% static 'images/Iphone 16e.jpg' %}'">
+            <video class="hero-video" muted loop>
                 <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
@@ -59,7 +60,7 @@
 
     <!-- Products Section -->
     <section class="products" id="iphones">
-        <h2>Nossos iPhones</h2>
+        <h2>Nossos Produtos</h2>
         <div class="product-grid">
             <div class="product-card">
                 <img src="{% static 'images/Iphone 13 (64gb).jpg' %}" alt="iPhone 13 64GB">
@@ -149,7 +150,7 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Entretenimento</h3>
+                <h3>Campanhas para Vendedores</h3>
                 <ul>
                     <li><a href="#">Apple One</a></li>
                 </ul>
