@@ -29,12 +29,38 @@ header {
     font-size: 24px;
     font-weight: 700;
     color: #1d1d1f;
+    display: flex;
+    align-items: center;
+}
+
+.logo .fab {
+    margin-right: 8px;
 }
 
 header nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.nav-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-categories li a {
+    text-decoration: none;
+    color: #1d1d1f;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    font-family: 'SF Pro Display';
+}
+
+.nav-categories li a:hover {
+    color: #0071e3;
 }
 
 .search-bar {
@@ -61,10 +87,10 @@ header nav {
 }
 
 .search-button:hover {
-    background-color: #f5f5f7;
+    background-color: #f5f7f7;
 }
 
-header nav ul {
+.nav-links {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -72,7 +98,7 @@ header nav ul {
     gap: 20px;
 }
 
-header nav ul li a {
+.nav-links li a {
     text-decoration: none;
     color: #1d1d1f;
     font-weight: 500;
@@ -80,7 +106,7 @@ header nav ul li a {
     font-family: 'SF Pro Display';
 }
 
-header nav ul li a:hover {
+.nav-links li a:hover {
     color: #0071e3;
 }
 
@@ -101,20 +127,21 @@ header nav ul li a:hover {
     margin: 0 auto;
 }
 
-.hero-image {
+.hero-video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
+    overflow: hidden;
 }
 
-.hero-img {
+.hero-video video {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
-    opacity: 0.2;
+    opacity: 0.7;
 }
 
 .hero h1 {
@@ -242,7 +269,7 @@ header nav ul li a:hover {
     color: #1d1d1f;
 }
 
-/* Video Carousel */
+/* Video Sections */
 .video-section {
     padding: 100px 0;
     text-align: center;
@@ -257,20 +284,22 @@ header nav ul li a:hover {
     font-family: 'SF Pro Display';
 }
 
-.video-carousel {
-    display: flex;
-    overflow-x: auto;
-    gap: 20px;
-    padding: 20px 0;
-    scroll-behavior: smooth;
+.video-container {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.video-slide {
-    min-width: 600px;
-    max-width: 600px;
+.video-container video {
+    width: 100%;
+    border-radius: 12px;
 }
 
-.video-slide video {
+.footer-video {
+    max-width: 800px;
+    margin: 0 auto 20px;
+}
+
+.footer-video video {
     width: 100%;
     border-radius: 12px;
 }
@@ -293,12 +322,16 @@ header nav ul li a:hover {
         grid-template-columns: 1fr;
     }
 
-    .video-slide {
-        min-width: 300px;
+    .nav-categories {
+        display: none;
     }
 
     .search-bar {
-        display: none; /* Opcional: esconder busca em mobile */
+        width: 100%;
+    }
+
+    .video-container, .footer-video {
+        max-width: 100%;
     }
 }
 
