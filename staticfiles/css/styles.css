@@ -242,7 +242,7 @@ header nav ul li a:hover {
     color: #1d1d1f;
 }
 
-/* Video Section */
+/* Video Carousel */
 .video-section {
     padding: 100px 0;
     text-align: center;
@@ -257,14 +257,49 @@ header nav ul li a:hover {
     font-family: 'SF Pro Display';
 }
 
-.video-container {
-    max-width: 800px;
-    margin: 0 auto;
+.video-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px 0;
+    scroll-behavior: smooth;
 }
 
-.video-container video {
+.video-slide {
+    min-width: 600px;
+    max-width: 600px;
+}
+
+.video-slide video {
     width: 100%;
     border-radius: 12px;
+}
+
+/* Media Queries para Mobile */
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 0;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .video-slide {
+        min-width: 300px;
+    }
+
+    .search-bar {
+        display: none; /* Opcional: esconder busca em mobile */
+    }
 }
 
 /* Footer */
