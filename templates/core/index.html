@@ -15,7 +15,7 @@
         <nav class="container">
             <div class="logo">A121</div>
             <form class="search-bar">
-                <input type="text" placeholder="Pesquisar..." class="search-input">
+                <input type="text" placeholder="Pesquisar iPhones..." class="search-input">
                 <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
             </form>
             <ul>
@@ -29,14 +29,16 @@
         </nav>
     </header>
 
-    <!-- Hero Section (fundo neutro e texto claro) -->
+    <!-- Hero Section (com imagem do iPhone) -->
     <section class="hero">
-        <div class="hero-image">
-            <img src="{% static 'images/hero-background.jpg' %}" alt="A121 Fundo" class="hero-img">
-        </div>
-        <div class="hero-content">
+        <div class="hero-content-top">
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
-            <p>Compre iPhones, invista no seu futuro e transforme sua vida conosco.</p>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/iPhone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
+        </div>
+        <div class="hero-content-bottom">
+            <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
     </section>
@@ -52,7 +54,7 @@
                 <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card">
-                <img src="{% static 'images/iPhone 13 (128gb).jpg' %}" alt="iPhone 13 128GB">
+                <img src="{% static 'images/iPhone 13 (128GB).jpg' %}" alt="iPhone 13 128GB">
                 <h3>iPhone 13 (128GB)</h3>
                 <p class="price">€ 1.399,00</p>
                 <button class="cta-button">Comprar</button>
@@ -84,6 +86,17 @@
             <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
         </div>
         <button class="cta-button">Comece Agora</button>
+    </section>
+
+    <!-- Vídeo Placeholder (estilo Apple) -->
+    <section class="video-section">
+        <h2>Explore a A121</h2>
+        <div class="video-container">
+            <video controls poster="{% static 'images/video-placeholder.jpg' %}">
+                <source src="https://example.com/sample-video.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
     </section>
 
     <!-- Footer (inspirado na Apple) -->
