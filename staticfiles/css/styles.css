@@ -29,7 +29,6 @@ header {
     font-size: 24px;
     font-weight: 700;
     color: #1d1d1f;
-    padding: 5px 0;
 }
 
 header nav {
@@ -190,12 +189,20 @@ header nav ul li a:hover {
     color: #1d1d1f;
 }
 
-.benefits p {
-    font-size: 18px;
-    color: #6e6e73;
+.benefits-text {
     max-width: 800px;
     margin: 0 auto 30px;
+}
+
+.benefits-text p {
+    font-size: 18px;
+    color: #6e6e73;
     line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.benefits-text p strong {
+    color: #1d1d1f;
 }
 
 /* Footer */
