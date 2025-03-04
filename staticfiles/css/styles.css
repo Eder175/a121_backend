@@ -31,7 +31,13 @@ header {
     color: #1d1d1f;
     display: flex;
     align-items: center;
-    margin-right: 20px; /* Espaço após A121 */
+    margin-right: 20px;
+}
+
+.logo .header-logo {
+    width: 24px; /* Tamanho igual ao da logo da Apple */
+    height: 24px;
+    margin-right: 8px;
 }
 
 header nav {
@@ -39,7 +45,7 @@ header nav {
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    white-space: nowrap; /* Evita quebras de linha */
+    white-space: nowrap;
 }
 
 .nav-categories {
@@ -48,7 +54,7 @@ header nav {
     margin: 0;
     display: flex;
     gap: 20px;
-    flex-grow: 1; /* Ocupa espaço disponível */
+    flex-grow: 1;
 }
 
 .nav-categories li a {
