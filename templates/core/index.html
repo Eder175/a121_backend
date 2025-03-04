@@ -21,33 +21,34 @@
                 <li><a href="#">iPhone</a></li>
                 <li><a href="#">Watch</a></li>
                 <li><a href="#">AirPods</a></li>
-                <li><a href="#">Campanhas para Vendedores</a></li> <!-- Substituído Entretenimento -->
+                <li><a href="#">Campanhas para Vendedores</a></li>
                 <li><a href="#">Acessórios</a></li>
                 <li><a href="#">Suporte</a></li>
             </ul>
-            <form class="search-bar" style="margin-left: auto;">
-                <input type="text" placeholder="Pesquisar..." class="search-input">
-                <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
-            </form>
             <ul class="nav-links">
-                <li><a href="#iphones">Produtos</a></li>
-                <li><a href="#cursos">Cursos</a></li>
+                <li><a href="#iphones">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
                 <li><a href="#niveis">Níveis</a></li>
                 <li><a href="#">Cadastro</a></li>
                 <li><a href="#">Login</a></li>
+                <li>
+                    <form class="search-bar">
+                        <input type="text" placeholder="Pesquisar..." class="search-input">
+                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                    </form>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <!-- Hero Section com Imagem da Maçã Brilhante e Vídeo Opcional -->
+    <!-- Hero Section com Maçã Brilhante -->
     <section class="hero">
         <div class="hero-content-top">
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/apple_brilliant.jpg' %}" alt="A121 Hero" class="hero-img" onerror="this.src='{% static 'images/Iphone 16e.jpg' %}'">
-            <video class="hero-video" muted loop>
+            <img src="{% static 'images/apple_brilliant.jpg' %}" alt="A121 Hero" class="hero-img" onerror="this.src='{% static 'videos/Video 1.mp4' %}'">
+            <video class="hero-video" muted loop poster="{% static 'images/video-placeholder1.jpg' %}">
                 <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
@@ -150,7 +151,7 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Campanhas para Vendedores</h3>
+                <h3>Campanhas de Incentivos</h3>
                 <ul>
                     <li><a href="#">Apple One</a></li>
                 </ul>
