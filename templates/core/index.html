@@ -13,7 +13,7 @@
     <!-- Header com Navegação Ajustada -->
     <header>
         <nav class="container">
-            <div class="logo">A121</div> <!-- Removido ícone da maçã -->
+            <div class="logo">A121</div>
             <ul class="nav-categories">
                 <li><a href="#">Loja</a></li>
                 <li><a href="#">Mac</a></li>
@@ -21,12 +21,12 @@
                 <li><a href="#">iPhone</a></li>
                 <li><a href="#">Watch</a></li>
                 <li><a href="#">AirPods</a></li>
-                <li><a href="#">Campanhas para Vendedores</a></li>
+                <li><a href="#">Campanhas de Incentivos</a></li>
                 <li><a href="#">Acessórios</a></li>
                 <li><a href="#">Suporte</a></li>
             </ul>
             <ul class="nav-links">
-                <li><a href="#iphones">Cursos</a></li>
+                <li><a href="#cursos">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
                 <li><a href="#niveis">Níveis</a></li>
                 <li><a href="#">Cadastro</a></li>
@@ -47,8 +47,8 @@
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/apple_brilliant.jpg' %}" alt="A121 Hero" class="hero-img" onerror="this.src='{% static 'videos/Video 1.mp4' %}'">
-            <video class="hero-video" muted loop poster="{% static 'images/video-placeholder1.jpg' %}">
+            <img src="{% static 'images/apple_brilliant.jpg' %}" alt="A121 Hero" class="hero-img" onerror="this.src='{% static 'images/Iphone 16e.jpg' %}'">
+            <video class="hero-video" muted loop>
                 <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
@@ -90,12 +90,12 @@
         </div>
     </section>
 
-    <!-- Video 2 (meio do site) -->
+    <!-- Video 1 (meio do site) -->
     <section class="video-section">
-        <h2>Experiência iPhone 16</h2>
+        <h2>Apresentação iPhone 16</h2>
         <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder2.jpg' %}">
-                <source src="{% static 'videos/Video 2.mp4' %}" type="video/mp4">
+            <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
+                <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
         </div>
@@ -115,7 +115,18 @@
         <button class="cta-button">Comece Agora</button>
     </section>
 
-    <!-- Video 3 (perto do final) -->
+    <!-- Video 2 (perto do final) -->
+    <section class="video-section">
+        <h2>Experiência iPhone 16</h2>
+        <div class="video-container">
+            <video controls poster="{% static 'images/video-placeholder2.jpg' %}">
+                <source src="{% static 'videos/Video 2.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
+    </section>
+
+    <!-- Video 3 (antes do footer) -->
     <section class="video-section">
         <h2>Inovação com iPhone 16</h2>
         <div class="video-container">
