@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A121</title>
     {% load static %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <!-- Adiciona Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Header com Logo -->
+    <!-- Header com Logo e Barra de Pesquisa -->
     <header>
         <nav class="container">
             <div class="logo">A121</div>
+            <form class="search-bar">
+                <input type="text" placeholder="Pesquisar..." class="search-input">
+                <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+            </form>
             <ul>
                 <li><a href="#iphones">iPhones</a></li>
                 <li><a href="#cursos">Cursos</a></li>
@@ -25,14 +29,14 @@
         </nav>
     </header>
 
-    <!-- Hero Section (sem texto indesejado) -->
+    <!-- Hero Section (fundo neutro e texto claro) -->
     <section class="hero">
         <div class="hero-image">
-            <img src="{% static 'images/iPhone 16 Pro Max (512GB).jpg' %}" alt="A121" class="hero-img">
+            <img src="{% static 'images/hero-background.jpg' %}" alt="A121 Fundo" class="hero-img">
         </div>
         <div class="hero-content">
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
-            <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
+            <p>Compre iPhones, invista no seu futuro e transforme sua vida conosco.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
     </section>
@@ -42,7 +46,7 @@
         <h2>Nossos iPhones</h2>
         <div class="product-grid">
             <div class="product-card">
-                <img src="{% static 'images/iphone 13 (64gb).jpg' %}" alt="iPhone 13 64GB">
+                <img src="{% static 'images/Iphone 13 (64gb).jpg' %}" alt="iPhone 13 64GB">
                 <h3>iPhone 13 (64GB)</h3>
                 <p class="price">€ 999,00</p>
                 <button class="cta-button">Comprar</button>
