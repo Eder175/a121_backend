@@ -29,13 +29,13 @@
         </nav>
     </header>
 
-    <!-- Hero Section (com imagem do iPhone) -->
+    <!-- Hero Section (com imagem do iPhone corrigida) -->
     <section class="hero">
         <div class="hero-content-top">
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/iPhone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
+            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
         </div>
         <div class="hero-content-bottom">
             <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
@@ -88,14 +88,28 @@
         <button class="cta-button">Comece Agora</button>
     </section>
 
-    <!-- Vídeo Placeholder (estilo Apple) -->
+    <!-- Video Carousel (estilo Apple) -->
     <section class="video-section">
         <h2>Explore a A121</h2>
-        <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder.jpg' %}">
-                <source src="https://example.com/sample-video.mp4" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
+        <div class="video-carousel">
+            <div class="video-slide">
+                <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
+                    <source src="https://example.com/video1.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeo.
+                </video>
+            </div>
+            <div class="video-slide">
+                <video controls poster="{% static 'images/video-placeholder2.jpg' %}">
+                    <source src="https://example.com/video2.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeo.
+                </video>
+            </div>
+            <div class="video-slide">
+                <video controls poster="{% static 'images/video-placeholder3.jpg' %}">
+                    <source src="https://example.com/video3.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeo.
+                </video>
+            </div>
         </div>
     </section>
 
