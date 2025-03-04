@@ -35,9 +35,11 @@ header {
 
 header nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    gap: 20px;
+    gap: 30px; /* Aumentado o espaçamento */
+    overflow-x: auto; /* Rolagem horizontal se necessário */
+    white-space: nowrap; /* Evita quebras de linha */
 }
 
 .nav-categories {
@@ -58,6 +60,27 @@ header nav {
 }
 
 .nav-categories li a:hover {
+    color: #0071e3;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #1d1d1f;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    font-family: 'SF Pro Display';
+}
+
+.nav-links li a:hover {
     color: #0071e3;
 }
 
@@ -86,26 +109,6 @@ header nav {
 
 .search-button:hover {
     background-color: #f5f7f7;
-}
-
-.nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links li a {
-    text-decoration: none;
-    color: #1d1d1f;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    font-family: 'SF Pro Display';
-}
-
-.nav-links li a:hover {
-    color: #0071e3;
 }
 
 /* Hero Section */
@@ -339,9 +342,14 @@ header nav {
         display: none;
     }
 
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .search-bar {
         width: 100%;
-        margin-left: 0;
+        margin-top: 10px;
     }
 
     .video-container, .footer-video {
