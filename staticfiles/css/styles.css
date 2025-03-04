@@ -31,14 +31,14 @@ header {
     color: #1d1d1f;
     display: flex;
     align-items: center;
+    margin-right: 20px; /* Espaço após A121 */
 }
 
 header nav {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 30px; /* Aumentado o espaçamento */
-    overflow-x: auto; /* Rolagem horizontal se necessário */
+    gap: 20px;
     white-space: nowrap; /* Evita quebras de linha */
 }
 
@@ -47,7 +47,8 @@ header nav {
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 30px;
+    gap: 20px;
+    flex-grow: 1; /* Ocupa espaço disponível */
 }
 
 .nav-categories li a {
