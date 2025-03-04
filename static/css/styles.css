@@ -45,7 +45,7 @@ header nav {
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    white-space: nowrap;
+    /* Removido overflow-x: auto */
 }
 
 .nav-categories {
@@ -55,6 +55,7 @@ header nav {
     display: flex;
     gap: 20px;
     flex-grow: 1;
+    flex-wrap: wrap; /* Permite que os itens quebrem em linhas se necessário */
 }
 
 .nav-categories li a {
