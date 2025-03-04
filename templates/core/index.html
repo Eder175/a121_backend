@@ -10,15 +10,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Header com Logo e Barra de Pesquisa -->
+    <!-- Header com Navegação Apple-like -->
     <header>
         <nav class="container">
-            <div class="logo">A121</div>
+            <div class="logo"><i class="fab fa-apple"></i> A121</div>
+            <ul class="nav-categories">
+                <li><a href="#">Loja</a></li>
+                <li><a href="#">Mac</a></li>
+                <li><a href="#">iPad</a></li>
+                <li><a href="#">iPhone</a></li>
+                <li><a href="#">Watch</a></li>
+                <li><a href="#">AirPods</a></li>
+                <li><a href="#">Entretenimento</a></li>
+                <li><a href="#">Acessórios</a></li>
+                <li><a href="#">Suporte</a></li>
+            </ul>
             <form class="search-bar">
                 <input type="text" placeholder="Pesquisar iPhones..." class="search-input">
                 <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
             </form>
-            <ul>
+            <ul class="nav-links">
                 <li><a href="#iphones">iPhones</a></li>
                 <li><a href="#cursos">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
@@ -29,13 +40,16 @@
         </nav>
     </header>
 
-    <!-- Hero Section (com imagem do iPhone corrigida) -->
+    <!-- Hero Section com Vídeo -->
     <section class="hero">
         <div class="hero-content-top">
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
         </div>
-        <div class="hero-image">
-            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
+        <div class="hero-video">
+            <video autoplay muted loop poster="{% static 'images/video-placeholder1.jpg' %}">
+                <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
         </div>
         <div class="hero-content-bottom">
             <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
@@ -74,6 +88,17 @@
         </div>
     </section>
 
+    <!-- Video 2 (meio do site) -->
+    <section class="video-section">
+        <h2>Experiência iPhone 16</h2>
+        <div class="video-container">
+            <video controls poster="{% static 'images/video-placeholder2.jpg' %}">
+                <source src="{% static 'videos/Video 2.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
+    </section>
+
     <!-- Benefits Section -->
     <section class="benefits" id="negocio">
         <h2>Por que escolher a A121?</h2>
@@ -88,84 +113,52 @@
         <button class="cta-button">Comece Agora</button>
     </section>
 
-    <!-- Video Carousel (estilo Apple) -->
+    <!-- Video 3 (perto do final) -->
     <section class="video-section">
-        <h2>Explore a A121</h2>
-        <div class="video-carousel">
-            <div class="video-slide">
-                <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
-                    <source src="https://example.com/video1.mp4" type="video/mp4">
-                    Seu navegador não suporta vídeo.
-                </video>
-            </div>
-            <div class="video-slide">
-                <video controls poster="{% static 'images/video-placeholder2.jpg' %}">
-                    <source src="https://example.com/video2.mp4" type="video/mp4">
-                    Seu navegador não suporta vídeo.
-                </video>
-            </div>
-            <div class="video-slide">
-                <video controls poster="{% static 'images/video-placeholder3.jpg' %}">
-                    <source src="https://example.com/video3.mp4" type="video/mp4">
-                    Seu navegador não suporta vídeo.
-                </video>
-            </div>
+        <h2>Inovação com iPhone 16</h2>
+        <div class="video-container">
+            <video controls poster="{% static 'images/video-placeholder3.jpg' %}">
+                <source src="{% static 'videos/Video 3.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
         </div>
     </section>
 
-    <!-- Footer (inspirado na Apple) -->
+    <!-- Footer com Vídeo 4 -->
     <footer>
+        <div class="footer-video">
+            <video controls poster="{% static 'images/video-placeholder4.jpg' %}">
+                <source src="{% static 'videos/Video 4.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
         <div class="footer-top">
             <p>As notícias e atualizações mais recentes, diretamente da A121.</p>
             <a href="#" class="footer-link">Saiba mais</a>
         </div>
         <div class="footer-main container">
             <div class="footer-section">
-                <h3>Descobrir e comprar</h3>
+                <h3>Loja</h3>
                 <ul>
-                    <li><a href="#">Loja</a></li>
-                    <li><a href="#">iPhones</a></li>
+                    <li><a href="#">Mac</a></li>
+                    <li><a href="#">iPad</a></li>
+                    <li><a href="#">iPhone</a></li>
+                    <li><a href="#">Watch</a></li>
+                    <li><a href="#">AirPods</a></li>
                     <li><a href="#">Acessórios</a></li>
-                    <li><a href="#">Vales-oferta</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Formas de Pagamento</h3>
-                <ul>
-                    <li><a href="#">PayPal</a></li>
-                    <li><a href="#">MBWay</a></li>
-                    <li><a href="#">Multibanco (Cartões)</a></li>
-                    <li><a href="#">Criptomoedas (BTC, ETH, XRP)</a></li>
-                    <li><a href="#">Wise</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Conta</h3>
-                <ul>
-                    <li><a href="#">Gerir o seu ID Apple</a></li>
-                    <li><a href="#">iCloud.com</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Entretenimento</h3>
                 <ul>
                     <li><a href="#">Apple One</a></li>
-                    <li><a href="#">Apple TV+</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Ajuda</h3>
+                <h3>Suporte</h3>
                 <ul>
-                    <li><a href="#">Ajuda para comprar</a></li>
-                    <li><a href="#">Contactar a A121</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Valores da A121</h3>
-                <ul>
-                    <li><a href="#">Acessibilidade</a></li>
-                    <li><a href="#">Ambiente</a></li>
-                    <li><a href="#">Privacidade</a></li>
+                    <li><a href="#">Ajuda</a></li>
+                    <li><a href="#">Contactar</a></li>
                 </ul>
             </div>
             <div class="footer-section social">
@@ -182,10 +175,7 @@
             <p>© 2025 A121. Todos os direitos reservados.</p>
             <ul>
                 <li><a href="#">Política de Privacidade</a></li>
-                <li><a href="#">Utilização de Cookies</a></li>
-                <li><a href="#">Termos de Utilização</a></li>
-                <li><a href="#">Vendas e Reembolsos</a></li>
-                <li><a href="#">Avisos Legais</a></li>
+                <li><a href="#">Termos de Uso</a></li>
                 <li><a href="#">Mapa do Site</a></li>
             </ul>
         </div>
