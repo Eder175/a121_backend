@@ -97,6 +97,17 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+        .preview-options {
+            margin: 10px 0;
+        }
+        .preview-options label {
+            margin-right: 5px;
+        }
+        .preview-options select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d2d2d7;
+        }
         .accordion {
             max-width: 800px;
             margin: 20px auto;
@@ -413,7 +424,8 @@
                 <li><a href="#">Termos de Uso</a></li>
                 <li><a href="#">Mapa do Site</a></li>
             </ul>
-        </footer>
+        </div>
+    </footer>
 
     <!-- Pop-up -->
     <div class="popup-overlay" id="popupOverlay" onclick="hidePopup()"></div>
@@ -434,7 +446,27 @@
             </video>
         </div>
         <img id="preview-image" src="" alt="Produto" style="max-width: 100%; margin-top: 10px;">
+        <div class="preview-options">
+            <label>Cor: </label>
+            <select id="preview-color" onchange="updatePreviewImage()">
+                <option value="rosa">Rosa</option>
+                <option value="azul">Azul</option>
+                <option value="dourado claro">Dourado Claro</option>
+                <option value="preto">Preto</option>
+                <option value="branco">Branco</option>
+                <option value="roxo">Roxo</option>
+            </select>
+            <label>Armazenamento: </label>
+            <select id="preview-storage">
+                <option value="128GB">128 GB</option>
+                <option value="256GB">256 GB</option>
+                <option value="512GB">512 GB</option>
+                <option value="1TB">1TB</option>
+            </select>
+        </div>
         <button class="cta-button" onclick="selectProduct()">Selecionar</button>
+        <button class="cta-button" onclick="hidePreview()">Fechar</button>
+        <button class="cta-button" onclick="goToDetails()">Ver Detalhes</button>
     </div>
 
     <script>
@@ -448,11 +480,14 @@
                 const previewTitle = document.getElementById('preview-title');
                 const previewImage = document.getElementById('preview-image');
                 const previewVideo = document.getElementById('preview-video');
+                const previewColor = document.getElementById('preview-color');
+                const previewStorage = document.getElementById('preview-storage');
+
                 if (preview && overlay) {
                     const products = {
-                        'iphone-15': { name: 'iPhone 15', image: '{% static "images/iPhone-15-rosa.jpg" %}' },
-                        'iphone-16': { name: 'iPhone 16', image: '{% static "images/iPhone-16-azul.jpg" %}' },
-                        'iphone-16-pro': { name: 'iPhone 16 Pro', image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}' }
+                        'iphone-15': { name: 'iPhone 15', image: '{% static "images/iPhone-15-rosa.jpg" %}', colors: ['rosa'], storage: ['128GB', '256GB', '512GB'] },
+                        'iphone-16': { name: 'iPhone 16', image: '{% static "images/iPhone-16-azul.jpg" %}', colors: ['azul'], storage: ['128GB', '256GB', '512GB'] },
+                        'iphone-16-pro': { name: 'iPhone 16 Pro', image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}', colors: ['dourado claro', 'preto', 'branco', 'roxo'], storage: ['128GB', '256GB', '512GB', '1TB'] }
                     };
                     const product = products[productId];
                     if (product) {
@@ -460,10 +495,33 @@
                         previewImage.src = product.image;
                         previewVideo.currentTime = 0;
                         previewVideo.play().catch(error => console.log("Erro ao tocar vídeo na prévia:", error));
+
+                        // Popular opções de cor e armazenamento
+                        previewColor.innerHTML = product.colors.map(color => `<option value="${color}">${color.charAt(0).toUpperCase() + color.slice(1)}</option>`).join('');
+                        previewStorage.innerHTML = product.storage.map(size => `<option value="${size}">${size}</option>`).join('');
+
                         preview.style.display = 'block';
                         overlay.style.display = 'block';
                     }
                 }
+            }
+
+            // Função para atualizar a imagem na prévia com base na cor
+            function updatePreviewImage() {
+                const previewTitle = document.getElementById('preview-title').textContent.toLowerCase().replace(' ', '-');
+                const selectedColor = document.getElementById('preview-color').value;
+                const previewImage = document.getElementById('preview-image');
+                const images = {
+                    'iphone-15': { 'rosa': '{% static "images/iPhone-15-rosa.jpg" %}' },
+                    'iphone-16': { 'azul': '{% static "images/iPhone-16-azul.jpg" %}' },
+                    'iphone-16-pro': { 
+                        'dourado claro': '{% static "images/iPhone-16-pro-dourado claro.jpg" %}', 
+                        'preto': '{% static "images/iPhone-16-pro-preto.jpg" %}', 
+                        'branco': '{% static "images/iPhone-16-pro-branco.jpg" %}', 
+                        'roxo': '{% static "images/iPhone-16-pro-roxo.jpg" %}' 
+                    }
+                };
+                previewImage.src = images[previewTitle][selectedColor] || images[previewTitle]['dourado claro'];
             }
 
             // Função para selecionar o produto e rolar até ele
@@ -474,7 +532,18 @@
                 if (productCard) {
                     productCard.classList.add('highlighted');
                     productCard.scrollIntoView({ behavior: 'smooth' });
-                    setTimeout(() => productCard.classList.remove('highlighted'), 2000); // Remove destaque após 2s
+                    setTimeout(() => productCard.classList.remove('highlighted'), 2000);
+                }
+            }
+
+            // Função para ir aos detalhes
+            function goToDetails() {
+                const previewTitle = document.getElementById('preview-title').textContent.toLowerCase().replace(' ', '-');
+                hidePreview();
+                const iphoneDetails = document.getElementById('iphone-details');
+                if (iphoneDetails) {
+                    iphoneDetails.style.display = 'block';
+                    iphoneDetails.scrollIntoView({ behavior: 'smooth' });
                 }
             }
 
@@ -485,13 +554,14 @@
                 if (preview && overlay) {
                     preview.style.display = 'none';
                     overlay.style.display = 'none';
+                    document.getElementById('preview-video').pause();
                 }
             }
 
-            // Função para mostrar seção de detalhes dos iPhones (reserva por enquanto)
+            // Função para mostrar seção de detalhes dos iPhones
             function showIphoneDetails(event) {
                 event.preventDefault();
-                console.log("Clicou em iPhone"); // Depuração
+                console.log("Clicou em iPhone");
                 const iphoneDetails = document.getElementById('iphone-details');
                 if (iphoneDetails) {
                     iphoneDetails.style.display = 'block';
@@ -501,8 +571,6 @@
                         iphoneDetails.style.opacity = '1';
                         iphoneDetails.scrollIntoView({ behavior: 'smooth' });
                     }, 10);
-                } else {
-                    console.log("Erro: #iphone-details não encontrado");
                 }
             }
 
@@ -520,8 +588,6 @@
                         otherDetails.scrollIntoView({ behavior: 'smooth' });
                         populateAccordion(category);
                     }, 10);
-                } else {
-                    console.log("Erro: #other-details não encontrado");
                 }
             }
 
@@ -592,57 +658,6 @@
                 }
             }
 
-            // Função para reaplicar eventos de cor e armazenamento (não usado aqui, mas mantido)
-            function reinitializeProductEvents(productId) {
-                document.querySelectorAll('.color-option').forEach(option => {
-                    option.addEventListener('click', function () {
-                        const color = this.getAttribute('data-color');
-                        const card = document.getElementById('selected-product').querySelector('.product-card');
-                        const storage = card.querySelector('.storage-button.selected')?.getAttribute('data-storage') || '128GB';
-                        const price = card.querySelector(`.storage-button[data-storage="${storage}"]`)?.getAttribute('data-price') || '889';
-                        updateProduct('selected-product', color, storage, price);
-                        this.classList.add('selected');
-                        this.parentElement.querySelectorAll('.color-option').forEach(opt => {
-                            if (opt !== this) opt.classList.remove('selected');
-                        });
-                    });
-                });
-
-                document.querySelectorAll('.storage-button').forEach(button => {
-                    button.addEventListener('click', function () {
-                        const card = document.getElementById('selected-product').querySelector('.product-card');
-                        const storage = this.getAttribute('data-storage');
-                        const price = this.getAttribute('data-price');
-                        const color = card.querySelector('.color-option.selected')?.getAttribute('data-color') || 'rosa';
-                        card.querySelectorAll('.storage-button').forEach(btn => btn.classList.remove('selected'));
-                        this.classList.add('selected');
-                        updateProduct('selected-product', color, storage, price);
-                    });
-                });
-            }
-
-            // Função para atualizar cor e armazenamento (não usado aqui, mas mantido)
-            function updateProduct(cardId, color, storage, price) {
-                const card = document.getElementById(cardId).querySelector('.product-card');
-                const image = card.querySelector('.product-image');
-                const priceElement = card.querySelector('.selected-price');
-                image.style.border = `5px solid ${getColorCode(color)}`;
-                priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price} €`;
-            }
-
-            // Mapeamento de cores para códigos hex
-            function getColorCode(color) {
-                const colors = {
-                    'rosa': '#ffcccb',
-                    'azul': '#add8e6',
-                    'dourado claro': '#d4af37',
-                    'preto': '#000000',
-                    'branco': '#ffffff',
-                    'roxo': '#800080'
-                };
-                return colors[color] || '#000000';
-            }
-
             // Função para mostrar o pop-up
             function showPopup() {
                 const popup = document.getElementById('popup');
@@ -663,7 +678,7 @@
                 }
             }
 
-            // Função para calcular ganhos (genérica por enquanto)
+            // Função para calcular ganhos
             function calculateEarnings() {
                 const salesCount = document.getElementById('salesCount').value;
                 const result = document.getElementById('earningsResult');
@@ -674,13 +689,15 @@
                 }
             }
 
+            // Função para comparar modelos (placeholder)
+            function compareModels() {
+                alert('Funcionalidade de comparação em desenvolvimento!');
+            }
+
             // Vincular eventos
             const iphoneLink = document.querySelector('#iphone-dropdown a');
             if (iphoneLink) {
                 iphoneLink.addEventListener('click', showIphoneDetails);
-                console.log("Evento vinculado ao link iPhone");
-            } else {
-                console.log("Link iPhone não encontrado");
             }
 
             const dropdownLinks = document.querySelectorAll('#iphone-dropdown .dropdown-content a');
@@ -693,12 +710,8 @@
                         showProductPreview(productId);
                     });
                 });
-                console.log("Eventos vinculados aos links do dropdown");
-            } else {
-                console.log("Links do dropdown não encontrados");
             }
 
-            // Vincular eventos para outras categorias
             document.querySelectorAll('.nav-categories .dropdown a').forEach(link => {
                 if (link.getAttribute('onclick')) {
                     link.addEventListener('click', function (event) {
@@ -709,7 +722,6 @@
                 }
             });
 
-            // Vincular eventos para accordion
             document.querySelectorAll('.dropdown-content a').forEach(link => {
                 link.addEventListener('click', function (event) {
                     event.preventDefault();
@@ -717,20 +729,6 @@
                     toggleAccordion(itemId);
                 });
             });
-
-            // Inicializar seleção padrão na seção de produtos
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.querySelector('.storage-button').classList.add('selected');
-                const defaultColor = card.querySelector('.color-option')?.getAttribute('data-color') || 'rosa';
-                const defaultStorage = card.querySelector('.storage-button')?.getAttribute('data-storage') || '128GB';
-                const defaultPrice = card.querySelector('.storage-button')?.getAttribute('data-price') || '889';
-                updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
-            });
-
-            // Função para comparar modelos (placeholder)
-            function compareModels() {
-                alert('Funcionalidade de comparação em desenvolvimento!');
-            }
         });
     </script>
 </body>
