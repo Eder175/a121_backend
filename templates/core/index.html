@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+kkkkk<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -68,6 +68,15 @@
             font-weight: bold;
             color: #0071e3;
             display: block;
+        }
+        .calculator .sales-list {
+            margin-top: 10px;
+            padding: 5px;
+            border: 1px solid #d2d2d7;
+            border-radius: 5px;
+            background-color: #fff;
+            max-height: 100px;
+            overflow-y: auto;
         }
         .iphone-details, .other-details {
             padding: 100px 0;
@@ -325,8 +334,8 @@
     <section class="iphone-details" id="iphone-details" style="display: none;">
         <h2>Conheça os iPhones da A121</h2>
         <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder1.jpg' %}" id="iphone-video">
-                <source src="{% static 'videos/IPHONE 16 PRO MAX.mp4' %}" type="video/mp4" id="video-source">
+            <video controls>
+                <source src="{% static 'videos/IPHONE 16 PRO MAX.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
         </div>
@@ -354,7 +363,7 @@
         </div>
         <div class="calculator">
             <h3>Calculadora de Ganhos</h3>
-            <p>Selecione o iPhone e a quantidade vendida:</p>
+            <p>Adicione suas vendas:</p>
             <select id="model">
                 <option value="iphone-15">iPhone 15 (base 889€)</option>
                 <option value="iphone-16">iPhone 16 (base 989€)</option>
@@ -366,14 +375,16 @@
                 <option value="512GB">512 GB</option>
                 <option value="1TB">1 TB</option>
             </select>
-            <input type="number" id="salesCount" min="0" placeholder="Quantidade vendida">
+            <input type="number" id="salesCount" min="0" placeholder="Quantidade">
             <select id="level">
                 <option value="1">Nível 1 (5%)</option>
                 <option value="2">Nível 2 (1.55%)</option>
                 <option value="3">Nível 3 (1.15%)</option>
             </select>
-            <button onclick="calculateEarnings()">Calcular</button>
-            <div class="result-box" id="earningsResult">Seu potencial de ganhos será calculado aqui!</div>
+            <button onclick="addSale()">Adicionar Venda</button>
+            <button onclick="calculateTotal()">Calcular Total</button>
+            <div class="sales-list" id="salesList"></div>
+            <div class="result-box" id="earningsResult">Total Ganho: €0.00</div>
         </div>
         <button class="cta-button">Comece Agora</button>
     </section>
@@ -382,7 +393,7 @@
     <section class="video-section">
         <h2>Experiência iPhone 16</h2>
         <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder2.jpg' %}">
+            <video controls>
                 <source src="{% static 'videos/Video 2.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
@@ -393,7 +404,7 @@
     <section class="video-section">
         <h2>Inovação com iPhone 16</h2>
         <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder3.jpg' %}">
+            <video controls>
                 <source src="{% static 'videos/Video 3.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
@@ -403,7 +414,7 @@
     <!-- Footer com Vídeo 4 -->
     <footer>
         <div class="footer-video">
-            <video controls poster="{% static 'images/video-placeholder4.jpg' %}">
+            <video controls>
                 <source src="{% static 'videos/Video 4.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
@@ -499,6 +510,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            let sales = [];
+
             // Função para mostrar prévia de iPhone
             function showProductPreview(productId) {
                 event.preventDefault();
@@ -706,29 +719,54 @@
                 }
             }
 
-            // Função para calcular ganhos
-            function calculateEarnings() {
+            // Função para adicionar uma venda
+            function addSale() {
                 const model = document.getElementById('model').value;
                 const storage = document.getElementById('storage').value;
                 const salesCount = parseInt(document.getElementById('salesCount').value) || 0;
                 const level = parseInt(document.getElementById('level').value);
-                const prices = {
-                    'iphone-15': { '128GB': 889, '256GB': 1019, '512GB': 1269 },
-                    'iphone-16': { '128GB': 989, '256GB': 1119, '512GB': 1369 },
-                    'iphone-16-pro': { '128GB': 1249, '256GB': 1379, '512GB': 1629, '1TB': 1879 }
-                };
-                const commissionRates = { 1: 0.05, 2: 0.0155, 3: 0.0115 };
-                const price = prices[model][storage];
-                const totalSalesValue = salesCount * price;
-                const commission = totalSalesValue * commissionRates[level];
+                if (salesCount > 0) {
+                    const prices = {
+                        'iphone-15': { '128GB': 889, '256GB': 1019, '512GB': 1269 },
+                        'iphone-16': { '128GB': 989, '256GB': 1119, '512GB': 1369 },
+                        'iphone-16-pro': { '128GB': 1249, '256GB': 1379, '512GB': 1629, '1TB': 1879 }
+                    };
+                    const commissionRates = { 1: 0.05, 2: 0.0155, 3: 0.0115 };
+                    const price = prices[model][storage];
+                    const commission = salesCount * price * commissionRates[level];
+                    sales.push({ model, storage, salesCount, level, commission });
+                    updateSalesList();
+                    clearInputs();
+                    console.log("Venda adicionada:", { model, storage, salesCount, level, commission });
+                } else {
+                    alert("Insira uma quantidade válida!");
+                }
+            }
+
+            // Função para atualizar a lista de vendas
+            function updateSalesList() {
+                const salesList = document.getElementById('salesList');
+                salesList.innerHTML = sales.map(sale => 
+                    `${sale.salesCount} ${sale.model.replace('iphone-', 'iPhone ')} de ${sale.storage} (Nível ${sale.level}): €${sale.commission.toFixed(2)}`
+                ).join('<br>');
+            }
+
+            // Função para calcular o total
+            function calculateTotal() {
+                const total = sales.reduce((sum, sale) => sum + sale.commission, 0);
                 const result = document.getElementById('earningsResult');
                 if (result) {
-                    result.textContent = `Total Ganho: €${commission.toFixed(2)} (com ${salesCount} ${model.replace('iphone-', 'iPhone ')} de ${storage} no Nível ${level})`;
+                    result.textContent = `Total Ganho: €${total.toFixed(2)}`;
                     result.style.display = 'block';
-                    console.log("Cálculo realizado: ", result.textContent);
+                    console.log("Total calculado: €", total.toFixed(2));
                 } else {
                     console.error('Erro: Elemento #earningsResult não encontrado!');
                 }
+            }
+
+            // Função para limpar os inputs
+            function clearInputs() {
+                document.getElementById('salesCount').value = '';
             }
 
             // Função para comparar modelos (placeholder)
