@@ -35,8 +35,8 @@ header {
 }
 
 .logo .header-logo {
-    width: 52.5px; /* Novo tamanho */
-    height: 52.5px;
+    width: 72.5px; /* Aumentado para 72.5x72.5px */
+    height: 72.5px;
     margin-right: 8px;
 }
 
@@ -508,4 +508,23 @@ footer {
 
 .footer-bottom ul li a:hover {
     color: #0071e3;
+}
+
+.learn-more {
+    background-color: #0071e3;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-family: 'SF Pro Display';
+}
+
+.learn-more:hover {
+    background-color: #005bb5;
+    transform: translateY(-2px);
 }

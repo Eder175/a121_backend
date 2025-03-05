@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A121</title>
     {% load static %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Header com Navegação Ajustada e Logo -->
     <header>
         <nav class="container">
             <div class="logo">
-                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo" onerror="this.style.display='none'">
+                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
                 A121
             </div>
             <ul class="nav-categories">
@@ -94,7 +94,7 @@
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/apple_brilliant.jpg' %}" alt="A121 Hero" class="hero-img" onerror="this.src='{% static 'images/Iphone 16e.jpg' %}'">
+            <img src="{% static 'images/apple_brilliant.jpg' %}" alt="A121 Hero" class="hero-img">
             <video class="hero-video" muted loop>
                 <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
@@ -111,14 +111,42 @@
         <h2>Nossos Produtos</h2>
         <div class="product-grid">
             <div class="product-card" id="iphone-card">
-                <img src="{% static 'images/Iphone 16e.jpg' %}" alt="iPhone 16e" class="product-image">
-                <h3>iPhone 16e</h3>
-                <p class="price">€ 1.299,00</p>
+                <img src="{% static 'images/Iphone 13.jpg' %}" alt="iPhone 13" class="product-image">
+                <h3>iPhone 13 (64GB)</h3>
+                <p class="price">€ 999,00</p>
+                <button class="cta-button">Comprar</button>
+            </div>
+            <div class="product-card" id="iphone-card">
+                <img src="{% static 'images/Iphone 13.jpg' %}" alt="iPhone 13" class="product-image">
+                <h3>iPhone 13 (128GB)</h3>
+                <p class="price">€ 1.399,00</p>
+                <button class="cta-button">Comprar</button>
+            </div>
+            <div class="product-card" id="iphone-card">
+                <img src="{% static 'images/Iphone 14 Pro.jpg' %}" alt="iPhone 14 Pro" class="product-image">
+                <h3>iPhone 14 Pro (256GB)</h3>
+                <p class="price">€ 1.499,00</p>
+                <button class="cta-button">Comprar</button>
+            </div>
+            <div class="product-card" id="iphone-card">
+                <img src="{% static 'images/Iphone 15 Pro Max.jpg' %}" alt="iPhone 15 Pro Max" class="product-image">
+                <h3>iPhone 15 Pro Max (512GB)</h3>
+                <p class="price">€ 1.599,00</p>
+                <button class="cta-button">Comprar</button>
+            </div>
+            <div class="product-card" id="iphone-card">
+                <img src="{% static 'images/Iphone 16 Pro.jpg' %}" alt="iPhone 16 Pro" class="product-image">
+                <h3>iPhone 16 Pro</h3>
+                <p>Disponível em titânio do deserto, titânio natural, titânio branco e titânio preto</p>
+                <p>O iPhone definitivo.</p>
+                <p class="price">A partir de US$ 999 ou US$ 41,62/mês por 24 meses.**</p>
                 <div class="color-options">
-                    <span class="color-option" data-color="preto" style="background-color: #000;"></span>
-                    <span class="color-option" data-color="azul" style="background-color: #0071e3;"></span>
-                    <span class="color-option" data-color="verde" style="background-color: #34c759;"></span>
+                    <span class="color-option" data-color="titanium-desert" style="background-color: #a68a64;"></span>
+                    <span class="color-option" data-color="titanium-natural" style="background-color: #d3c4b0;"></span>
+                    <span class="color-option" data-color="titanium-white" style="background-color: #f0ece2;"></span>
+                    <span class="color-option" data-color="titanium-black" style="background-color: #333333;"></span>
                 </div>
+                <a href="#" class="cta-button learn-more">Saber mais</a>
                 <button class="cta-button">Comprar</button>
             </div>
         </div>
@@ -139,12 +167,12 @@
     <section class="benefits" id="negocio">
         <h2>Por que escolher a A121?</h2>
         <div class="benefits-text">
-            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da humanidade? Aqui, qualquer pessoa pode criar um site de vendas de iPhones, mas só você pode mudar sua vida. Somos os arquitetos de um futuro extraordinário.</p>
-            <p><strong>Entre na revolução:</strong> Mais do que comprar um iPhone, você se junta a uma revolução global para mudar o eixo do planeta com liberdade financeira e geográfica.</p>
-            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora e construir seus sonhos com a A121!</p>
-            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo. Não o use apenas para vídeos ou redes sociais como TikTok — transforme-o em uma ferramenta para conhecimento e revolução pessoal!</p>
-            <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a nós para criar uma família global, onde todos crescem juntos como um só, mudando vidas e o eixo do planeta!</p>
-            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
+            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino financeiro da sua família?</p>
+            <p><strong>Entre na revolução:</strong> Mais do que comprar um iPhone, você entra em uma revolução.</p>
+            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora.</p>
+            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo.</p>
+            <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a uma comunidade de vencedores.</p>
+            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar o iPhone dos seus sonhos.</p>
         </div>
         <button class="cta-button">Comece Agora</button>
     </section>
@@ -214,7 +242,6 @@
                     <li><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></li>
                     <li><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
                     <li><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="#" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
                 </ul>
             </div>
         </div>
@@ -225,8 +252,7 @@
                 <li><a href="#">Termos de Uso</a></li>
                 <li><a href="#">Mapa do Site</a></li>
             </ul>
-        </div>
-    </footer>
+        </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -236,14 +262,13 @@
             colorOptions.forEach(option => {
                 option.addEventListener('mouseover', function () {
                     const color = this.getAttribute('data-color');
-                    productImage.src = `{% static 'images/Iphone 16e_${color}.jpg' %}`.replace(' ', '');
+                    productImage.src = `{% static 'images/Iphone 16 Pro_${color}.jpg' %}`;
                 });
                 option.addEventListener('mouseout', function () {
-                    productImage.src = `{% static 'images/Iphone 16e.jpg' %}`; // Volta à imagem padrão
+                    productImage.src = `{% static 'images/Iphone 16 Pro.jpg' %}`; // Volta ao padrão
                 });
             });
         });
     </script>
 </body>
 </html>
-
