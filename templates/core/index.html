@@ -154,7 +154,6 @@
         }
         body {
             overflow: auto; /* Garante que o body permaneça acessível */
-            position: static; /* Evita alterações indesejadas */
         }
     </style>
 </head>
@@ -355,7 +354,18 @@
         </div>
         <div class="calculator">
             <h3>Calculadora de Ganhos</h3>
-            <p>Insira a quantidade de iPhones vendidos e seu nível:</p>
+            <p>Selecione o iPhone e a quantidade vendida:</p>
+            <select id="model">
+                <option value="iphone-15">iPhone 15 (base 889€)</option>
+                <option value="iphone-16">iPhone 16 (base 989€)</option>
+                <option value="iphone-16-pro">iPhone 16 Pro (base 1249€)</option>
+            </select>
+            <select id="storage">
+                <option value="128GB">128 GB</option>
+                <option value="256GB">256 GB</option>
+                <option value="512GB">512 GB</option>
+                <option value="1TB">1 TB</option>
+            </select>
             <input type="number" id="salesCount" min="0" placeholder="Quantidade vendida">
             <select id="level">
                 <option value="1">Nível 1 (5%)</option>
@@ -479,7 +489,7 @@
                 <option value="128GB">128 GB</option>
                 <option value="256GB">256 GB</option>
                 <option value="512GB">512 GB</option>
-                <option value="1TB">1TB</option>
+                <option value="1TB">1 TB</option>
             </select>
         </div>
         <button class="cta-button" onclick="selectProduct()">Selecionar</button>
@@ -519,9 +529,6 @@
 
                         preview.style.display = 'block';
                         overlay.style.display = 'block';
-                        // Evitar interferência no body
-                        document.body.style.position = 'static';
-                        document.body.style.overflow = 'auto';
                     }
                 }
             }
@@ -575,11 +582,6 @@
                     preview.style.display = 'none';
                     overlay.style.display = 'none';
                     document.getElementById('preview-video').pause();
-                    // Restaurar completamente o body
-                    document.body.style.position = '';
-                    document.body.style.overflow = '';
-                    document.body.style.width = '';
-                    document.body.style.height = '';
                     console.log("Prévia fechada com sucesso");
                 }
             }
@@ -706,24 +708,22 @@
 
             // Função para calcular ganhos
             function calculateEarnings() {
+                const model = document.getElementById('model').value;
+                const storage = document.getElementById('storage').value;
                 const salesCount = parseInt(document.getElementById('salesCount').value) || 0;
                 const level = parseInt(document.getElementById('level').value);
-                const commissionRates = {
-                    1: 0.05, // 5%
-                    2: 0.0155, // 1.55%
-                    3: 0.0115 // 1.15%
+                const prices = {
+                    'iphone-15': { '128GB': 889, '256GB': 1019, '512GB': 1269 },
+                    'iphone-16': { '128GB': 989, '256GB': 1119, '512GB': 1369 },
+                    'iphone-16-pro': { '128GB': 1249, '256GB': 1379, '512GB': 1629, '1TB': 1879 }
                 };
-                const basePrices = {
-                    'iphone-15': 889,
-                    'iphone-16': 989,
-                    'iphone-16-pro': 1249
-                };
-                const avgPrice = (basePrices['iphone-15'] + basePrices['iphone-16'] + basePrices['iphone-16-pro']) / 3; // Média dos preços base
-                const totalSalesValue = salesCount * avgPrice;
+                const commissionRates = { 1: 0.05, 2: 0.0155, 3: 0.0115 };
+                const price = prices[model][storage];
+                const totalSalesValue = salesCount * price;
                 const commission = totalSalesValue * commissionRates[level];
                 const result = document.getElementById('earningsResult');
                 if (result) {
-                    result.textContent = `Total Ganho: €${commission.toFixed(2)} (com ${salesCount} iPhones no Nível ${level})`;
+                    result.textContent = `Total Ganho: €${commission.toFixed(2)} (com ${salesCount} ${model.replace('iphone-', 'iPhone ')} de ${storage} no Nível ${level})`;
                     result.style.display = 'block';
                     console.log("Cálculo realizado: ", result.textContent);
                 } else {
