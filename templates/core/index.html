@@ -35,11 +35,11 @@
                     </div>
                 </li>
                 <li class="dropdown" id="iphone-dropdown">
-                    <a href="#">iPhone</a>
+                    <a href="#" onclick="showIphoneDetails(event)">iPhone</a>
                     <div class="dropdown-content">
-                        <a href="#">iPhone 15</a>
-                        <a href="#">iPhone 16</a>
-                        <a href="#">iPhone 16 Pro</a>
+                        <a href="#" onclick="showProductDetails('iphone-15')">iPhone 15</a>
+                        <a href="#" onclick="showProductDetails('iphone-16')">iPhone 16</a>
+                        <a href="#" onclick="showProductDetails('iphone-16-pro')">iPhone 16 Pro</a>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -110,9 +110,78 @@
         </div>
     </section>
 
-    <!-- Products Section com Cores e GB Dinâmicos -->
-    <section class="products" id="iphones">
+    <!-- Products Section (Nossos Produtos) -->
+    <section class="products" id="products">
         <h2>Nossos Produtos</h2>
+        <div class="product-grid">
+            <div class="product-card" id="iphone-15-card">
+                <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
+                <h3>iPhone 15</h3>
+                <p>Impressionante como sempre.</p>
+                <div class="options">
+                    <div class="color-options">
+                        <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
+                    </div>
+                    <div class="storage-options">
+                        <button class="storage-button" data-storage="128GB" data-price="889">128 GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="1019">256 GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="1269">512 GB</button>
+                    </div>
+                </div>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 889 €</p>
+                <button class="cta-button">Comprar</button>
+            </div>
+            <div class="product-card" id="iphone-16-card">
+                <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul" class="product-image">
+                <h3>iPhone 16</h3>
+                <p>Potente em tudo.</p>
+                <div class="options">
+                    <div class="color-options">
+                        <span class="color-option" data-color="azul" style="background-color: #add8e6;"></span>
+                    </div>
+                    <div class="storage-options">
+                        <button class="storage-button" data-storage="128GB" data-price="989">128 GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="1119">256 GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="1369">512 GB</button>
+                    </div>
+                </div>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 989 €</p>
+                <button class="cta-button">Comprar</button>
+            </div>
+            <div class="product-card" id="iphone-16-pro-card">
+                <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro" class="product-image">
+                <h3>iPhone 16 Pro</h3>
+                <p>O iPhone de topo.</p>
+                <div class="options">
+                    <div class="color-options">
+                        <span class="color-option" data-color="dourado claro" style="background-color: #d4af37;"></span>
+                        <span class="color-option" data-color="preto" style="background-color: #000000;"></span>
+                        <span class="color-option" data-color="branco" style="background-color: #ffffff;"></span>
+                        <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
+                    </div>
+                    <div class="storage-options">
+                        <button class="storage-button" data-storage="128GB" data-price="1249">128 GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="1379">256 GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="1629">512 GB</button>
+                        <button class="storage-button" data-storage="1TB" data-price="1879">1TB</button>
+                    </div>
+                </div>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 1249 €</p>
+                <button class="cta-button">Comprar</button>
+            </div>
+        </div>
+        <button class="cta-button compare-button" onclick="compareModels()">Compare Todos os Modelos</button>
+    </section>
+
+    <!-- iPhone Details Section (Subseção Dinâmica) -->
+    <section class="iphone-details" id="iphone-details" style="display: none;">
+        <h2>Conheça os iPhones da A121</h2>
+        <div class="video-container">
+            <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
+                <source src="{% static 'videos/IPHONE 16 PRO MAX.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
         <div class="product-grid">
             <div class="product-card" id="iphone-15-card">
                 <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
@@ -185,17 +254,6 @@
             <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
         </div>
         <button class="cta-button">Comece Agora</button>
-    </section>
-
-    <!-- Video 1 -->
-    <section class="video-section">
-        <h2>Apresentação iPhone 16</h2>
-        <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
-                <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
-        </div>
     </section>
 
     <!-- Video 2 -->
@@ -277,6 +335,26 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Função para mostrar seção de detalhes dos iPhones
+            function showIphoneDetails(event) {
+                event.preventDefault();
+                const iphoneDetails = document.getElementById('iphone-details');
+                if (iphoneDetails.style.display === 'none' || iphoneDetails.style.display === '') {
+                    iphoneDetails.style.display = 'block';
+                    iphoneDetails.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    iphoneDetails.style.display = 'none';
+                }
+            }
+
+            // Função para mostrar detalhes de um produto
+            function showProductDetails(productId) {
+                const iphoneDetails = document.getElementById('iphone-details');
+                iphoneDetails.style.display = 'block';
+                const productCard = document.getElementById(productId + '-card');
+                productCard.scrollIntoView({ behavior: 'smooth' });
+            }
+
             // Função para atualizar cor e armazenamento
             function updateProduct(cardId, color, storage, price) {
                 const card = document.getElementById(cardId);
