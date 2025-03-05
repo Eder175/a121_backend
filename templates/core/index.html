@@ -35,12 +35,11 @@
                     </div>
                 </li>
                 <li class="dropdown" id="iphone-dropdown">
-                    <a href="#" onclick="showIphoneSection(event)">iPhone</a>
+                    <a href="#">iPhone</a>
                     <div class="dropdown-content">
-                        <a href="#" onclick="showProductDetails('iphone-15')">iPhone 15</a>
-                        <a href="#" onclick="showProductDetails('iphone-16')">iPhone 16</a>
-                        <a href="#" onclick="showProductDetails('iphone-16-pro')">iPhone 16 Pro</a>
-                        <a href="#" onclick="showProductDetails('iphone-16e')">iPhone 16e</a>
+                        <a href="#">iPhone 15</a>
+                        <a href="#">iPhone 16</a>
+                        <a href="#">iPhone 16 Pro</a>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -170,27 +169,8 @@
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 1249 €</p>
                 <button class="cta-button">Comprar</button>
             </div>
-            <div class="product-card" id="iphone-16e-card">
-                <img src="{% static 'images/Iphone 16e.jpg' %}" alt="iPhone 16e" class="product-image">
-                <h3>iPhone 16e (Demonstração)</h3>
-                <p>Novo iPhone. Preço irresistível.</p>
-                <p>128 GB: Desde 739 € (Não disponível para venda)</p>
-                <p>256 GB: Desde 869 € (Não disponível para venda)</p>
-                <p>512 GB: Desde 1119 € (Não disponível para venda)</p>
-            </div>
         </div>
         <button class="cta-button compare-button" onclick="compareModels()">Compare Todos os Modelos</button>
-    </section>
-
-    <!-- Features Section com Vídeo Top -->
-    <section class="features">
-        <h2>Conheça o iPhone com A121</h2>
-        <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
-                <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
-        </div>
     </section>
 
     <!-- Benefits Section -->
@@ -205,6 +185,17 @@
             <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
         </div>
         <button class="cta-button">Comece Agora</button>
+    </section>
+
+    <!-- Video 1 -->
+    <section class="video-section">
+        <h2>Apresentação iPhone 16</h2>
+        <div class="video-container">
+            <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
+                <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
     </section>
 
     <!-- Video 2 -->
@@ -286,18 +277,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Função para mostrar seção de iPhones
-            function showIphoneSection(event) {
-                event.preventDefault();
-                document.getElementById('iphones').style.display = 'block';
-            }
-
-            // Função para mostrar detalhes de um produto
-            function showProductDetails(productId) {
-                const productDetails = document.getElementById('iphones');
-                productDetails.scrollIntoView({ behavior: 'smooth' }); // Rola até a seção
-            }
-
             // Função para atualizar cor e armazenamento
             function updateProduct(cardId, color, storage, price) {
                 const card = document.getElementById(cardId);
@@ -361,7 +340,6 @@
             // Função para comparar modelos (placeholder)
             function compareModels() {
                 alert('Funcionalidade de comparação em desenvolvimento!');
-                // Futuramente, pode abrir uma nova seção ou página de comparação
             }
         });
     </script>
