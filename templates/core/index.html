@@ -20,7 +20,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            z-index: 1001;
             width: 300px;
             text-align: center;
         }
@@ -32,7 +32,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            z-index: 1000;
         }
         .calculator {
             margin-top: 20px;
@@ -83,7 +83,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            z-index: 1002;
             width: 400px;
             text-align: center;
         }
@@ -95,7 +95,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            z-index: 1001;
         }
         .preview-options {
             margin: 10px 0;
@@ -341,10 +341,15 @@
         </div>
         <div class="calculator">
             <h3>Calculadora de Ganhos</h3>
-            <p>Insira quantos iPhones você planeja vender:</p>
-            <input type="number" id="salesCount" min="0" placeholder="Quantidade">
+            <p>Insira a quantidade de iPhones vendidos e seu nível:</p>
+            <input type="number" id="salesCount" min="0" placeholder="Quantidade vendida">
+            <select id="level">
+                <option value="1">Nível 1 (5%)</option>
+                <option value="2">Nível 2 (1.55%)</option>
+                <option value="3">Nível 3 (1.15%)</option>
+            </select>
             <button onclick="calculateEarnings()">Calcular</button>
-            <p id="earningsResult">Seu potencial de ganhos aumenta com mais vendas!</p>
+            <p id="earningsResult">Seu potencial de ganhos será calculado aqui!</p>
         </div>
         <button class="cta-button">Comece Agora</button>
     </section>
@@ -424,8 +429,7 @@
                 <li><a href="#">Termos de Uso</a></li>
                 <li><a href="#">Mapa do Site</a></li>
             </ul>
-        </div>
-    </footer>
+        </footer>
 
     <!-- Pop-up -->
     <div class="popup-overlay" id="popupOverlay" onclick="hidePopup()"></div>
@@ -485,9 +489,9 @@
 
                 if (preview && overlay) {
                     const products = {
-                        'iphone-15': { name: 'iPhone 15', image: '{% static "images/iPhone-15-rosa.jpg" %}', colors: ['rosa'], storage: ['128GB', '256GB', '512GB'] },
-                        'iphone-16': { name: 'iPhone 16', image: '{% static "images/iPhone-16-azul.jpg" %}', colors: ['azul'], storage: ['128GB', '256GB', '512GB'] },
-                        'iphone-16-pro': { name: 'iPhone 16 Pro', image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}', colors: ['dourado claro', 'preto', 'branco', 'roxo'], storage: ['128GB', '256GB', '512GB', '1TB'] }
+                        'iphone-15': { name: 'iPhone 15', image: '{% static "images/iPhone-15-rosa.jpg" %}', colors: ['rosa'], storage: ['128GB', '256GB', '512GB'], basePrice: 889 },
+                        'iphone-16': { name: 'iPhone 16', image: '{% static "images/iPhone-16-azul.jpg" %}', colors: ['azul'], storage: ['128GB', '256GB', '512GB'], basePrice: 989 },
+                        'iphone-16-pro': { name: 'iPhone 16 Pro', image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}', colors: ['dourado claro', 'preto', 'branco', 'roxo'], storage: ['128GB', '256GB', '512GB', '1TB'], basePrice: 1249 }
                     };
                     const product = products[productId];
                     if (product) {
@@ -496,7 +500,6 @@
                         previewVideo.currentTime = 0;
                         previewVideo.play().catch(error => console.log("Erro ao tocar vídeo na prévia:", error));
 
-                        // Popular opções de cor e armazenamento
                         previewColor.innerHTML = product.colors.map(color => `<option value="${color}">${color.charAt(0).toUpperCase() + color.slice(1)}</option>`).join('');
                         previewStorage.innerHTML = product.storage.map(size => `<option value="${size}">${size}</option>`).join('');
 
@@ -555,6 +558,9 @@
                     preview.style.display = 'none';
                     overlay.style.display = 'none';
                     document.getElementById('preview-video').pause();
+                    // Restaurar o site ao fundo (remover comportamento inesperado)
+                    document.body.style.position = '';
+                    document.body.style.overflow = '';
                 }
             }
 
@@ -680,13 +686,23 @@
 
             // Função para calcular ganhos
             function calculateEarnings() {
-                const salesCount = document.getElementById('salesCount').value;
+                const salesCount = parseInt(document.getElementById('salesCount').value) || 0;
+                const level = parseInt(document.getElementById('level').value);
+                const commissionRates = {
+                    1: 0.05, // 5%
+                    2: 0.0155, // 1.55%
+                    3: 0.0115 // 1.15%
+                };
+                const basePrices = {
+                    'iphone-15': 889,
+                    'iphone-16': 989,
+                    'iphone-16-pro': 1249
+                };
+                const avgPrice = (basePrices['iphone-15'] + basePrices['iphone-16'] + basePrices['iphone-16-pro']) / 3; // Média dos preços base
+                const totalSalesValue = salesCount * avgPrice;
+                const commission = totalSalesValue * commissionRates[level];
                 const result = document.getElementById('earningsResult');
-                if (salesCount && salesCount > 0) {
-                    result.textContent = `Com ${salesCount} iPhones vendidos, seu potencial de ganhos aumenta!`;
-                } else {
-                    result.textContent = `Insira uma quantidade válida para ver seu potencial!`;
-                }
+                result.textContent = `Com ${salesCount} iPhones vendidos no Nível ${level}, você ganha aproximadamente €${commission.toFixed(2)}!`;
             }
 
             // Função para comparar modelos (placeholder)
