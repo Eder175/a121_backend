@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos temporários para pop-up, calculadora, prévia e accordion */
+        /* Estilos para pop-up, calculadora, prévia e accordion */
         .popup {
             display: none;
             position: fixed;
@@ -37,7 +37,7 @@
         .calculator {
             margin-top: 20px;
             padding: 15px;
-            border: 1px solid #d2d2d7;
+            border: 2px solid #0071e3;
             border-radius: 8px;
             background-color: #fff;
             display: block;
@@ -59,11 +59,15 @@
         .calculator button:hover {
             background-color: #005bb5;
         }
-        .calculator #earningsResult {
+        .calculator .result-box {
             margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #0071e3;
+            border-radius: 5px;
+            background-color: #f0f7ff;
             font-weight: bold;
             color: #0071e3;
-            display: block; /* Garante que o resultado seja visível */
+            display: block;
         }
         .iphone-details, .other-details {
             padding: 100px 0;
@@ -149,7 +153,8 @@
             transition: all 0.3s ease;
         }
         body {
-            overflow: auto; /* Garante que o body não seja afetado pela prévia */
+            overflow: auto; /* Garante que o body permaneça acessível */
+            position: static; /* Evita alterações indesejadas */
         }
     </style>
 </head>
@@ -358,7 +363,7 @@
                 <option value="3">Nível 3 (1.15%)</option>
             </select>
             <button onclick="calculateEarnings()">Calcular</button>
-            <p id="earningsResult">Seu potencial de ganhos será calculado aqui!</p>
+            <div class="result-box" id="earningsResult">Seu potencial de ganhos será calculado aqui!</div>
         </div>
         <button class="cta-button">Comece Agora</button>
     </section>
@@ -507,14 +512,14 @@
                         previewTitle.textContent = product.name;
                         previewImage.src = product.image;
                         previewVideo.currentTime = 0;
-                        previewVideo.play().catch(error => console.log("Erro ao tocar vídeo na prévia:", error));
+                        previewVideo.play().catch(error => console.log("Erro ao tocar vídeo:", error));
 
                         previewColor.innerHTML = product.colors.map(color => `<option value="${color}">${color.charAt(0).toUpperCase() + color.slice(1)}</option>`).join('');
                         previewStorage.innerHTML = product.storage.map(size => `<option value="${size}">${size}</option>`).join('');
 
                         preview.style.display = 'block';
                         overlay.style.display = 'block';
-                        // Evitar que o body seja afetado
+                        // Evitar interferência no body
                         document.body.style.position = 'static';
                         document.body.style.overflow = 'auto';
                     }
@@ -570,11 +575,12 @@
                     preview.style.display = 'none';
                     overlay.style.display = 'none';
                     document.getElementById('preview-video').pause();
-                    // Restaurar o body completamente
+                    // Restaurar completamente o body
                     document.body.style.position = '';
                     document.body.style.overflow = '';
                     document.body.style.width = '';
                     document.body.style.height = '';
+                    console.log("Prévia fechada com sucesso");
                 }
             }
 
@@ -717,10 +723,11 @@
                 const commission = totalSalesValue * commissionRates[level];
                 const result = document.getElementById('earningsResult');
                 if (result) {
-                    result.textContent = `Com ${salesCount} iPhones vendidos no Nível ${level}, você ganha aproximadamente €${commission.toFixed(2)}!`;
-                    result.style.display = 'block'; // Garante visibilidade
+                    result.textContent = `Total Ganho: €${commission.toFixed(2)} (com ${salesCount} iPhones no Nível ${level})`;
+                    result.style.display = 'block';
+                    console.log("Cálculo realizado: ", result.textContent);
                 } else {
-                    console.error('Elemento #earningsResult não encontrado!');
+                    console.error('Erro: Elemento #earningsResult não encontrado!');
                 }
             }
 
