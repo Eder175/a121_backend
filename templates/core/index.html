@@ -42,7 +42,7 @@
             background-color: #fff;
             display: block;
         }
-        .calculator input {
+        .calculator input, .calculator select {
             padding: 5px;
             margin-right: 10px;
             border: 1px solid #d2d2d7;
@@ -58,6 +58,12 @@
         }
         .calculator button:hover {
             background-color: #005bb5;
+        }
+        .calculator #earningsResult {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #0071e3;
+            display: block; /* Garante que o resultado seja visível */
         }
         .iphone-details, .other-details {
             padding: 100px 0;
@@ -141,6 +147,9 @@
             border: 3px solid #0071e3;
             transform: scale(1.05);
             transition: all 0.3s ease;
+        }
+        body {
+            overflow: auto; /* Garante que o body não seja afetado pela prévia */
         }
     </style>
 </head>
@@ -505,6 +514,9 @@
 
                         preview.style.display = 'block';
                         overlay.style.display = 'block';
+                        // Evitar que o body seja afetado
+                        document.body.style.position = 'static';
+                        document.body.style.overflow = 'auto';
                     }
                 }
             }
@@ -558,9 +570,11 @@
                     preview.style.display = 'none';
                     overlay.style.display = 'none';
                     document.getElementById('preview-video').pause();
-                    // Restaurar o site ao fundo (remover comportamento inesperado)
+                    // Restaurar o body completamente
                     document.body.style.position = '';
                     document.body.style.overflow = '';
+                    document.body.style.width = '';
+                    document.body.style.height = '';
                 }
             }
 
@@ -702,7 +716,12 @@
                 const totalSalesValue = salesCount * avgPrice;
                 const commission = totalSalesValue * commissionRates[level];
                 const result = document.getElementById('earningsResult');
-                result.textContent = `Com ${salesCount} iPhones vendidos no Nível ${level}, você ganha aproximadamente €${commission.toFixed(2)}!`;
+                if (result) {
+                    result.textContent = `Com ${salesCount} iPhones vendidos no Nível ${level}, você ganha aproximadamente €${commission.toFixed(2)}!`;
+                    result.style.display = 'block'; // Garante visibilidade
+                } else {
+                    console.error('Elemento #earningsResult não encontrado!');
+                }
             }
 
             // Função para comparar modelos (placeholder)
