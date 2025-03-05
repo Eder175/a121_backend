@@ -512,10 +512,11 @@
         document.addEventListener('DOMContentLoaded', function () {
             let sales = [];
 
-            // Atualiza o preço selecionado nos cards de produto
+            // Atualiza o preço selecionado no card correto
             document.querySelectorAll('.storage-options .storage-button').forEach(button => {
                 button.addEventListener('click', function () {
-                    const cardId = this.closest('.product-card').id;
+                    const card = this.closest('.product-card');
+                    const cardId = card.id;
                     const price = this.getAttribute('data-price');
                     const storage = this.getAttribute('data-storage');
                     document.getElementById(`selected-price-${cardId.split('-')[1]}`).textContent = `Selecionado: ${storage} - ${price} €`;
@@ -600,12 +601,16 @@
             // Função para esconder a prévia
             function hidePreview() {
                 const preview = document.getElementById('productPreview');
+                const popup = document.getElementById('popup');
                 const overlay = document.getElementById('previewOverlay');
                 if (preview && overlay) {
                     preview.style.display = 'none';
                     overlay.style.display = 'none';
                     document.getElementById('preview-video').pause();
                     console.log("Prévia fechada com sucesso");
+                }
+                if (popup && overlay) {
+                    popup.style.display = 'none';
                 }
             }
 
@@ -752,6 +757,7 @@
                     const commission = salesCount * price * commissionRates[level];
                     sales.push({ model, storage, salesCount, level, commission, price });
                     updateSalesList();
+                    calculateTotal(); // Atualiza o total imediatamente
                     clearInputs();
                     console.log("Venda adicionada:", { model, storage, salesCount, level, commission });
                 } else {
