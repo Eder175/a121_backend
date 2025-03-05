@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos temporários para pop-up, calculadora e accordion */
+        /* Estilos temporários para pop-up, calculadora, prévia e accordion */
         .popup {
             display: none;
             position: fixed;
@@ -40,7 +40,7 @@
             border: 1px solid #d2d2d7;
             border-radius: 8px;
             background-color: #fff;
-            display: block; /* Garante que apareça */
+            display: block;
         }
         .calculator input {
             padding: 5px;
@@ -73,6 +73,30 @@
             max-width: 300px;
             margin: 0 auto;
         }
+        .preview {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 400px;
+            text-align: center;
+        }
+        .preview-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
         .accordion {
             max-width: 800px;
             margin: 20px auto;
@@ -101,6 +125,11 @@
         }
         .accordion-content.active {
             display: block;
+        }
+        .product-card.highlighted {
+            border: 3px solid #0071e3;
+            transform: scale(1.05);
+            transition: all 0.3s ease;
         }
     </style>
 </head>
@@ -132,9 +161,9 @@
                 <li class="dropdown" id="iphone-dropdown">
                     <a href="#" onclick="showIphoneDetails(event)">iPhone</a>
                     <div class="dropdown-content">
-                        <a href="#" onclick="showProductDetails('iphone-15')">iPhone 15</a>
-                        <a href="#" onclick="showProductDetails('iphone-16')">iPhone 16</a>
-                        <a href="#" onclick="showProductDetails('iphone-16-pro')">iPhone 16 Pro</a>
+                        <a href="#" onclick="showProductPreview('iphone-15')">iPhone 15</a>
+                        <a href="#" onclick="showProductPreview('iphone-16')">iPhone 16</a>
+                        <a href="#" onclick="showProductPreview('iphone-16-pro')">iPhone 16 Pro</a>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -394,37 +423,75 @@
         <button class="cta-button" onclick="hidePopup()">Fechar</button>
     </div>
 
+    <!-- Prévia flutuante -->
+    <div class="preview-overlay" id="previewOverlay" onclick="hidePreview()"></div>
+    <div class="preview" id="productPreview">
+        <h3 id="preview-title"></h3>
+        <div class="video-container">
+            <video controls id="preview-video">
+                <source src="{% static 'videos/IPHONE 16 PRO MAX.mp4' %}" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
+        <img id="preview-image" src="" alt="Produto" style="max-width: 100%; margin-top: 10px;">
+        <button class="cta-button" onclick="selectProduct()">Selecionar</button>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Função para mostrar seção de detalhes dos iPhones
-            function showIphoneDetails(event) {
+            // Função para mostrar prévia de iPhone
+            function showProductPreview(productId) {
                 event.preventDefault();
-                console.log("Clicou em iPhone"); // Depuração
-                const iphoneDetails = document.getElementById('iphone-details');
-                if (iphoneDetails) {
-                    iphoneDetails.style.display = 'block';
-                    iphoneDetails.style.opacity = '0'; // Fade-in
-                    setTimeout(() => {
-                        iphoneDetails.style.transition = 'opacity 0.5s ease-in';
-                        iphoneDetails.style.opacity = '1';
-                        iphoneDetails.scrollIntoView({ behavior: 'smooth' });
-                        const video = document.getElementById('iphone-video');
-                        if (video) {
-                            video.currentTime = 0;
-                            const source = document.getElementById('video-source');
-                            source.src = `{% static 'videos/IPHONE 16 PRO MAX.mp4' %}`;
-                            video.load(); // Recarrega o vídeo
-                            video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
-                        }
-                    }, 10);
-                } else {
-                    console.log("Erro: #iphone-details não encontrado");
+                console.log("Prévia de " + productId);
+                const preview = document.getElementById('productPreview');
+                const overlay = document.getElementById('previewOverlay');
+                const previewTitle = document.getElementById('preview-title');
+                const previewImage = document.getElementById('preview-image');
+                const previewVideo = document.getElementById('preview-video');
+                if (preview && overlay) {
+                    const products = {
+                        'iphone-15': { name: 'iPhone 15', image: '{% static "images/iPhone-15-rosa.jpg" %}' },
+                        'iphone-16': { name: 'iPhone 16', image: '{% static "images/iPhone-16-azul.jpg" %}' },
+                        'iphone-16-pro': { name: 'iPhone 16 Pro', image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}' }
+                    };
+                    const product = products[productId];
+                    if (product) {
+                        previewTitle.textContent = product.name;
+                        previewImage.src = product.image;
+                        previewVideo.currentTime = 0;
+                        previewVideo.play().catch(error => console.log("Erro ao tocar vídeo na prévia:", error));
+                        preview.style.display = 'block';
+                        overlay.style.display = 'block';
+                    }
                 }
             }
 
-            // Função para mostrar detalhes de um produto
-            function showProductDetails(productId) {
-                console.log("Clicou em " + productId); // Depuração
+            // Função para selecionar o produto e rolar até ele
+            function selectProduct() {
+                const previewTitle = document.getElementById('preview-title').textContent.toLowerCase().replace(' ', '-');
+                hidePreview();
+                const productCard = document.getElementById(previewTitle + '-card');
+                if (productCard) {
+                    productCard.classList.add('highlighted');
+                    productCard.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => productCard.classList.remove('highlighted'), 2000); // Remove destaque após 2s
+                }
+            }
+
+            // Função para esconder a prévia
+            function hidePreview() {
+                const preview = document.getElementById('productPreview');
+                const overlay = document.getElementById('previewOverlay');
+                if (preview && overlay) {
+                    preview.style.display = 'none';
+                    overlay.style.display = 'none';
+                }
+            }
+
+            // Função para mostrar seção de detalhes dos iPhones (reserva por enquanto)
+            function showIphoneDetails(event) {
+                event.preventDefault();
+                console.log("Clicou em iPhone"); // Depuração
                 const iphoneDetails = document.getElementById('iphone-details');
                 if (iphoneDetails) {
                     iphoneDetails.style.display = 'block';
@@ -433,74 +500,9 @@
                         iphoneDetails.style.transition = 'opacity 0.5s ease-in';
                         iphoneDetails.style.opacity = '1';
                         iphoneDetails.scrollIntoView({ behavior: 'smooth' });
-                        const video = document.getElementById('iphone-video');
-                        if (video) {
-                            video.currentTime = 0;
-                            const source = document.getElementById('video-source');
-                            source.src = `{% static 'videos/IPHONE 16 PRO MAX.mp4' %}`;
-                            video.load(); // Recarrega o vídeo
-                            video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
-                        }
-                        displaySelectedProduct(productId);
                     }, 10);
                 } else {
                     console.log("Erro: #iphone-details não encontrado");
-                }
-            }
-
-            // Função para exibir o produto selecionado
-            function displaySelectedProduct(productId) {
-                const selectedProductDiv = document.getElementById('selected-product');
-                if (selectedProductDiv) {
-                    const products = {
-                        'iphone-15': {
-                            name: 'iPhone 15',
-                            description: 'Impressionante como sempre.',
-                            image: '{% static "images/iPhone-15-rosa.jpg" %}',
-                            colors: ['rosa'],
-                            storages: ['128GB', '256GB', '512GB'],
-                            prices: ['889', '1019', '1269']
-                        },
-                        'iphone-16': {
-                            name: 'iPhone 16',
-                            description: 'Potente em tudo.',
-                            image: '{% static "images/iPhone-16-azul.jpg" %}',
-                            colors: ['azul'],
-                            storages: ['128GB', '256GB', '512GB'],
-                            prices: ['989', '1119', '1369']
-                        },
-                        'iphone-16-pro': {
-                            name: 'iPhone 16 Pro',
-                            description: 'O iPhone de topo.',
-                            image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}', // Corrigido o caminho
-                            colors: ['dourado claro', 'preto', 'branco', 'roxo'],
-                            storages: ['128GB', '256GB', '512GB', '1TB'],
-                            prices: ['1249', '1379', '1629', '1879']
-                        }
-                    };
-                    const product = products[productId];
-                    if (product) {
-                        selectedProductDiv.innerHTML = `
-                            <div class="product-card">
-                                <img src="${product.image}" alt="${product.name}" class="product-image">
-                                <h3>${product.name}</h3>
-                                <p>${product.description}</p>
-                                <div class="options">
-                                    <div class="color-options">
-                                        ${product.colors.map(color => `<span class="color-option" data-color="${color}" style="background-color: ${getColorCode(color)};"></span>`).join('')}
-                                    </div>
-                                    <div class="storage-options">
-                                        ${product.storages.map((storage, index) => `<button class="storage-button" data-storage="${storage}" data-price="${product.prices[index]}">${storage}</button>`).join('')}
-                                    </div>
-                                </div>
-                                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde ${product.prices[0]} €</p>
-                                <button class="cta-button">Comprar</button>
-                            </div>
-                        `;
-                        reinitializeProductEvents(productId);
-                    } else {
-                        selectedProductDiv.innerHTML = '<p>Produto não encontrado.</p>';
-                    }
                 }
             }
 
@@ -590,7 +592,7 @@
                 }
             }
 
-            // Função para reaplicar eventos de cor e armazenamento
+            // Função para reaplicar eventos de cor e armazenamento (não usado aqui, mas mantido)
             function reinitializeProductEvents(productId) {
                 document.querySelectorAll('.color-option').forEach(option => {
                     option.addEventListener('click', function () {
@@ -619,7 +621,7 @@
                 });
             }
 
-            // Função para atualizar cor e armazenamento
+            // Função para atualizar cor e armazenamento (não usado aqui, mas mantido)
             function updateProduct(cardId, color, storage, price) {
                 const card = document.getElementById(cardId).querySelector('.product-card');
                 const image = card.querySelector('.product-image');
@@ -686,9 +688,9 @@
                 dropdownLinks.forEach(link => {
                     link.addEventListener('click', function (event) {
                         event.preventDefault();
-                        const productId = this.textContent.toLowerCase().replace(' ', '-');
+                        const productId = this.getAttribute('onclick').match(/'([^']+)'/)[1];
                         console.log("Clicou em dropdown: " + productId);
-                        showProductDetails(productId);
+                        showProductPreview(productId);
                     });
                 });
                 console.log("Eventos vinculados aos links do dropdown");
