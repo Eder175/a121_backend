@@ -97,7 +97,7 @@
             <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
         </div>
         <div class="hero-content-bottom">
-            <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
+            <p>Com o A121, você não compra um iPhone — você constrói um futuro. Junte-se à revolução.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
     </section>
@@ -177,7 +177,7 @@
     <section class="iphone-details" id="iphone-details" style="display: none;">
         <h2>Conheça os iPhones da A121</h2>
         <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
+            <video controls poster="{% static 'images/video-placeholder1.jpg' %}" id="iphone-video">
                 <source src="{% static 'videos/IPHONE 16 PRO MAX.mp4' %}" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
@@ -342,6 +342,12 @@
                 if (iphoneDetails.style.display === 'none' || iphoneDetails.style.display === '') {
                     iphoneDetails.style.display = 'block';
                     iphoneDetails.scrollIntoView({ behavior: 'smooth' });
+                    // Reinicia o vídeo ao abrir
+                    const video = document.getElementById('iphone-video');
+                    if (video) {
+                        video.currentTime = 0;
+                        video.play().catch(error => console.log("Erro ao iniciar o vídeo:", error));
+                    }
                 } else {
                     iphoneDetails.style.display = 'none';
                 }
@@ -351,8 +357,15 @@
             function showProductDetails(productId) {
                 const iphoneDetails = document.getElementById('iphone-details');
                 iphoneDetails.style.display = 'block';
+                iphoneDetails.scrollIntoView({ behavior: 'smooth' });
                 const productCard = document.getElementById(productId + '-card');
                 productCard.scrollIntoView({ behavior: 'smooth' });
+                // Reinicia o vídeo ao abrir
+                const video = document.getElementById('iphone-video');
+                if (video) {
+                    video.currentTime = 0;
+                    video.play().catch(error => console.log("Erro ao iniciar o vídeo:", error));
+                }
             }
 
             // Função para atualizar cor e armazenamento
