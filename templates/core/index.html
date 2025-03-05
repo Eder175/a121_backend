@@ -8,6 +8,57 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos temporários para pop-up e calculadora */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+            text-align: center;
+        }
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .calculator {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .calculator input {
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #d2d2d7;
+            border-radius: 5px;
+        }
+        .calculator button {
+            padding: 5px 10px;
+            background-color: #0071e3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .calculator button:hover {
+            background-color: #005bb5;
+        }
+    </style>
 </head>
 <body>
     <!-- Header com Navegação Ajustada e Logo -->
@@ -182,63 +233,8 @@
                 Seu navegador não suporta vídeo.
             </video>
         </div>
-        <div class="product-grid">
-            <div class="product-card" id="iphone-15-card">
-                <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
-                <h3>iPhone 15</h3>
-                <p>Impressionante como sempre.</p>
-                <div class="options">
-                    <div class="color-options">
-                        <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
-                    </div>
-                    <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="889">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1019">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1269">512 GB</button>
-                    </div>
-                </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 889 €</p>
-                <button class="cta-button">Comprar</button>
-            </div>
-            <div class="product-card" id="iphone-16-card">
-                <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul" class="product-image">
-                <h3>iPhone 16</h3>
-                <p>Potente em tudo.</p>
-                <div class="options">
-                    <div class="color-options">
-                        <span class="color-option" data-color="azul" style="background-color: #add8e6;"></span>
-                    </div>
-                    <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="989">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1119">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1369">512 GB</button>
-                    </div>
-                </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 989 €</p>
-                <button class="cta-button">Comprar</button>
-            </div>
-            <div class="product-card" id="iphone-16-pro-card">
-                <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro" class="product-image">
-                <h3>iPhone 16 Pro</h3>
-                <p>O iPhone de topo.</p>
-                <div class="options">
-                    <div class="color-options">
-                        <span class="color-option" data-color="dourado claro" style="background-color: #d4af37;"></span>
-                        <span class="color-option" data-color="preto" style="background-color: #000000;"></span>
-                        <span class="color-option" data-color="branco" style="background-color: #ffffff;"></span>
-                        <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
-                    </div>
-                    <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="1249">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1379">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1629">512 GB</button>
-                        <button class="storage-button" data-storage="1TB" data-price="1879">1TB</button>
-                    </div>
-                </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 1249 €</p>
-                <button class="cta-button">Comprar</button>
-            </div>
-        </div>
+        <div id="selected-product" class="selected-product"></div>
+        <button class="cta-button" onclick="showPopup()">Junte-se à Revolução</button>
         <button class="cta-button compare-button" onclick="compareModels()">Compare Todos os Modelos</button>
     </section>
 
@@ -252,6 +248,13 @@
             <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo. Não o use apenas para vídeos ou redes sociais como TikTok — transforme-o em uma ferramenta para conhecimento e revolução pessoal!</p>
             <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a nós para criar uma família global, onde todos crescem juntos como um só, mudando vidas e o eixo do planeta!</p>
             <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
+        </div>
+        <div class="calculator">
+            <h3>Calculadora de Ganhos</h3>
+            <p>Insira quantos iPhones você planeja vender:</p>
+            <input type="number" id="salesCount" min="0" placeholder="Quantidade">
+            <button onclick="calculateEarnings()">Calcular</button>
+            <p id="earningsResult">Seu potencial de ganhos aumenta com mais vendas!</p>
         </div>
         <button class="cta-button">Comece Agora</button>
     </section>
@@ -333,6 +336,14 @@
             </ul>
         </footer>
 
+    <!-- Pop-up -->
+    <div class="popup-overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popup">
+        <h3>Junte-se à Revolução</h3>
+        <p>Venda iPhones e ganhe comissões! Convide amigos e cresça na rede!</p>
+        <button class="cta-button" onclick="hidePopup()">Fechar</button>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Função para mostrar seção de detalhes dos iPhones
@@ -342,12 +353,17 @@
                 const iphoneDetails = document.getElementById('iphone-details');
                 if (iphoneDetails) {
                     iphoneDetails.style.display = 'block';
-                    iphoneDetails.scrollIntoView({ behavior: 'smooth' });
-                    const video = document.getElementById('iphone-video');
-                    if (video) {
-                        video.currentTime = 0;
-                        video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
-                    }
+                    iphoneDetails.style.opacity = '0'; // Fade-in
+                    setTimeout(() => {
+                        iphoneDetails.style.transition = 'opacity 0.5s ease-in';
+                        iphoneDetails.style.opacity = '1';
+                        iphoneDetails.scrollIntoView({ behavior: 'smooth' });
+                        const video = document.getElementById('iphone-video');
+                        if (video) {
+                            video.currentTime = 0;
+                            video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
+                        }
+                    }, 10);
                 } else {
                     console.log("Erro: #iphone-details não encontrado");
                 }
@@ -359,42 +375,113 @@
                 const iphoneDetails = document.getElementById('iphone-details');
                 if (iphoneDetails) {
                     iphoneDetails.style.display = 'block';
-                    iphoneDetails.scrollIntoView({ behavior: 'smooth' });
-                    const productCard = document.getElementById(productId + '-card');
-                    if (productCard) {
-                        productCard.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    const video = document.getElementById('iphone-video');
-                    if (video) {
-                        video.currentTime = 0;
-                        video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
-                    }
+                    iphoneDetails.style.opacity = '0';
+                    setTimeout(() => {
+                        iphoneDetails.style.transition = 'opacity 0.5s ease-in';
+                        iphoneDetails.style.opacity = '1';
+                        iphoneDetails.scrollIntoView({ behavior: 'smooth' });
+                        displaySelectedProduct(productId);
+                        const video = document.getElementById('iphone-video');
+                        if (video) {
+                            video.currentTime = 0;
+                            video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
+                        }
+                    }, 10);
                 } else {
                     console.log("Erro: #iphone-details não encontrado");
                 }
             }
 
-            // Vincular eventos aos elementos corretos
-            const iphoneLink = document.querySelector('#iphone-dropdown a');
-            if (iphoneLink) {
-                iphoneLink.addEventListener('click', showIphoneDetails);
+            // Função para exibir o produto selecionado
+            function displaySelectedProduct(productId) {
+                const selectedProductDiv = document.getElementById('selected-product');
+                if (selectedProductDiv) {
+                    const products = {
+                        'iphone-15': {
+                            name: 'iPhone 15',
+                            description: 'Impressionante como sempre.',
+                            image: '{% static "images/iPhone-15-rosa.jpg" %}',
+                            colors: ['rosa'],
+                            storages: ['128GB', '256GB', '512GB'],
+                            prices: ['889', '1019', '1269']
+                        },
+                        'iphone-16': {
+                            name: 'iPhone 16',
+                            description: 'Potente em tudo.',
+                            image: '{% static "images/iPhone-16-azul.jpg" %}',
+                            colors: ['azul'],
+                            storages: ['128GB', '256GB', '512GB'],
+                            prices: ['989', '1119', '1369']
+                        },
+                        'iphone-16-pro': {
+                            name: 'iPhone 16 Pro',
+                            description: 'O iPhone de topo.',
+                            image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}',
+                            colors: ['dourado claro', 'preto', 'branco', 'roxo'],
+                            storages: ['128GB', '256GB', '512GB', '1TB'],
+                            prices: ['1249', '1379', '1629', '1879']
+                        }
+                    };
+                    const product = products[productId];
+                    if (product) {
+                        selectedProductDiv.innerHTML = `
+                            <div class="product-card">
+                                <img src="${product.image}" alt="${product.name}" class="product-image">
+                                <h3>${product.name}</h3>
+                                <p>${product.description}</p>
+                                <div class="options">
+                                    <div class="color-options">
+                                        ${product.colors.map(color => `<span class="color-option" data-color="${color}" style="background-color: ${getColorCode(color)};"></span>`).join('')}
+                                    </div>
+                                    <div class="storage-options">
+                                        ${product.storages.map((storage, index) => `<button class="storage-button" data-storage="${storage}" data-price="${product.prices[index]}">${storage}</button>`).join('')}
+                                    </div>
+                                </div>
+                                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde ${product.prices[0]} €</p>
+                                <button class="cta-button">Comprar</button>
+                            </div>
+                        `;
+                        reinitializeProductEvents(productId);
+                    } else {
+                        selectedProductDiv.innerHTML = '<p>Produto não encontrado.</p>';
+                    }
+                }
             }
 
-            const dropdownLinks = document.querySelectorAll('#iphone-dropdown .dropdown-content a');
-            dropdownLinks.forEach(link => {
-                link.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const productId = this.textContent.toLowerCase().replace(' ', '-');
-                    showProductDetails(productId);
+            // Função para reaplicar eventos de cor e armazenamento
+            function reinitializeProductEvents(productId) {
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.addEventListener('click', function () {
+                        const color = this.getAttribute('data-color');
+                        const card = document.getElementById('selected-product').querySelector('.product-card');
+                        const storage = card.querySelector('.storage-button.selected')?.getAttribute('data-storage') || '128GB';
+                        const price = card.querySelector(`.storage-button[data-storage="${storage}"]`)?.getAttribute('data-price') || '889';
+                        updateProduct('selected-product', color, storage, price);
+                        this.classList.add('selected');
+                        this.parentElement.querySelectorAll('.color-option').forEach(opt => {
+                            if (opt !== this) opt.classList.remove('selected');
+                        });
+                    });
                 });
-            });
+
+                document.querySelectorAll('.storage-button').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const card = document.getElementById('selected-product').querySelector('.product-card');
+                        const storage = this.getAttribute('data-storage');
+                        const price = this.getAttribute('data-price');
+                        const color = card.querySelector('.color-option.selected')?.getAttribute('data-color') || 'rosa';
+                        card.querySelectorAll('.storage-button').forEach(btn => btn.classList.remove('selected'));
+                        this.classList.add('selected');
+                        updateProduct('selected-product', color, storage, price);
+                    });
+                });
+            }
 
             // Função para atualizar cor e armazenamento
             function updateProduct(cardId, color, storage, price) {
-                const card = document.getElementById(cardId);
+                const card = document.getElementById(cardId).querySelector('.product-card');
                 const image = card.querySelector('.product-image');
                 const priceElement = card.querySelector('.selected-price');
-
                 image.style.border = `5px solid ${getColorCode(color)}`;
                 priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price} €`;
             }
@@ -412,35 +499,62 @@
                 return colors[color] || '#000000';
             }
 
-            // Evento para cores
-            document.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', function () {
-                    const color = this.getAttribute('data-color');
-                    const cardId = this.closest('.product-card').id;
-                    const storage = this.closest('.product-card').querySelector('.storage-button.selected')?.getAttribute('data-storage') || '128GB';
-                    const price = this.closest('.product-card').querySelector(`.storage-button[data-storage="${storage}"]`)?.getAttribute('data-price') || '889';
-                    updateProduct(cardId, color, storage, price);
-                    this.classList.add('selected');
-                    this.parentElement.querySelectorAll('.color-option').forEach(opt => {
-                        if (opt !== this) opt.classList.remove('selected');
+            // Função para mostrar o pop-up
+            function showPopup() {
+                const popup = document.getElementById('popup');
+                const overlay = document.getElementById('popupOverlay');
+                if (popup && overlay) {
+                    popup.style.display = 'block';
+                    overlay.style.display = 'block';
+                }
+            }
+
+            // Função para esconder o pop-up
+            function hidePopup() {
+                const popup = document.getElementById('popup');
+                const overlay = document.getElementById('popupOverlay');
+                if (popup && overlay) {
+                    popup.style.display = 'none';
+                    overlay.style.display = 'none';
+                }
+            }
+
+            // Função para calcular ganhos (genérica por enquanto)
+            function calculateEarnings() {
+                const salesCount = document.getElementById('salesCount').value;
+                const result = document.getElementById('earningsResult');
+                if (salesCount && salesCount > 0) {
+                    result.textContent = `Com ${salesCount} iPhones vendidos, seu potencial de ganhos aumenta!`;
+                } else {
+                    result.textContent = `Insira uma quantidade válida para ver seu potencial!`;
+                }
+            }
+
+            // Vincular eventos
+            const iphoneLink = document.querySelector('#iphone-dropdown a');
+            if (iphoneLink) {
+                iphoneLink.addEventListener('click', showIphoneDetails);
+                console.log("Evento vinculado ao link iPhone");
+            } else {
+                console.log("Link iPhone não encontrado");
+            }
+
+            const dropdownLinks = document.querySelectorAll('#iphone-dropdown .dropdown-content a');
+            if (dropdownLinks.length > 0) {
+                dropdownLinks.forEach(link => {
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const productId = this.textContent.toLowerCase().replace(' ', '-');
+                        console.log("Clicou em dropdown: " + productId);
+                        showProductDetails(productId);
                     });
                 });
-            });
+                console.log("Eventos vinculados aos links do dropdown");
+            } else {
+                console.log("Links do dropdown não encontrados");
+            }
 
-            // Evento para armazenamento
-            document.querySelectorAll('.storage-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    const card = this.closest('.product-card');
-                    const storage = this.getAttribute('data-storage');
-                    const price = this.getAttribute('data-price');
-                    const color = card.querySelector('.color-option.selected')?.getAttribute('data-color') || 'rosa';
-                    card.querySelectorAll('.storage-button').forEach(btn => btn.classList.remove('selected'));
-                    this.classList.add('selected');
-                    updateProduct(card.id, color, storage, price);
-                });
-            });
-
-            // Inicializar seleção padrão
+            // Inicializar seleção padrão na seção de produtos
             document.querySelectorAll('.product-card').forEach(card => {
                 card.querySelector('.storage-button').classList.add('selected');
                 const defaultColor = card.querySelector('.color-option')?.getAttribute('data-color') || 'rosa';
