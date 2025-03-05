@@ -34,12 +34,12 @@
                         <a href="#">iPad Mini</a>
                     </div>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown" id="iphone-dropdown">
                     <a href="#">iPhone</a>
                     <div class="dropdown-content">
                         <a href="#">iPhone 13</a>
                         <a href="#">iPhone 14</a>
-                        <a href="#">iPhone 15</a>
+                        <a href="#">iPhone 16</a>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -106,32 +106,19 @@
         </div>
     </section>
 
-    <!-- Products Section -->
+    <!-- Products Section com Cores Dinâmicas -->
     <section class="products" id="iphones">
         <h2>Nossos Produtos</h2>
         <div class="product-grid">
-            <div class="product-card">
-                <img src="{% static 'images/Iphone 13 (64gb).jpg' %}" alt="iPhone 13 64GB">
-                <h3>iPhone 13 (64GB)</h3>
-                <p class="price">€ 999,00</p>
-                <button class="cta-button">Comprar</button>
-            </div>
-            <div class="product-card">
-                <img src="{% static 'images/iPhone 13 (128GB).jpg' %}" alt="iPhone 13 128GB">
-                <h3>iPhone 13 (128GB)</h3>
-                <p class="price">€ 1.399,00</p>
-                <button class="cta-button">Comprar</button>
-            </div>
-            <div class="product-card">
-                <img src="{% static 'images/iPhone 14 Pro (256GB).jpg' %}" alt="iPhone 14 Pro 256GB">
-                <h3>iPhone 14 Pro (256GB)</h3>
-                <p class="price">€ 1.499,00</p>
-                <button class="cta-button">Comprar</button>
-            </div>
-            <div class="product-card">
-                <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="iPhone 15 Pro Max 512GB">
-                <h3>iPhone 15 Pro Max (512GB)</h3>
-                <p class="price">€ 1.599,00</p>
+            <div class="product-card" id="iphone-card">
+                <img src="{% static 'images/Iphone 16e.jpg' %}" alt="iPhone 16e" class="product-image">
+                <h3>iPhone 16e</h3>
+                <p class="price">€ 1.299,00</p>
+                <div class="color-options">
+                    <span class="color-option" data-color="preto" style="background-color: #000;"></span>
+                    <span class="color-option" data-color="azul" style="background-color: #0071e3;"></span>
+                    <span class="color-option" data-color="verde" style="background-color: #34c759;"></span>
+                </div>
                 <button class="cta-button">Comprar</button>
             </div>
         </div>
@@ -240,5 +227,23 @@
             </ul>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const colorOptions = document.querySelectorAll('.color-option');
+            const productImage = document.querySelector('#iphone-card .product-image');
+
+            colorOptions.forEach(option => {
+                option.addEventListener('mouseover', function () {
+                    const color = this.getAttribute('data-color');
+                    productImage.src = `{% static 'images/Iphone 16e_${color}.jpg' %}`.replace(' ', '');
+                });
+                option.addEventListener('mouseout', function () {
+                    productImage.src = `{% static 'images/Iphone 16e.jpg' %}`; // Volta à imagem padrão
+                });
+            });
+        });
+    </script>
 </body>
 </html>
+
