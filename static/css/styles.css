@@ -388,31 +388,6 @@ header nav {
     font-family: 'SF Pro Display';
 }
 
-/* Features Section */
-.features {
-    padding: 100px 0;
-    text-align: center;
-    background-color: #fff;
-}
-
-.features h2 {
-    font-size: 36px;
-    margin-bottom: 40px;
-    font-weight: 600;
-    color: #1d1d1f;
-    font-family: 'SF Pro Display';
-}
-
-.video-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.video-container video {
-    width: 100%;
-    border-radius: 12px;
-}
-
 /* Benefits Section */
 .benefits {
     padding: 100px 0;
