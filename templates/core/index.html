@@ -1,4 +1,4 @@
-k<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@ k<!DOCTYPE html>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos temporários para pop-up e calculadora */
+        /* Estilos temporários para pop-up, calculadora e accordion */
         .popup {
             display: none;
             position: fixed;
@@ -40,6 +40,7 @@ k<!DOCTYPE html>
             border: 1px solid #d2d2d7;
             border-radius: 8px;
             background-color: #fff;
+            display: block; /* Garante que apareça */
         }
         .calculator input {
             padding: 5px;
@@ -58,7 +59,7 @@ k<!DOCTYPE html>
         .calculator button:hover {
             background-color: #005bb5;
         }
-        .iphone-details {
+        .iphone-details, .other-details {
             padding: 100px 0;
             text-align: center;
             background-color: #fff;
@@ -72,6 +73,35 @@ k<!DOCTYPE html>
             max-width: 300px;
             margin: 0 auto;
         }
+        .accordion {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .accordion-item {
+            margin-bottom: 10px;
+        }
+        .accordion-button {
+            background-color: #0071e3;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+        .accordion-button:hover {
+            background-color: #005bb5;
+        }
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            background-color: #f5f5f7;
+            border-radius: 5px;
+        }
+        .accordion-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -84,19 +114,19 @@ k<!DOCTYPE html>
             </div>
             <ul class="nav-categories">
                 <li class="dropdown">
-                    <a href="#">Mac</a>
+                    <a href="#" onclick="showOtherDetails('mac')">Mac</a>
                     <div class="dropdown-content">
-                        <a href="#">MacBook Air</a>
-                        <a href="#">MacBook Pro</a>
-                        <a href="#">iMac</a>
+                        <a href="#" onclick="showAccordionContent('macbook-air')">MacBook Air</a>
+                        <a href="#" onclick="showAccordionContent('macbook-pro')">MacBook Pro</a>
+                        <a href="#" onclick="showAccordionContent('imac')">iMac</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">iPad</a>
+                    <a href="#" onclick="showOtherDetails('ipad')">iPad</a>
                     <div class="dropdown-content">
-                        <a href="#">iPad Pro</a>
-                        <a href="#">iPad Air</a>
-                        <a href="#">iPad Mini</a>
+                        <a href="#" onclick="showAccordionContent('ipad-pro')">iPad Pro</a>
+                        <a href="#" onclick="showAccordionContent('ipad-air')">iPad Air</a>
+                        <a href="#" onclick="showAccordionContent('ipad-mini')">iPad Mini</a>
                     </div>
                 </li>
                 <li class="dropdown" id="iphone-dropdown">
@@ -108,31 +138,31 @@ k<!DOCTYPE html>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Watch</a>
+                    <a href="#" onclick="showOtherDetails('watch')">Watch</a>
                     <div class="dropdown-content">
-                        <a href="#">Apple Watch Series 9</a>
-                        <a href="#">Apple Watch Ultra</a>
+                        <a href="#" onclick="showAccordionContent('watch-series-9')">Apple Watch Series 9</a>
+                        <a href="#" onclick="showAccordionContent('watch-ultra')">Apple Watch Ultra</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">AirPods</a>
+                    <a href="#" onclick="showOtherDetails('airpods')">AirPods</a>
                     <div class="dropdown-content">
-                        <a href="#">AirPods Pro</a>
-                        <a href="#">AirPods Max</a>
+                        <a href="#" onclick="showAccordionContent('airpods-pro')">AirPods Pro</a>
+                        <a href="#" onclick="showAccordionContent('airpods-max')">AirPods Max</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Campanhas de Incentivos</a>
+                    <a href="#" onclick="showOtherDetails('incentives')">Campanhas de Incentivos</a>
                     <div class="dropdown-content">
-                        <a href="#">Programa de Recompensas</a>
-                        <a href="#">Bônus por Vendas</a>
+                        <a href="#" onclick="showAccordionContent('rewards')">Programa de Recompensas</a>
+                        <a href="#" onclick="showAccordionContent('bonuses')">Bônus por Vendas</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Acessórios</a>
+                    <a href="#" onclick="showOtherDetails('accessories')">Acessórios</a>
                     <div class="dropdown-content">
-                        <a href="#">Carregadores</a>
-                        <a href="#">Capas</a>
+                        <a href="#" onclick="showAccordionContent('chargers')">Carregadores</a>
+                        <a href="#" onclick="showAccordionContent('cases')">Capas</a>
                     </div>
                 </li>
                 <li><a href="#">Suporte</a></li>
@@ -243,13 +273,19 @@ k<!DOCTYPE html>
         <h2>Conheça os iPhones da A121</h2>
         <div class="video-container">
             <video controls poster="{% static 'images/video-placeholder1.jpg' %}" id="iphone-video">
-                <source src="{% static 'videos/video-placeholder.mp4' %}" type="video/mp4" id="video-source">
+                <source src="{% static 'videos/IPHONE 16 PRO MAX.mp4' %}" type="video/mp4" id="video-source">
                 Seu navegador não suporta vídeo.
             </video>
         </div>
         <div id="selected-product" class="selected-product"></div>
         <button class="cta-button" onclick="showPopup()">Junte-se à Revolução</button>
         <button class="cta-button compare-button" onclick="compareModels()">Compare Todos os Modelos</button>
+    </section>
+
+    <!-- Other Details Section (para Mac, iPad, etc.) -->
+    <section class="other-details" id="other-details" style="display: none;">
+        <h2>Explore os Produtos da A121</h2>
+        <div class="accordion" id="product-accordion"></div>
     </section>
 
     <!-- Benefits Section -->
@@ -376,7 +412,7 @@ k<!DOCTYPE html>
                         if (video) {
                             video.currentTime = 0;
                             const source = document.getElementById('video-source');
-                            source.src = `{% static 'videos/video-placeholder.mp4' %}`; // Vídeo genérico por enquanto
+                            source.src = `{% static 'videos/IPHONE 16 PRO MAX.mp4' %}`;
                             video.load(); // Recarrega o vídeo
                             video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
                         }
@@ -401,7 +437,7 @@ k<!DOCTYPE html>
                         if (video) {
                             video.currentTime = 0;
                             const source = document.getElementById('video-source');
-                            source.src = `{% static 'videos/video-placeholder.mp4' %}`; // Vídeo genérico por enquanto
+                            source.src = `{% static 'videos/IPHONE 16 PRO MAX.mp4' %}`;
                             video.load(); // Recarrega o vídeo
                             video.play().catch(error => console.log("Erro ao tocar vídeo:", error));
                         }
@@ -436,7 +472,7 @@ k<!DOCTYPE html>
                         'iphone-16-pro': {
                             name: 'iPhone 16 Pro',
                             description: 'O iPhone de topo.',
-                            image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}',
+                            image: '{% static "images/iPhone-16-pro-dourado claro.jpg" %}', // Corrigido o caminho
                             colors: ['dourado claro', 'preto', 'branco', 'roxo'],
                             storages: ['128GB', '256GB', '512GB', '1TB'],
                             prices: ['1249', '1379', '1629', '1879']
@@ -465,6 +501,92 @@ k<!DOCTYPE html>
                     } else {
                         selectedProductDiv.innerHTML = '<p>Produto não encontrado.</p>';
                     }
+                }
+            }
+
+            // Função para mostrar seção de outros produtos
+            function showOtherDetails(category) {
+                event.preventDefault();
+                console.log("Clicou em " + category);
+                const otherDetails = document.getElementById('other-details');
+                if (otherDetails) {
+                    otherDetails.style.display = 'block';
+                    otherDetails.style.opacity = '0';
+                    setTimeout(() => {
+                        otherDetails.style.transition = 'opacity 0.5s ease-in';
+                        otherDetails.style.opacity = '1';
+                        otherDetails.scrollIntoView({ behavior: 'smooth' });
+                        populateAccordion(category);
+                    }, 10);
+                } else {
+                    console.log("Erro: #other-details não encontrado");
+                }
+            }
+
+            // Função para popular o accordion
+            function populateAccordion(category) {
+                const accordion = document.getElementById('product-accordion');
+                if (accordion) {
+                    const categories = {
+                        'mac': {
+                            items: [
+                                { id: 'macbook-air', name: 'MacBook Air', image: '{% static "images/macbook-air.jpg" %}' },
+                                { id: 'macbook-pro', name: 'MacBook Pro', image: '{% static "images/macbook-pro.jpg" %}' },
+                                { id: 'imac', name: 'iMac', image: '{% static "images/imac.jpg" %}' }
+                            ]
+                        },
+                        'ipad': {
+                            items: [
+                                { id: 'ipad-pro', name: 'iPad Pro', image: '{% static "images/ipad-pro.jpg" %}' },
+                                { id: 'ipad-air', name: 'iPad Air', image: '{% static "images/ipad-air.jpg" %}' },
+                                { id: 'ipad-mini', name: 'iPad Mini', image: '{% static "images/ipad-mini.jpg" %}' }
+                            ]
+                        },
+                        'watch': {
+                            items: [
+                                { id: 'watch-series-9', name: 'Apple Watch Series 9', image: '{% static "images/watch-series-9.jpg" %}' },
+                                { id: 'watch-ultra', name: 'Apple Watch Ultra', image: '{% static "images/watch-ultra.jpg" %}' }
+                            ]
+                        },
+                        'airpods': {
+                            items: [
+                                { id: 'airpods-pro', name: 'AirPods Pro', image: '{% static "images/airpods-pro.jpg" %}' },
+                                { id: 'airpods-max', name: 'AirPods Max', image: '{% static "images/airpods-max.jpg" %}' }
+                            ]
+                        },
+                        'incentives': {
+                            items: [
+                                { id: 'rewards', name: 'Programa de Recompensas', image: '' },
+                                { id: 'bonuses', name: 'Bônus por Vendas', image: '' }
+                            ]
+                        },
+                        'accessories': {
+                            items: [
+                                { id: 'chargers', name: 'Carregadores', image: '' },
+                                { id: 'cases', name: 'Capas', image: '' }
+                            ]
+                        }
+                    };
+                    const categoryData = categories[category];
+                    if (categoryData) {
+                        accordion.innerHTML = categoryData.items.map(item => `
+                            <div class="accordion-item">
+                                <button class="accordion-button" onclick="toggleAccordion('${item.id}')">${item.name}</button>
+                                <div class="accordion-content" id="${item.id}">
+                                    <img src="${item.image}" alt="${item.name}" style="max-width: 100%; height: auto;">
+                                    <p>Detalhes de ${item.name} em breve!</p>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            }
+
+            // Função para alternar o accordion
+            function toggleAccordion(id) {
+                const content = document.getElementById(id);
+                if (content) {
+                    content.classList.toggle('active');
                 }
             }
 
@@ -573,6 +695,26 @@ k<!DOCTYPE html>
             } else {
                 console.log("Links do dropdown não encontrados");
             }
+
+            // Vincular eventos para outras categorias
+            document.querySelectorAll('.nav-categories .dropdown a').forEach(link => {
+                if (link.getAttribute('onclick')) {
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const category = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+                        showOtherDetails(category);
+                    });
+                }
+            });
+
+            // Vincular eventos para accordion
+            document.querySelectorAll('.dropdown-content a').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const itemId = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    toggleAccordion(itemId);
+                });
+            });
 
             // Inicializar seleção padrão na seção de produtos
             document.querySelectorAll('.product-card').forEach(card => {
