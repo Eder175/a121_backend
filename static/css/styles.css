@@ -1,11 +1,16 @@
 /* Estilos Globais */
-body {
-    font-family: 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'sans-serif';
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'sans-serif';
     background-color: #f5f5f7;
     color: #1d1d1f;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .container {
@@ -22,156 +27,132 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: 700;
-    color: #1d1d1f;
     display: flex;
     align-items: center;
-    margin-right: 20px;
+    gap: 8px;
 }
 
 .logo .header-logo {
-    width: 72.5px; /* Tamanho já ajustado */
-    height: 72.5px;
-    margin-right: 8px;
+    width: 24px;
+    height: 24px;
 }
 
-header nav {
+.logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+
+nav {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
 }
 
-.nav-categories {
+.nav-categories, .nav-links {
     list-style: none;
-    padding: 0;
-    margin: 0;
     display: flex;
     gap: 20px;
-    flex-grow: 1;
+    align-items: center;
 }
 
-.nav-categories .dropdown {
-    position: relative;
-    display: inline-block;
+.nav-categories li a, .nav-links li a {
+    text-decoration: none;
+    color: #1d1d1f;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-.nav-categories .dropdown-content {
+.nav-categories li a:hover, .nav-links li a:hover {
+    color: #0071e3;
+}
+
+.dropdown-content {
     display: none;
     position: absolute;
     background-color: #fff;
-    min-width: 160px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    padding: 10px 0;
+    z-index: 1000;
 }
 
-.nav-categories .dropdown-content a {
-    color: #1d1d1f;
-    padding: 12px 16px;
-    text-decoration: none;
+.dropdown:hover .dropdown-content {
     display: block;
-    font-family: 'SF Pro Display';
 }
 
-.nav-categories .dropdown-content a:hover {
+.dropdown-content a {
+    display: block;
+    padding: 8px 16px;
+    color: #1d1d1f;
+    text-decoration: none;
+}
+
+.dropdown-content a:hover {
     background-color: #f5f5f7;
-}
-
-.nav-categories .dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.nav-categories li a {
-    text-decoration: none;
-    color: #1d1d1f;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    font-family: 'SF Pro Display';
-    white-space: nowrap;
-}
-
-.nav-categories li a:hover {
-    color: #0071e3;
-}
-
-.nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.nav-links li a {
-    text-decoration: none;
-    color: #1d1d1f;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    font-family: 'SF Pro Display';
-}
-
-.nav-links li a:hover {
-    color: #0071e3;
 }
 
 .search-bar {
     display: flex;
     align-items: center;
-    border: 1px solid #d2d2d7;
-    border-radius: 20px;
-    overflow: hidden;
 }
 
 .search-input {
-    padding: 8px 12px;
-    border: none;
+    padding: 8px;
+    border: 1px solid #d2d2d7;
+    border-radius: 20px 0 0 20px;
     outline: none;
-    font-family: 'SF Pro Display';
-    width: 120px;
-    transition: width 0.3s;
-}
-
-.search-input:focus {
-    width: 160px;
 }
 
 .search-button {
     padding: 8px 12px;
-    border: none;
+    border: 1px solid #d2d2d7;
+    border-left: none;
+    border-radius: 0 20px 20px 0;
     background-color: #fff;
     cursor: pointer;
-    font-family: 'SF Pro Display';
 }
 
 .search-button:hover {
     background-color: #f5f7f7;
 }
 
-/* Hero Section */
+/* Hero Section com 3D */
 .hero {
     position: relative;
     text-align: center;
-    padding: 120px 0;
-    background-color: #fff;
+    padding: 150px 0;
+    background-color: #000;
     overflow: hidden;
+    min-height: 600px;
 }
 
-.hero-content-top, .hero-content-bottom {
+.hero-content {
     position: relative;
     z-index: 1;
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    color: #fff;
 }
 
-.hero-image {
+.hero-title {
+    font-size: 56px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #ccc;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-3d {
     position: absolute;
     top: 0;
     left: 0;
@@ -180,90 +161,22 @@ header nav {
     z-index: 0;
 }
 
-.hero-img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    opacity: 0.2;
-}
-
-.hero h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
-    font-weight: 700;
-    color: #1d1d1f;
-}
-
-.hero p {
-    font-size: 20px;
-    margin-bottom: 30px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    color: #6e6e73;
-}
-
 .cta-button {
     background-color: #0071e3;
     color: #fff;
     border: none;
-    padding: 12px 24px;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: 500;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-family: 'SF Pro Display';
+    transition: all 0.3s ease;
+    text-transform: uppercase;
 }
 
 .cta-button:hover {
     background-color: #005bb5;
-    transform: translateY(-2px);
-}
-
-.compare-button {
-    margin-top: 20px;
-    background-color: #0071e3;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-family: 'SF Pro Display';
-}
-
-.compare-button:hover {
-    background-color: #005bb5;
-    transform: translateY(-2px);
-}
-
-/* Demo Section */
-.demo-section {
-    padding: 50px 0;
-    text-align: center;
-    background-color: #fff;
-}
-
-.demo-section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    font-weight: 600;
-    color: #1d1d1f;
-    font-family: 'SF Pro Display';
-}
-
-.demo-card {
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.demo-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
+    transform: scale(1.05);
 }
 
 /* Products Section */
@@ -274,134 +187,97 @@ header nav {
 }
 
 .products h2 {
-    font-size: 36px;
-    margin-bottom: 40px;
+    font-size: 40px;
+    margin-bottom: 50px;
     font-weight: 600;
     color: #1d1d1f;
-    font-family: 'SF Pro Display';
 }
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 40px;
     padding: 0 20px;
 }
 
 .product-card {
     background-color: #fff;
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 15px;
+    padding: 25px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .product-image {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: border 0.3s ease;
+}
+
+.product-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #1d1d1f;
+    font-weight: 600;
 }
 
 .options {
     margin: 15px 0;
 }
 
-.color-options {
+.color-options, .storage-options {
     display: flex;
-    gap: 10px;
     justify-content: center;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .color-option {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
 }
 
-.color-option:hover {
-    transform: scale(1.2);
-}
-
-.color-option.selected {
-    border: 2px solid #0071e3;
-}
-
-.storage-options {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
+.color-option:hover, .color-option.selected {
+    border-color: #0071e3;
+    transform: scale(1.1);
 }
 
 .storage-button {
-    padding: 5px 10px;
+    padding: 8px 16px;
     border: 1px solid #d2d2d7;
+    border-radius: 20px;
     background-color: #fff;
     cursor: pointer;
-    border-radius: 5px;
-    font-family: 'SF Pro Display';
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.storage-button:hover {
-    background-color: #f5f5f7;
-}
-
-.storage-button.selected {
+.storage-button:hover, .storage-button.selected {
     background-color: #0071e3;
     color: #fff;
+    border-color: #005bb5;
 }
 
-.product-card h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
-    color: #1d1d1f;
-    font-weight: 600;
-    font-family: 'SF Pro Display';
-}
-
-.product-card p {
-    font-size: 16px;
-    color: #6e6e73;
-    margin-bottom: 10px;
-    font-family: 'SF Pro Display';
-}
-
-.product-card .selected-price {
+.selected-price {
     font-size: 18px;
-    color: #0071e3;
+    color: #1d1d1f;
     margin-bottom: 20px;
     font-weight: 500;
-    font-family: 'SF Pro Display';
 }
 
-/* iPhone Details Section */
-.iphone-details {
-    padding: 100px 0;
-    text-align: center;
-    background-color: #fff;
-    display: none;
-}
-
-.iphone-details h2 {
-    font-size: 36px;
-    margin-bottom: 40px;
-    font-weight: 600;
-    color: #1d1d1f;
-    font-family: 'SF Pro Display';
+.product-buy {
+    margin-top: 15px;
 }
 
 /* Benefits Section */
@@ -412,31 +288,28 @@ header nav {
 }
 
 .benefits h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 40px;
+    margin-bottom: 30px;
     font-weight: 600;
     color: #1d1d1f;
-    font-family: 'SF Pro Display';
 }
 
 .benefits-text {
-    max-width: 800px;
-    margin: 0 auto 30px;
+    max-width: 900px;
+    margin: 0 auto 40px;
+    font-size: 18px;
+    color: #6e6e73;
 }
 
 .benefits-text p {
-    font-size: 18px;
-    color: #6e6e73;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    font-family: 'SF Pro Display';
+    margin-bottom: 20px;
 }
 
-.benefits-text p strong {
+.benefits-text strong {
     color: #1d1d1f;
 }
 
-/* Video Sections */
+/* Video Section */
 .video-section {
     padding: 100px 0;
     text-align: center;
@@ -444,86 +317,33 @@ header nav {
 }
 
 .video-section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 40px;
+    margin-bottom: 30px;
     font-weight: 600;
     color: #1d1d1f;
-    font-family: 'SF Pro Display';
 }
 
 .video-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
 .video-container video {
     width: 100%;
-    border-radius: 12px;
-}
-
-.footer-video {
-    max-width: 800px;
-    margin: 0 auto 20px;
-}
-
-.footer-video video {
-    width: 100%;
-    border-radius: 12px;
-}
-
-/* Media Queries para Mobile */
-@media (max-width: 768px) {
-    .hero {
-        padding: 80px 0;
-    }
-
-    .hero h1 {
-        font-size: 36px;
-    }
-
-    .hero p {
-        font-size: 16px;
-    }
-
-    .product-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .nav-categories {
-        display: none;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .search-bar {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .video-container, .footer-video {
-        max-width: 100%;
-    }
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Footer */
 footer {
-    background-color: #f5f5f7;
-    padding: 40px 0;
-    color: #6e6e73;
-    font-size: 12px;
-    font-family: 'SF Pro Display';
-}
-
-.footer-top {
+    background-color: #000;
+    padding: 50px 0;
+    color: #ccc;
     text-align: center;
-    margin-bottom: 20px;
 }
 
 .footer-top p {
-    margin: 0 0 10px;
+    margin-bottom: 10px;
 }
 
 .footer-link {
@@ -533,21 +353,17 @@ footer {
 
 .footer-main {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
     flex-wrap: wrap;
-    gap: 20px;
-}
-
-.footer-section {
-    flex: 1;
-    min-width: 150px;
 }
 
 .footer-section h3 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    color: #1d1d1f;
-    margin-bottom: 10px;
+    color: #fff;
+    margin-bottom: 15px;
 }
 
 .footer-section ul {
@@ -555,12 +371,8 @@ footer {
     padding: 0;
 }
 
-.footer-section ul li {
-    margin-bottom: 5px;
-}
-
 .footer-section ul li a {
-    color: #6e6e73;
+    color: #ccc;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -573,12 +385,12 @@ footer {
     display: flex;
     align-items: center;
     gap: 5px;
+    justify-content: center;
 }
 
 .footer-bottom {
-    text-align: center;
     margin-top: 20px;
-    border-top: 1px solid #d2d2d7;
+    border-top: 1px solid #333;
     padding-top: 20px;
 }
 
@@ -587,16 +399,61 @@ footer {
     padding: 0;
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 10px;
+    gap: 20px;
 }
 
 .footer-bottom ul li a {
-    color: #6e6e73;
+    color: #ccc;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .footer-bottom ul li a:hover {
     color: #0071e3;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .hero {
+        padding: 100px 0;
+        min-height: 500px;
+    }
+
+    .hero-title {
+        font-size: 36px;
+    }
+
+    .hero-subtitle {
+        font-size: 18px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-categories, .nav-links {
+        display: none;
+    }
+
+    .hero-3d {
+        height: 50%;
+    }
+
+    .video-container, .footer-video {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 769px) {
+    nav {
+        justify-content: space-between;
+    }
+
+    .nav-categories {
+        display: flex;
+    }
+
+    .nav-links {
+        display: flex;
+    }
 }
