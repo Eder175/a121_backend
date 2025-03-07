@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121 - Mude o Eixo do Planeta</title>
+    <title>A121 - Seu Futuro Começa Aqui!</title>
     {% load static %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -24,6 +24,10 @@
                 <li><a href="#">Mac</a></li>
                 <li><a href="#">iPad</a></li>
                 <li><a href="#">iPhone</a></li>
+                <li><a href="#">Watch</a></li>
+                <li><a href="#">AirPods</a></li>
+                <li><a href="#">Campanhas de Incentivo</a></li>
+                <li><a href="#">Acessórios</a></li>
                 <li><a href="#">Suporte</a></li>
             </ul>
             <ul class="nav-links">
@@ -45,7 +49,7 @@
     <!-- Hero Section com 3D -->
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">A121 - Mude o Eixo do Planeta</h1>
+            <h1 class="hero-title">A121 - Seu Futuro Começa Aqui!</h1>
             <p class="hero-subtitle">Com o A121, você não compra um iPhone — você constrói um futuro. Junte-se à revolução.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
@@ -190,8 +194,12 @@
             const geometry = new THREE.BoxGeometry(1, 2, 0.2);
             const textureLoader = new THREE.TextureLoader();
             textureLoader.load('{% static "images/iPhone 16 Pro Max Titânio Deserto.jpg" %}', (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
                 const material = new THREE.MeshBasicMaterial({ map: texture });
                 const iphone = new THREE.Mesh(geometry, material);
+                iphone.position.y = 0.5; // Ajuste vertical
                 scene.add(iphone);
             }, undefined, (error) => {
                 console.error('Erro ao carregar textura:', error);
