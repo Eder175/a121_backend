@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Three.js para 3D -->
+    <!-- Three.js e GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 </head>
 <body>
-    <!-- Header com Navegação Avançada -->
+    <!-- Header -->
     <header>
         <nav class="container">
             <div class="logo">
@@ -21,30 +21,9 @@
                 <span class="logo-text">A121</span>
             </div>
             <ul class="nav-categories">
-                <li class="dropdown">
-                    <a href="#">Mac</a>
-                    <div class="dropdown-content">
-                        <a href="#">MacBook Air</a>
-                        <a href="#">MacBook Pro</a>
-                        <a href="#">iMac</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">iPad</a>
-                    <div class="dropdown-content">
-                        <a href="#">iPad Pro</a>
-                        <a href="#">iPad Air</a>
-                        <a href="#">iPad Mini</a>
-                    </div>
-                </li>
-                <li class="dropdown" id="iphone-dropdown">
-                    <a href="#">iPhone</a>
-                    <div class="dropdown-content">
-                        <a href="#" data-model="15">iPhone 15</a>
-                        <a href="#" data-model="16">iPhone 16</a>
-                        <a href="#" data-model="16pro">iPhone 16 Pro</a>
-                    </div>
-                </li>
+                <li><a href="#">Mac</a></li>
+                <li><a href="#">iPad</a></li>
+                <li><a href="#">iPhone</a></li>
                 <li><a href="#">Suporte</a></li>
             </ul>
             <ul class="nav-links">
@@ -67,7 +46,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">A121 - Mude o Eixo do Planeta</h1>
-            <p class="hero-subtitle">Compre iPhones, aprenda com cursos e construa seu futuro global.</p>
+            <p class="hero-subtitle">Com o A121, você não compra um iPhone — você constrói um futuro. Junte-se à revolução.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
         <div id="three-canvas" class="hero-3d"></div>
@@ -139,9 +118,12 @@
     <section class="benefits" id="negocio">
         <h2>Por que Escolher a A121?</h2>
         <div class="benefits-text">
-            <p><strong>Reescreva seu Destino:</strong> Transforme sua vida com a A121. Não é só um iPhone, é uma revolução!</p>
-            <p><strong>Entre na Revolução:</strong> Junte-se a uma comunidade global e mude o eixo do planeta.</p>
-            <p><strong>Aja Agora:</strong> O momento é hoje – construa seu futuro financeiro!</p>
+            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da humanidade? Aqui, qualquer pessoa pode criar um site de vendas de iPhones, mas só você pode mudar sua vida. Somos os arquitetos de um futuro extraordinário.</p>
+            <p><strong>Entre na revolução:</strong> Mais do que comprar um iPhone, você se junta a uma revolução global para mudar o eixo do planeta com liberdade financeira e geográfica.</p>
+            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora e construir seus sonhos com a A121!</p>
+            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo. Não o use apenas para vídeos ou redes sociais como TikTok — transforme-o em uma ferramenta para conhecimento e revolução pessoal!</p>
+            <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a nós para criar uma família global, onde todos crescem juntos como um só, mudando vidas e o eixo do planeta!</p>
+            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
         </div>
         <button class="cta-button">Torne-se Parceiro</button>
     </section>
@@ -196,42 +178,39 @@
     </footer>
 
     <script>
-        // Inicialização do 3D com Three.js
+        // Inicialização do 3D com Three.js usando a imagem como textura
         document.addEventListener('DOMContentLoaded', () => {
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight * 0.7);
             document.getElementById('three-canvas').appendChild(renderer.domElement);
 
-            const geometry = new THREE.BoxGeometry(1, 2, 0.5); // Forma de iPhone simplificada
-            const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: false });
-            const iphone = new THREE.Mesh(geometry, material);
-            scene.add(iphone);
+            // Geometria do iPhone (aproximada)
+            const geometry = new THREE.BoxGeometry(1, 2, 0.2);
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.load('{% static "images/iPhone 16 Pro Max Titânio Deserto.jpg" %}', (texture) => {
+                const material = new THREE.MeshBasicMaterial({ map: texture });
+                const iphone = new THREE.Mesh(geometry, material);
+                scene.add(iphone);
+            }, undefined, (error) => {
+                console.error('Erro ao carregar textura:', error);
+            });
 
             camera.position.z = 3;
+            camera.position.y = 1;
 
             function animate() {
                 requestAnimationFrame(animate);
-                iphone.rotation.y += 0.01;
+                if (scene.children.length > 1) scene.children[1].rotation.y += 0.005; // Rotação suave
                 renderer.render(scene, camera);
             }
             animate();
 
-            // Animação GSAP
+            // Animações GSAP
             gsap.from('.hero-title', { opacity: 0, y: -50, duration: 1.5, ease: 'power2.out' });
             gsap.from('.hero-subtitle', { opacity: 0, y: -30, duration: 1.5, delay: 0.5, ease: 'power2.out' });
             gsap.from('.cta-button', { opacity: 0, scale: 0.8, duration: 1.5, delay: 1, ease: 'elastic.out(1, 0.3)' });
-
-            // Dropdown interativo
-            document.querySelectorAll('.dropdown').forEach(dropdown => {
-                dropdown.addEventListener('mouseover', () => {
-                    dropdown.querySelector('.dropdown-content').style.display = 'block';
-                });
-                dropdown.addEventListener('mouseout', () => {
-                    dropdown.querySelector('.dropdown-content').style.display = 'none';
-                });
-            });
 
             // Seleção de produtos
             function updateProduct(card, color, storage, price) {
@@ -278,7 +257,6 @@
                 updateProduct(card, defaultColor, defaultStorage, defaultPrice);
             });
 
-            // Modal para pré-visualização (a ser implementado na próxima etapa)
             document.querySelectorAll('.product-buy').forEach(button => {
                 button.addEventListener('click', () => {
                     alert('Pré-visualização em desenvolvimento - próxima etapa!');
