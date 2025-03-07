@@ -46,8 +46,8 @@
         </nav>
     </header>
 
-    <!-- Hero Section com 3D -->
-    <section class="hero">
+    <!-- Hero Section com 3D e Imagem de Fundo -->
+    <section class="hero" style="background-image: url('{% static 'images/iPhone 14 Pro dourado claro.jpg' %}'); background-size: cover; background-position: center;">
         <div class="hero-content">
             <h1 class="hero-title">A121 - Seu Futuro Começa Aqui!</h1>
             <p class="hero-subtitle">Com o A121, você não compra um iPhone — você constrói um futuro. Junte-se à revolução.</p>
@@ -191,26 +191,33 @@
             document.getElementById('three-canvas').appendChild(renderer.domElement);
 
             // Geometria do iPhone (aproximada)
-            const geometry = new THREE.BoxGeometry(1, 2, 0.2);
+            const geometry = new THREE.BoxGeometry(1, 2, 0.2); // Ajuste para um iPhone estilizado
             const textureLoader = new THREE.TextureLoader();
-            textureLoader.load('{% static "images/iPhone 16 Pro Max Titânio Deserto.jpg" %}', (texture) => {
+            textureLoader.load('{% static "images/iPhone 14 Pro dourado claro.jpg" %}', (texture) => {
                 texture.wrapS = THREE.RepeatWrapping;
                 texture.wrapT = THREE.RepeatWrapping;
                 texture.repeat.set(1, 1);
                 const material = new THREE.MeshBasicMaterial({ map: texture });
                 const iphone = new THREE.Mesh(geometry, material);
-                iphone.position.y = 0.5; // Ajuste vertical
+                iphone.position.set(0, 0.5, 0); // Centralizado e ajustado verticalmente
                 scene.add(iphone);
             }, undefined, (error) => {
                 console.error('Erro ao carregar textura:', error);
             });
+
+            // Luz para destacar o modelo
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 3, 5);
+            scene.add(directionalLight);
 
             camera.position.z = 3;
             camera.position.y = 1;
 
             function animate() {
                 requestAnimationFrame(animate);
-                if (scene.children.length > 1) scene.children[1].rotation.y += 0.005; // Rotação suave
+                if (scene.children.length > 3) scene.children[3].rotation.y += 0.005; // Rotação suave
                 renderer.render(scene, camera);
             }
             animate();
