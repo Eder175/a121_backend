@@ -10,3 +10,6 @@ db.sqlite3
 
 # Ignorar arquivos de configuração sensíveis
 .env
+*.log
+*.sqlite3
+media/  # Para arquivos de upload (ex.: documentos dos parceiros)
