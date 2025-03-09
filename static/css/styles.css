@@ -7,7 +7,7 @@
 
 body {
     font-family: 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'sans-serif';
-    background-color: #fff;
+    background-color: #f5f5f7;
     color: #1d1d1f;
     line-height: 1.6;
     overflow-x: hidden;
@@ -34,9 +34,6 @@ header {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #1d1d1f;
 }
 
 .logo .header-logo {
@@ -63,10 +60,6 @@ nav {
     align-items: center;
 }
 
-.nav-categories li, .nav-links li {
-    position: relative;
-}
-
 .nav-categories li a, .nav-links li a {
     text-decoration: none;
     color: #1d1d1f;
@@ -76,30 +69,6 @@ nav {
 
 .nav-categories li a:hover, .nav-links li a:hover {
     color: #0071e3;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    z-index: 1;
-    top: 100%;
-    left: 0;
-    min-width: 150px;
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 10px 15px;
-    color: #1d1d1f;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.dropdown-content a:hover {
-    background-color: #f5f5f7;
 }
 
 .search-bar {
@@ -131,38 +100,35 @@ nav {
 .hero {
     position: relative;
     text-align: center;
-    padding: 100px 0;
+    padding: 150px 0;
+    background-color: #000;
+    overflow: hidden;
     min-height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    background-color: #000;
 }
 
-.hero-content-top h1 {
+.hero-content {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    padding: 20px;
+}
+
+.hero-title {
     font-size: 56px;
     margin-bottom: 20px;
     font-weight: 700;
-    color: #fff;
 }
 
-.hero-image {
-    margin: 30px 0;
-}
-
-.hero-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.hero-content-bottom p {
+.hero-subtitle {
     font-size: 24px;
     margin-bottom: 30px;
     color: #ccc;
     max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-3d {
@@ -190,31 +156,6 @@ nav {
 .cta-button:hover {
     background-color: #005bb5;
     transform: scale(1.05);
-}
-
-/* Demo Section */
-.demo-section {
-    padding: 50px 0;
-    text-align: center;
-    background-color: #f5f5f7;
-}
-
-.demo-section h2 {
-    font-size: 40px;
-    margin-bottom: 30px;
-    font-weight: 600;
-    color: #1d1d1f;
-}
-
-.demo-card {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.demo-image {
-    max-width: 100%;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Products Section */
@@ -380,17 +321,6 @@ footer {
     text-align: center;
 }
 
-.footer-video {
-    max-width: 900px;
-    margin: 0 auto 30px;
-}
-
-.footer-video video {
-    width: 100%;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
 .footer-top {
     margin-bottom: 20px;
 }
@@ -477,15 +407,15 @@ footer {
 /* Media Queries */
 @media (max-width: 768px) {
     .hero {
-        padding: 50px 0;
-        min-height: 400px;
+        padding: 100px 0;
+        min-height: 500px;
     }
 
-    .hero-content-top h1 {
+    .hero-title {
         font-size: 36px;
     }
 
-    .hero-content-bottom p {
+    .hero-subtitle {
         font-size: 18px;
     }
 
