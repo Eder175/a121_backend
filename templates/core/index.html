@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -103,7 +103,7 @@
             <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
-        <div id="three-canvas" class="hero-3d" data-texture-path="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}"></div>
+        <div id="three-canvas" class="hero-3d" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;" data-texture-path="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}"></div>
     </section>
 
     <!-- Novo iPhone 16e (Demonstração) -->
@@ -284,7 +284,7 @@
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight * 0.7);
+            renderer.setSize(window.innerWidth, window.innerHeight * 0.3); // Ajustado para não cobrir todo o hero
             document.getElementById('three-canvas').appendChild(renderer.domElement);
 
             // Geometria do iPhone (aproximada)
@@ -295,7 +295,7 @@
             textureLoader.load(texturePath, function (texture) {
                 const material = new THREE.MeshBasicMaterial({ map: texture });
                 const iphone = new THREE.Mesh(geometry, material);
-                iphone.position.set(0, 0.5, 0); // Centralizado e ajustado verticalmente
+                iphone.position.set(0, 0, 0); // Centralizado
                 scene.add(iphone);
                 console.log('Textura carregada com sucesso!');
             }, undefined, function (error) {
@@ -310,7 +310,6 @@
             scene.add(directionalLight);
 
             camera.position.z = 3;
-            camera.position.y = 1;
 
             function animate() {
                 requestAnimationFrame(animate);
@@ -325,7 +324,7 @@
             // Ajustar o tamanho do renderer ao redimensionar a janela
             window.addEventListener('resize', function () {
                 const width = window.innerWidth;
-                const height = window.innerHeight * 0.7;
+                const height = window.innerHeight * 0.3;
                 renderer.setSize(width, height);
                 camera.aspect = width / height;
                 camera.updateProjectionMatrix();
