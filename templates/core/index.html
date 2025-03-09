@@ -7,7 +7,7 @@
     {% load static %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Three.js e GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
@@ -17,7 +17,7 @@
     <header>
         <nav class="container">
             <div class="logo">
-                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
+                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo">
                 <span class="logo-text">A121</span>
             </div>
             <ul class="nav-categories">
@@ -40,9 +40,9 @@
                 <li class="dropdown" id="iphone-dropdown">
                     <a href="#">iPhone</a>
                     <div class="dropdown-content">
-                        <a href="#">iPhone 15</a>
-                        <a href="#">iPhone 16</a>
-                        <a href="#">iPhone 16 Pro</a>
+                        <a href="#" data-model="15">iPhone 15</a>
+                        <a href="#" data-model="16">iPhone 16</a>
+                        <a href="#" data-model="16pro">iPhone 16 Pro</a>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -97,10 +97,10 @@
             <h1>A121 - Seu Futuro Começa Aqui!</h1>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
+            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-image">
         </div>
         <div class="hero-content-bottom">
-            <p>Com o A121, você não compra um iPhone — você constrói um futuro. Junte-se à revolução.</p>
+            <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
         <div id="three-canvas" class="hero-3d"></div>
@@ -119,24 +119,24 @@
         <h2>Nossos Produtos</h2>
         <div class="product-grid">
             <div class="product-card" id="iphone-15-card">
-                <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
+                <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa">
                 <h3>iPhone 15</h3>
                 <p>Impressionante como sempre.</p>
                 <div class="options">
                     <div class="color-options">
-                        <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
+                        <span class="color-option" data-color="rosa" style="background-color: #ffb6c1;"></span>
                     </div>
                     <div class="storage-options">
                         <button class="storage-button" data-storage="128GB" data-price="889">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1019">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1269">512 GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="999">256 GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="1199">512 GB</button>
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 889 €</p>
                 <button class="cta-button product-buy">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
-                <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul" class="product-image">
+                <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul">
                 <h3>iPhone 16</h3>
                 <p>Potente em tudo.</p>
                 <div class="options">
@@ -145,29 +145,29 @@
                     </div>
                     <div class="storage-options">
                         <button class="storage-button" data-storage="128GB" data-price="989">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1119">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1369">512 GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="1099">256 GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="1299">512 GB</button>
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 989 €</p>
                 <button class="cta-button product-buy">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
-                <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro" class="product-image">
+                <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro">
                 <h3>iPhone 16 Pro</h3>
                 <p>O iPhone de topo.</p>
                 <div class="options">
                     <div class="color-options">
-                        <span class="color-option" data-color="dourado claro" style="background-color: #d4af37;"></span>
+                        <span class="color-option" data-color="dourado claro" style="background-color: #f5e050;"></span>
                         <span class="color-option" data-color="preto" style="background-color: #000000;"></span>
                         <span class="color-option" data-color="branco" style="background-color: #ffffff;"></span>
                         <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
                     </div>
                     <div class="storage-options">
                         <button class="storage-button" data-storage="128GB" data-price="1249">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1379">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1629">512 GB</button>
-                        <button class="storage-button" data-storage="1TB" data-price="1879">1TB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="1349">256 GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="1549">512 GB</button>
+                        <button class="storage-button" data-storage="1TB" data-price="1749">1TB</button>
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 1249 €</p>
@@ -182,8 +182,8 @@
         <div class="benefits-text">
             <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da humanidade? Aqui, qualquer pessoa pode criar um site de vendas de iPhones, mas só você pode mudar sua vida. Somos os arquitetos de um futuro extraordinário.</p>
             <p><strong>Entre na revolução:</strong> Mais do que comprar um iPhone, você se junta a uma revolução global para mudar o eixo do planeta com liberdade financeira e geográfica.</p>
-            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora e construir seus sonhos com a A121!</p>
-            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo. Não o use apenas para vídeos ou redes sociais como TikTok — transforme-o em uma ferramenta para conhecimento e revolução pessoal!</p>
+            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora com A121!</p>
+            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo. Não o use apenas para postar ou redes sociais como TikTok — transforme-o em uma ferramenta para conhecimento e revolução pessoal!</p>
             <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a nós para criar uma família global, onde todos crescem juntos como um só, mudando vidas e o eixo do planeta!</p>
             <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
         </div>
@@ -276,7 +276,8 @@
                 <li><a href="#">Termos de Uso</a></li>
                 <li><a href="#">Mapa do Site</a></li>
             </ul>
-        </footer>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -288,18 +289,18 @@
             document.getElementById('three-canvas').appendChild(renderer.domElement);
 
             // Geometria do iPhone (aproximada)
-            const geometry = new THREE.BoxGeometry(1, 2, 0.2); // Ajuste para um iPhone estilizado
+            const geometry = new THREE.BoxGeometry(1, 2, 0.2); // Ajuste para um iPhone
             const textureLoader = new THREE.TextureLoader();
-            textureLoader.load('{% static "images/iPhone 16 Pro Max Titânio Deserto.jpg" %}', (texture) => {
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                texture.repeat.set(1, 1);
+
+            // Carregando a textura da imagem (usando o caminho correto após o collectstatic)
+            const texturePath = "/static/images/iPhone%2016%20Pro%20Max%20Tit%C3%A2nico%20Deserto.jpg";
+            textureLoader.load(texturePath, function (texture) {
                 const material = new THREE.MeshBasicMaterial({ map: texture });
                 const iphone = new THREE.Mesh(geometry, material);
                 iphone.position.set(0, 0.5, 0); // Centralizado e ajustado verticalmente
                 scene.add(iphone);
                 console.log('Textura carregada com sucesso!');
-            }, undefined, (error) => {
+            }, undefined, function (error) {
                 console.error('Erro ao carregar textura:', error);
             });
 
@@ -315,85 +316,23 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                if (scene.children.length > 3) scene.children[3].rotation.y += 0.005; // Rotação suave
+                if (scene.children.length > 3) {
+                    scene.children[3].rotation.y += 0.005; // Rotação suave
+                }
                 renderer.render(scene, camera);
             }
+
             animate();
 
-            // Animações GSAP
-            gsap.from('.hero-content-top h1', { opacity: 0, y: -50, duration: 1.5, ease: 'power2.out' });
-            gsap.from('.hero-content-bottom p', { opacity: 0, y: -30, duration: 1.5, delay: 0.5, ease: 'power2.out' });
-            gsap.from('.cta-button', { opacity: 0, scale: 0.8, duration: 1.5, delay: 1, ease: 'elastic.out(1, 0.3)' });
-
-            // Dropdown interativo
-            document.querySelectorAll('.dropdown').forEach(dropdown => {
-                dropdown.addEventListener('mouseover', () => {
-                    dropdown.querySelector('.dropdown-content').style.display = 'block';
-                });
-                dropdown.addEventListener('mouseout', () => {
-                    dropdown.querySelector('.dropdown-content').style.display = 'none';
-                });
+            // Ajustar o tamanho do renderer ao redimensionar a janela
+            window.addEventListener('resize', function () {
+                const width = window.innerWidth;
+                const height = window.innerHeight * 0.7;
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
             });
-
-            // Função para atualizar cor e armazenamento
-            function updateProduct(cardId, color, storage, price) {
-                const card = document.getElementById(cardId);
-                const image = card.querySelector('.product-image');
-                const priceElement = card.querySelector('.selected-price');
-                image.style.border = `5px solid ${getColorCode(color)}`;
-                priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price} €`;
-            }
-
-            function getColorCode(color) {
-                const colors = { 'rosa': '#ffcccb', 'azul': '#add8e6', 'dourado claro': '#d4af37', 'preto': '#000000', 'branco': '#ffffff', 'roxo': '#800080' };
-                return colors[color] || '#000000';
-            }
-
-            document.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const color = option.getAttribute('data-color');
-                    const cardId = option.closest('.product-card').id;
-                    const storage = option.closest('.product-card').querySelector('.storage-button.selected')?.getAttribute('data-storage') || '128GB';
-                    const price = option.closest('.product-card').querySelector(`.storage-button[data-storage="${storage}"]`)?.getAttribute('data-price') || '889';
-                    updateProduct(cardId, color, storage, price);
-                    option.closest('.product-card').querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                });
-            });
-
-            document.querySelectorAll('.storage-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const card = button.closest('.product-card');
-                    const storage = button.getAttribute('data-storage');
-                    const price = button.getAttribute('data-price');
-                    const color = card.querySelector('.color-option.selected')?.getAttribute('data-color') || 'rosa';
-                    card.querySelectorAll('.storage-button').forEach(btn => btn.classList.remove('selected'));
-                    button.classList.add('selected');
-                    updateProduct(card.id, color, storage, price);
-                });
-            });
-
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.querySelector('.storage-button').classList.add('selected');
-                const defaultColor = card.querySelector('.color-option')?.getAttribute('data-color') || 'rosa';
-                const defaultStorage = card.querySelector('.storage-button')?.getAttribute('data-storage') || '128GB';
-                const defaultPrice = card.querySelector('.storage-button')?.getAttribute('data-price') || '889';
-                updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
-            });
-
-            document.querySelectorAll('.product-buy').forEach(button => {
-                button.addEventListener('click', () => {
-                    alert('Pré-visualização em desenvolvimento - próxima etapa!');
-                });
-            });
-        });
-
-        window.addEventListener('resize', () => {
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer.setSize(window.innerWidth, window.innerHeight * 0.7);
-            camera.updateProjectionMatrix();
         });
     </script>
 </body>
 </html>
-
