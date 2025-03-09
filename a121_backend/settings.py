@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_g*pi%(t$iihf!2*w(qekq=wf+n*i@djw^+@^vu97@bi4w@4q>'
 
 # Modo de depuração (DEBUG). Em produção, defina como False.
-DEBUG = False  # Para produção no Render
+DEBUG = True  # Temporariamente True para testes locais; mude para False antes de deploy no Render
 
 # Hosts permitidos. Em produção, especifique os domínios corretos.
 ALLOWED_HOSTS = ['a121-backend.onrender.com', 'localhost', '127.0.0.1']
@@ -76,6 +76,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # Para produção com Whitenoise
 
 # Configuração de cookies e segurança
 SESSION_COOKIE_AGE = 1209600  # 2 semanas em segundos
@@ -83,6 +84,7 @@ SESSION_COOKIE_SECURE = not DEBUG  # True em produção com HTTPS
 CSRF_COOKIE_SECURE = not DEBUG  # True em produção com HTTPS
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = not DEBUG  # Redireciona para HTTPS em produção
 
 # Configuração de campo automático padrão
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
