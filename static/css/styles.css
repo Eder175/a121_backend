@@ -137,7 +137,7 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 30px; /* Aumentei o gap para melhor espaçamento */
 }
 
 .hero-content h1 {
@@ -148,8 +148,9 @@ nav {
 
 .hero-img {
     max-width: 100%;
+    width: 600px; /* Ajustei para um tamanho fixo para melhor proporção */
     height: auto;
-    max-height: 400px;
+    display: block; /* Garante que a imagem não tenha sobreposição */
 }
 
 .hero-content p {
@@ -383,6 +384,11 @@ footer {
 
     .hero-content p {
         font-size: 16px;
+    }
+
+    .hero-img {
+        width: 100%;
+        max-width: 400px;
     }
 
     .product-grid {
