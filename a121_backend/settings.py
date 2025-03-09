@@ -68,7 +68,7 @@ DATABASES = {
 
 # Configuração de idioma e fuso horário
 LANGUAGE_CODE = 'pt-br'
-TIME_ZONE = 'America/Sao_Paulo'
+TIME_ZONE = 'America/Sao_Pao Paulo'
 USE_I18N = True
 USE_TZ = True
 
