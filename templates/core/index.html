@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -103,7 +103,7 @@
             <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
-        <div id="three-canvas" class="hero-3d"></div>
+        <div id="three-canvas" class="hero-3d" data-texture-path="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}"></div>
     </section>
 
     <!-- Novo iPhone 16e (Demonstração) -->
@@ -276,8 +276,7 @@
                 <li><a href="#">Termos de Uso</a></li>
                 <li><a href="#">Mapa do Site</a></li>
             </ul>
-        </div>
-    </footer>
+        </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -291,9 +290,8 @@
             // Geometria do iPhone (aproximada)
             const geometry = new THREE.BoxGeometry(1, 2, 0.2); // Ajuste para um iPhone
             const textureLoader = new THREE.TextureLoader();
+            const texturePath = document.getElementById('three-canvas').dataset.texturePath;
 
-            // Carregando a textura da imagem (usando o caminho correto após o collectstatic)
-            const texturePath = "/static/images/iPhone%2016%20Pro%20Max%20Titanio%20Deserto.jpg";
             textureLoader.load(texturePath, function (texture) {
                 const material = new THREE.MeshBasicMaterial({ map: texture });
                 const iphone = new THREE.Mesh(geometry, material);
