@@ -20,20 +20,20 @@ body {
     padding: 0 20px;
 }
 
-/* Header (Estilo Apple sem Faixa Preta) */
+/* Header */
 header {
-    background-color: #fff; /* Fundo branco como o da Apple */
+    background-color: #fff;
     padding: 10px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 header:hover {
+    transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px); /* Efeito 3D ao hover */
 }
 
 nav {
@@ -49,20 +49,20 @@ nav {
 }
 
 .header-logo {
-    width: 72.5px !important; /* Tamanho solicitado */
+    width: 72.5px !important;
     height: 72.5px !important;
     object-fit: contain;
     transition: transform 0.3s ease;
 }
 
 .header-logo:hover {
-    transform: scale(1.1); /* Efeito de zoom ao hover */
+    transform: scale(1.1);
 }
 
 .logo-text {
     font-size: 20px;
     font-weight: 600;
-    color: #1d1d1f; /* Texto preto para fundo branco */
+    color: #1d1d1f;
 }
 
 .nav-links {
@@ -76,15 +76,15 @@ nav {
 
 .nav-links li a {
     text-decoration: none;
-    color: #1d1d1f; /* Texto preto */
+    color: #1d1d1f;
     font-weight: 400;
     font-size: 14px;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-links li a:hover {
-    color: #0071e3; /* Cor azul ao hover, estilo Apple */
-    transform: translateY(-2px); /* Efeito 3D ao hover */
+    color: #0071e3;
+    transform: translateY(-2px);
 }
 
 .dropdown {
@@ -94,7 +94,7 @@ nav {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #fff; /* Fundo branco */
+    background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     padding: 10px;
@@ -103,28 +103,28 @@ nav {
     left: 0;
     min-width: 150px;
     opacity: 0;
-    transform: perspective(500px) rotateX(-10deg); /* Efeito 3D */
+    transform: perspective(500px) rotateX(-10deg);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
     opacity: 1;
-    transform: perspective(500px) rotateX(0deg); /* Animação 3D ao aparecer */
+    transform: perspective(500px) rotateX(0deg);
 }
 
 .dropdown-content a {
     display: block;
     padding: 8px 12px;
-    color: #1d1d1f; /* Texto preto */
+    color: #1d1d1f;
     text-decoration: none;
     font-size: 13px;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .dropdown-content a:hover {
-    background-color: #f5f5f7; /* Cor de fundo clara ao hover */
-    transform: translateX(5px); /* Efeito de deslocamento ao hover */
+    background-color: #f5f5f7;
+    transform: translateX(5px);
 }
 
 .nav-icons {
@@ -141,7 +141,7 @@ nav {
 
 .nav-icon:hover {
     color: #0071e3;
-    transform: scale(1.2); /* Efeito de zoom ao hover */
+    transform: scale(1.2);
 }
 
 /* Hero Section */
@@ -202,7 +202,7 @@ nav {
 
 .cta-button:hover {
     background-color: #005bb5;
-    transform: scale(1.05); /* Efeito de zoom ao hover */
+    transform: scale(1.05);
 }
 
 /* Demo Section */
@@ -319,6 +319,70 @@ nav {
     margin-bottom: 15px;
 }
 
+.buy-button {
+    margin-top: 10px;
+}
+
+/* Payment Section */
+.payment-section {
+    padding: 50px 0;
+    text-align: center;
+    background-color: #f5f5f7;
+}
+
+.payment-section h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.payment-options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.payment-button {
+    padding: 10px 20px;
+    border: 1px solid #d2d2d7;
+    border-radius: 20px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.payment-button:hover {
+    background-color: #0071e3;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+#payment-result {
+    margin-top: 20px;
+    color: #6e6e73;
+}
+
+/* Vendor Dashboard */
+.vendor-dashboard {
+    padding: 50px 0;
+    text-align: center;
+    background-color: #fff;
+}
+
+.vendor-dashboard h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.dashboard-content p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.dashboard-content span {
+    color: #0071e3;
+}
+
 /* Benefits Section */
 .benefits {
     padding: 100px 0;
@@ -341,81 +405,32 @@ nav {
     color: #1d1d1f;
 }
 
-/* Video Section */
-.video-section {
-    padding: 100px 0;
-    text-align: center;
-    background-color: #fff;
-}
-
-.video-section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.video-container video {
-    max-width: 100%;
-    border-radius: 10px;
-}
-
-/* Footer */
-footer {
-    background-color: #f5f5f7;
-    padding: 40px 0;
-    text-align: center;
-}
-
-.footer-top p {
-    margin-bottom: 10px;
-}
-
-.footer-link {
-    color: #0071e3;
+/* WhatsApp Button */
+.whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 50px;
     text-decoration: none;
-}
-
-.footer-main {
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin: 20px 0;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
-.footer-section h3 {
-    font-size: 16px;
-    margin-bottom: 15px;
+.whatsapp-button:hover {
+    transform: scale(1.1);
 }
 
-.footer-section ul {
-    list-style: none;
-    padding: 0;
+.whatsapp-button i {
+    font-size: 20px;
 }
 
-.footer-section ul li a {
-    color: #6e6e73;
-    text-decoration: none;
-}
-
-.footer-bottom {
-    margin-top: 20px;
-    border-top: 1px solid #d2d2d7;
-    padding-top: 10px;
-}
-
-.footer-bottom ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.footer-bottom ul li a {
-    color: #6e6e73;
-    text-decoration: none;
-}
-
-/* Modal de Pré-carregamento */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -458,6 +473,14 @@ footer {
     text-decoration: none;
 }
 
+#payment-modal select {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #d2d2d7;
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
     .hero {
@@ -484,11 +507,6 @@ footer {
     .nav-links {
         flex-wrap: wrap;
         gap: 10px;
-        justify-content: center;
-    }
-
-    .nav-links li {
-        flex: 1 1 auto;
     }
 
     .dropdown-content {
@@ -511,6 +529,12 @@ footer {
 
     .modal-content {
         margin: 20% auto;
+    }
+
+    .whatsapp-button {
+        bottom: 10px;
+        right: 10px;
+        padding: 10px 15px;
     }
 }
 
