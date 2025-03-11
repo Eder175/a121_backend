@@ -20,7 +20,7 @@ body {
     padding: 0 20px;
 }
 
-/* Header (Estilo Apple) */
+/* Header (Estilo Apple com Submenus) */
 header {
     background-color: #1d1d1f; /* Fundo escuro como o da Apple */
     padding: 10px 0;
@@ -43,8 +43,8 @@ nav {
 }
 
 .header-logo {
-    width: 40px !important; /* Ajustei o tamanho para ficar mais próximo do estilo da Apple */
-    height: 40px !important;
+    width: 72.5px !important; /* Ajustado para o tamanho solicitado */
+    height: 72.5px !important;
     object-fit: contain;
 }
 
@@ -73,6 +73,45 @@ nav {
 
 .nav-links li a:hover {
     opacity: 0.7; /* Efeito de hover semelhante ao da Apple */
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1d1d1f; /* Mesmo fundo escuro do header */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1;
+    top: 100%; /* Posiciona abaixo do item do menu */
+    left: 0;
+    min-width: 150px;
+    opacity: 0;
+    transform: translateY(10px); /* Animação de entrada */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0); /* Animação suave ao aparecer */
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    color: #fff; /* Texto branco */
+    text-decoration: none;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #333; /* Efeito de hover nos subitens */
 }
 
 .nav-icons {
@@ -363,6 +402,20 @@ footer {
 
     .nav-links li {
         flex: 1 1 auto;
+    }
+
+    .dropdown-content {
+        position: static;
+        display: none;
+        opacity: 1;
+        transform: none;
+        background-color: #333; /* Fundo um pouco mais claro para diferenciar em telas menores */
+        box-shadow: none;
+        padding: 5px;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
     }
 
     .footer-main {
