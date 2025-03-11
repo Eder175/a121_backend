@@ -10,88 +10,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Header com Navegação e Logo -->
+    <!-- Header com Navegação e Logo (Estilo Apple) -->
     <header>
         <nav class="container">
             <div class="logo">
                 <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
-                A121
+                <span class="logo-text">A121</span>
             </div>
-            <ul class="nav-categories">
-                <li class="dropdown">
-                    <a href="#">Mac</a>
-                    <div class="dropdown-content">
-                        <a href="#">MacBook Air</a>
-                        <a href="#">MacBook Pro</a>
-                        <a href="#">iMac</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">iPad</a>
-                    <div class="dropdown-content">
-                        <a href="#">iPad Pro</a>
-                        <a href="#">iPad Air</a>
-                        <a href="#">iPad Mini</a>
-                    </div>
-                </li>
-                <li class="dropdown" id="iphone-dropdown">
-                    <a href="#">iPhone</a>
-                    <div class="dropdown-content">
-                        <a href="#">iPhone 15</a>
-                        <a href="#">iPhone 16</a>
-                        <a href="#">iPhone 16 Pro</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">Watch</a>
-                    <div class="dropdown-content">
-                        <a href="#">Apple Watch Series 9</a>
-                        <a href="#">Apple Watch Ultra</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">AirPods</a>
-                    <div class="dropdown-content">
-                        <a href="#">AirPods Pro</a>
-                        <a href="#">AirPods Max</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">Campanhas de Incentivos</a>
-                    <div class="dropdown-content">
-                        <a href="#">Programa de Recompensas</a>
-                        <a href="#">Bônus por Vendas</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">Acessórios</a>
-                    <div class="dropdown-content">
-                        <a href="#">Carregadores</a>
-                        <a href="#">Capas</a>
-                    </div>
-                </li>
+            <ul class="nav-links">
+                <li><a href="#">Mac</a></li>
+                <li><a href="#">iPad</a></li>
+                <li><a href="#">iPhone</a></li>
+                <li><a href="#">Watch</a></li>
+                <li><a href="#">AirPods</a></li>
+                <li><a href="#">Campanhas de Incentivos</a></li>
+                <li><a href="#">Acessórios</a></li>
                 <li><a href="#">Suporte</a></li>
                 <li><a href="#cursos">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
                 <li><a href="#niveis">Níveis</a></li>
                 <li><a href="/cadastro/">Cadastro</a></li>
                 <li><a href="/login/">Login</a></li>
-                <li>
-                    <form class="search-bar">
-                        <input type="text" placeholder="Pesquisar..." class="search-input">
-                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
-                    </form>
-                </li>
             </ul>
+            <div class="nav-icons">
+                <a href="#" class="nav-icon"><i class="fas fa-search"></i></a>
+                <a href="#" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+            </div>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>A121 - Seu Futuro Começa Aqui!</h1>
+            <h1>A121 - Transforme o Mundo, Comece por Você</h1>
             <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
-            <p>Compre iPhones, invista no seu futuro e construa seu negócio conosco.</p>
+            <p>Compre iPhones, aprenda com cursos e construa seu futuro global.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
     </section>
@@ -117,12 +70,12 @@
                         <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="R$ 8.999">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="R$ 9.999">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="R$ 10.999">512GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€ 889">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€ 1019">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€ 1269">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde R$ 8.999</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 889</p>
                 <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
@@ -134,12 +87,12 @@
                         <span class="color-option" data-color="azul" style="background-color: #add8e6;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="R$ 9.499">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="R$ 10.499">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="R$ 11.499">512GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€ 989">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€ 1119">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€ 1369">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde R$ 9.499</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 989</p>
                 <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
@@ -154,13 +107,13 @@
                         <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="R$ 10.999">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="R$ 11.999">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="R$ 12.999">512GB</button>
-                        <button class="storage-button" data-storage="1TB" data-price="R$ 14.999">1TB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€ 1249">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€ 1379">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€ 1629">512GB</button>
+                        <button class="storage-button" data-storage="1TB" data-price="€ 1879">1TB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde R$ 10.999</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
                 <button class="cta-button">Comprar</button>
             </div>
         </div>
@@ -170,12 +123,12 @@
     <section class="benefits" id="negocio">
         <h2>Por que escolher a A121?</h2>
         <div class="benefits-text">
-            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da sua vida? A A121 te dá essa chance.</p>
-            <p><strong>Entre na revolução:</strong> Mais do que comprar um iPhone, você faz parte de uma transformação.</p>
-            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora!</p>
-            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo — use-o para crescer.</p>
-            <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a nossa rede de pessoas que pensam no futuro.</p>
-            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar a A121 para transformar sua vida.</p>
+            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da humanidade? Aqui, qualquer pessoa pode criar um site de vendas de iPhones, mas só você pode transformar sua vida. Com a A121, você se torna um arquiteto de um futuro extraordinário.</p>
+            <p><strong>Entre na revolução global:</strong> Mais do que comprar um iPhone, você se junta a uma revolução para mudar o eixo do planeta, alcançando liberdade financeira e geográfica enquanto constrói seus sonhos.</p>
+            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora! Construa seus sonhos com a A121 e transforme sua realidade.</p>
+            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é apenas o começo. Não o use apenas para vídeos ou redes sociais como TikTok — transforme-o em uma ferramenta de conhecimento, crescimento e revolução pessoal.</p>
+            <p><strong>Construa uma família global:</strong> Com a A121, você se junta a uma comunidade que cresce unida, formando uma família global que muda vidas e o eixo do planeta, juntos como um só.</p>
+            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência para transformar sua vida e o mundo com a A121!</p>
         </div>
         <button class="cta-button">Comece Agora</button>
     </section>
@@ -325,6 +278,3 @@
     </script>
 </body>
 </html>
-
-
-
