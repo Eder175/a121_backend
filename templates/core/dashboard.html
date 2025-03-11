@@ -1,0 +1,15 @@
+# Crie o arquivo dashboard.html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Dashboard de Vendas</h1>
+    <p>Vendas por País: {{ sales_by_country|safe }}</p>
+    <p>Vendas Globais: {{ global_sales }}</p>
+    <a href="/">Voltar</a>
+</body>
+</html>
