@@ -1,3 +1,4 @@
+# Substitua o conteúdo de a121_backend/urls.py
 """
 URL configuration for a121_backend project.
 
@@ -21,4 +22,3 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),  # Adicione esta linha
 ]
-

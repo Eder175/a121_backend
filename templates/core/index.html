@@ -1,3 +1,4 @@
+# Substitua o conteúdo de templates/core/index.html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -101,6 +102,7 @@
     <section class="products" id="iphones">
         <h2>Nossos Produtos</h2>
         <div class="product-grid">
+            <!-- Exemplo dinâmico (ajustaremos a view depois) -->
             <div class="product-card" id="iphone-15-card">
                 <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
                 <h3>iPhone 15</h3>
@@ -116,7 +118,7 @@
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 889</p>
-                <button class="cta-button buy-button" data-product="iPhone 15">Comprar</button>
+                <button class="cta-button buy-button" data-product="1">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
                 <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul" class="product-image">
@@ -133,7 +135,7 @@
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 989</p>
-                <button class="cta-button buy-button" data-product="iPhone 16">Comprar</button>
+                <button class="cta-button buy-button" data-product="2">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
                 <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro" class="product-image">
@@ -154,7 +156,7 @@
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
-                <button class="cta-button buy-button" data-product="iPhone 16 Pro">Comprar</button>
+                <button class="cta-button buy-button" data-product="3">Comprar</button>
             </div>
         </div>
     </section>
@@ -388,9 +390,9 @@
             // Botão de Compra
             document.querySelectorAll('.buy-button').forEach(button => {
                 button.addEventListener('click', function () {
-                    const product = this.getAttribute('data-product');
+                    const productId = this.getAttribute('data-product');
                     const price = this.closest('.product-card').querySelector('.selected-price').textContent.split('Desde ')[1];
-                    paymentProduct.textContent = product;
+                    paymentProduct.textContent = `iPhone ${productId}`;
                     paymentPrice.textContent = price;
                     paymentModal.style.display = 'block';
                 });
