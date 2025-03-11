@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121</title>
+    <title>A121 - Transforme o Mundo</title>
     {% load static %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="description" content="Compre iPhones na A121, aprenda com cursos e transforme sua vida com marketing multinível.">
 </head>
 <body>
-    <!-- Header com Navegação e Logo (Estilo Apple sem Faixa Preta) -->
+    <!-- Header com Navegação e Logo -->
     <header>
         <nav class="container">
             <div class="logo">
@@ -115,7 +116,7 @@
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 889</p>
-                <button class="cta-button">Comprar</button>
+                <button class="cta-button buy-button" data-product="iPhone 15">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
                 <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul" class="product-image">
@@ -132,7 +133,7 @@
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 989</p>
-                <button class="cta-button">Comprar</button>
+                <button class="cta-button buy-button" data-product="iPhone 16">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
                 <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro" class="product-image">
@@ -153,8 +154,33 @@
                     </div>
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
-                <button class="cta-button">Comprar</button>
+                <button class="cta-button buy-button" data-product="iPhone 16 Pro">Comprar</button>
             </div>
+        </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section class="payment-section" id="payment">
+        <h2>Escolha sua Forma de Pagamento</h2>
+        <div class="payment-options">
+            <button class="payment-button" data-method="mbway">MBWay</button>
+            <button class="payment-button" data-method="card">Cartão</button>
+            <button class="payment-button" data-method="wise">Wise</button>
+            <button class="payment-button" data-method="paypal">PayPal</button>
+            <button class="payment-button" data-method="btc">BTC</button>
+            <button class="payment-button" data-method="eth">ETH</button>
+            <button class="payment-button" data-method="xrp">XRP</button>
+        </div>
+        <p id="payment-result">Selecione uma opção para simular o pagamento.</p>
+    </section>
+
+    <!-- Vendor Dashboard Section -->
+    <section class="vendor-dashboard" id="dashboard">
+        <h2>Dashboard de Vendedores</h2>
+        <div class="dashboard-content">
+            <p>Vendas por País: <span id="sales-by-country">Carregando...</span></p>
+            <p>Vendas Globais: <span id="global-sales">Carregando...</span></p>
+            <button class="cta-button" onclick="updateSales()">Atualizar Vendas</button>
         </div>
     </section>
 
@@ -172,96 +198,37 @@
         <button class="cta-button">Comece Agora</button>
     </section>
 
-    <!-- Video 1 -->
-    <section class="video-section">
-        <h2>Apresentação iPhone 16</h2>
-        <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder1.jpg' %}">
-                <source src="{% static 'videos/Video 1.mp4' %}" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
-        </div>
-    </section>
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
+        <i class="fab fa-whatsapp"></i> Fale Conosco
+    </a>
 
-    <!-- Video 2 -->
-    <section class="video-section">
-        <h2>Experiência iPhone 16</h2>
-        <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder2.jpg' %}">
-                <source src="{% static 'videos/Video 2.mp4' %}" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
-        </div>
-    </section>
-
-    <!-- Video 3 -->
-    <section class="video-section">
-        <h2>Inovação com iPhone 16</h2>
-        <div class="video-container">
-            <video controls poster="{% static 'images/video-placeholder3.jpg' %}">
-                <source src="{% static 'videos/Video 3.mp4' %}" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-top">
-            <p>As notícias e atualizações mais recentes, diretamente da A121.</p>
-            <a href="#" class="footer-link">Saiba mais</a>
-        </div>
-        <div class="footer-main container">
-            <div class="footer-section">
-                <h3>Loja</h3>
-                <ul>
-                    <li><a href="#">Mac</a></li>
-                    <li><a href="#">iPad</a></li>
-                    <li><a href="#">iPhone</a></li>
-                    <li><a href="#">Watch</a></li>
-                    <li><a href="#">AirPods</a></li>
-                    <li><a href="#">Acessórios</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Campanhas de Incentivos</h3>
-                <ul>
-                    <li><a href="#">Apple One</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Suporte</h3>
-                <ul>
-                    <li><a href="#">Ajuda</a></li>
-                    <li><a href="#">Contactar</a></li>
-                </ul>
-            </div>
-            <div class="footer-section social">
-                <h3>Redes Sociais</h3>
-                <ul>
-                    <li><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
-                    <li><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 A121. Todos os direitos reservados.</p>
-            <ul>
-                <li><a href="#">Política de Privacidade</a></li>
-                <li><a href="#">Termos de Uso</a></li>
-                <li><a href="#">Mapa do Site</a></li>
-            </ul>
-        </div>
-    </footer>
-
-    <!-- Modal de Pré-carregamento -->
+    <!-- Modal de Pré-carregamento e Pagamento -->
     <div id="preview-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2 id="preview-title"></h2>
             <p id="preview-description"></p>
             <button class="cta-button" id="go-to-page">Ir para a Página</button>
+        </div>
+    </div>
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Pagamento</h2>
+            <p>Produto: <span id="payment-product"></span></p>
+            <p>Valor: <span id="payment-price"></span></p>
+            <select id="payment-method">
+                <option value="mbway">MBWay</option>
+                <option value="card">Cartão</option>
+                <option value="wise">Wise</option>
+                <option value="paypal">PayPal</option>
+                <option value="btc">BTC</option>
+                <option value="eth">ETH</option>
+                <option value="xrp">XRP</option>
+            </select>
+            <button class="cta-button" id="confirm-payment">Confirmar Pagamento</button>
+            <p id="payment-status"></p>
         </div>
     </div>
 
@@ -272,7 +239,6 @@
                 const card = document.getElementById(cardId);
                 const image = card.querySelector('.product-image');
                 const priceElement = card.querySelector('.selected-price');
-
                 image.style.border = `5px solid ${getColorCode(color)}`;
                 priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price}`;
             }
@@ -322,12 +288,18 @@
                 updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
             });
 
-            // Pré-carregamento e Redirecionamento
+            // Redirecionamento com Tratamento de Erro
             const modal = document.getElementById('preview-modal');
             const previewTitle = document.getElementById('preview-title');
             const previewDescription = document.getElementById('preview-description');
             const goToPageButton = document.getElementById('go-to-page');
             const closeModal = document.querySelector('.close');
+            const paymentModal = document.getElementById('payment-modal');
+            const paymentProduct = document.getElementById('payment-product');
+            const paymentPrice = document.getElementById('payment-price');
+            const paymentMethod = document.getElementById('payment-method');
+            const confirmPayment = document.getElementById('confirm-payment');
+            const paymentStatus = document.getElementById('payment-status');
 
             document.querySelectorAll('.dropdown-content a[data-preview]').forEach(link => {
                 link.addEventListener('click', function (e) {
@@ -338,20 +310,74 @@
                     modal.style.display = 'block';
 
                     goToPageButton.onclick = () => {
-                        window.location.href = this.getAttribute('href');
+                        const url = this.getAttribute('href');
+                        fetch(url)
+                            .then(response => {
+                                if (response.status === 404) {
+                                    alert('Página ainda não disponível. Estamos trabalhando nisso!');
+                                    modal.style.display = 'none';
+                                } else {
+                                    window.location.href = url;
+                                }
+                            })
+                            .catch(() => {
+                                alert('Erro ao acessar a página. Tente novamente!');
+                                modal.style.display = 'none';
+                            });
                     };
                 });
             });
 
-            closeModal.onclick = () => {
-                modal.style.display = 'none';
-            };
+            // Botão de Compra
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    const product = this.getAttribute('data-product');
+                    const price = this.closest('.product-card').querySelector('.selected-price').textContent.split('Desde ')[1];
+                    paymentProduct.textContent = product;
+                    paymentPrice.textContent = price;
+                    paymentModal.style.display = 'block';
+                });
+            });
+
+            // Pagamento
+            confirmPayment.addEventListener('click', function () {
+                const method = paymentMethod.value;
+                paymentStatus.textContent = `Pagamento simulado com ${method} para ${paymentProduct.textContent} no valor de ${paymentPrice.textContent}. Transação concluída!`;
+                setTimeout(() => {
+                    paymentStatus.textContent = '';
+                    paymentModal.style.display = 'none';
+                }, 3000);
+            });
+
+            // Fechar Modais
+            [closeModal, document.querySelector('#payment-modal .close')].forEach(close => {
+                close.onclick = () => {
+                    modal.style.display = 'none';
+                    paymentModal.style.display = 'none';
+                };
+            });
 
             window.onclick = (event) => {
-                if (event.target == modal) {
+                if (event.target == modal || event.target == paymentModal) {
                     modal.style.display = 'none';
+                    paymentModal.style.display = 'none';
                 }
             };
+
+            // Dashboard de Vendedores (Simulação)
+            let salesData = {
+                Brazil: 1000,
+                USA: 1500,
+                Portugal: 800,
+                Global: 3300
+            };
+
+            function updateSales() {
+                document.getElementById('sales-by-country').textContent = JSON.stringify(salesData);
+                document.getElementById('global-sales').textContent = salesData.Global;
+            }
+
+            updateSales();
         });
     </script>
 </body>
