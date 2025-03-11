@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Header com Navegação e Logo (Estilo Apple com Submenus) -->
+    <!-- Header com Navegação e Logo (Estilo Apple sem Faixa Preta) -->
     <header>
         <nav class="container">
             <div class="logo">
@@ -21,46 +21,46 @@
                 <li class="dropdown">
                     <a href="#">Mac</a>
                     <div class="dropdown-content">
-                        <a href="#">MacBook Air</a>
-                        <a href="#">MacBook Pro</a>
-                        <a href="#">iMac</a>
+                        <a href="/macbook-air/">MacBook Air</a>
+                        <a href="/macbook-pro/">MacBook Pro</a>
+                        <a href="/imac/">iMac</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <a href="#">iPad</a>
                     <div class="dropdown-content">
-                        <a href="#">iPad Pro</a>
-                        <a href="#">iPad Air</a>
-                        <a href="#">iPad Mini</a>
+                        <a href="/ipad-pro/">iPad Pro</a>
+                        <a href="/ipad-air/">iPad Air</a>
+                        <a href="/ipad-mini/">iPad Mini</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <a href="#">iPhone</a>
                     <div class="dropdown-content">
-                        <a href="#iphone-15-card">iPhone 15</a>
-                        <a href="#iphone-16-card">iPhone 16</a>
-                        <a href="#iphone-16-pro-card">iPhone 16 Pro</a>
+                        <a href="/iphone-15/" data-preview="iPhone 15 - Desde €889">iPhone 15</a>
+                        <a href="/iphone-16/" data-preview="iPhone 16 - Desde €989">iPhone 16</a>
+                        <a href="/iphone-16-pro/" data-preview="iPhone 16 Pro - Desde €1249">iPhone 16 Pro</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <a href="#">Watch</a>
                     <div class="dropdown-content">
-                        <a href="#">Apple Watch Series 9</a>
-                        <a href="#">Apple Watch Ultra</a>
+                        <a href="/apple-watch-series-9/">Apple Watch Series 9</a>
+                        <a href="/apple-watch-ultra/">Apple Watch Ultra</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <a href="#">AirPods</a>
                     <div class="dropdown-content">
-                        <a href="#">AirPods Pro</a>
-                        <a href="#">AirPods Max</a>
+                        <a href="/airpods-pro/">AirPods Pro</a>
+                        <a href="/airpods-max/">AirPods Max</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <a href="#">Campanhas de Incentivos</a>
                     <div class="dropdown-content">
-                        <a href="#">Programa de Recompensas</a>
-                        <a href="#">Bônus por Vendas</a>
+                        <a href="/recompensas/">Programa de Recompensas</a>
+                        <a href="/bonus-vendas/">Bônus por Vendas</a>
                     </div>
                 </li>
                 <li><a href="#">Acessórios</a></li>
@@ -255,6 +255,16 @@
         </div>
     </footer>
 
+    <!-- Modal de Pré-carregamento -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="preview-title"></h2>
+            <p id="preview-description"></p>
+            <button class="cta-button" id="go-to-page">Ir para a Página</button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Função para atualizar cor e armazenamento
@@ -263,12 +273,11 @@
                 const image = card.querySelector('.product-image');
                 const priceElement = card.querySelector('.selected-price');
 
-                // Ajusta a borda da imagem para simular mudança de cor
                 image.style.border = `5px solid ${getColorCode(color)}`;
                 priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price}`;
             }
 
-            // Mapeamento de cores para códigos hex
+            // Mapeamento de cores
             function getColorCode(color) {
                 const colors = {
                     'rosa': '#ffcccb',
@@ -281,7 +290,7 @@
                 return colors[color] || '#000000';
             }
 
-            // Evento para cores
+            // Evento para cores e armazenamento
             document.querySelectorAll('.color-option').forEach(option => {
                 option.addEventListener('click', function () {
                     const color = this.getAttribute('data-color');
@@ -292,7 +301,6 @@
                 });
             });
 
-            // Evento para armazenamento
             document.querySelectorAll('.storage-button').forEach(button => {
                 button.addEventListener('click', function () {
                     const card = this.closest('.product-card');
@@ -313,6 +321,37 @@
                 const defaultPrice = card.querySelector('.storage-button')?.getAttribute('data-price');
                 updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
             });
+
+            // Pré-carregamento e Redirecionamento
+            const modal = document.getElementById('preview-modal');
+            const previewTitle = document.getElementById('preview-title');
+            const previewDescription = document.getElementById('preview-description');
+            const goToPageButton = document.getElementById('go-to-page');
+            const closeModal = document.querySelector('.close');
+
+            document.querySelectorAll('.dropdown-content a[data-preview]').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const previewText = this.getAttribute('data-preview');
+                    previewTitle.textContent = previewText.split(' - ')[0];
+                    previewDescription.textContent = `Preço inicial: ${previewText.split(' - ')[1]}. Clique para explorar!`;
+                    modal.style.display = 'block';
+
+                    goToPageButton.onclick = () => {
+                        window.location.href = this.getAttribute('href');
+                    };
+                });
+            });
+
+            closeModal.onclick = () => {
+                modal.style.display = 'none';
+            };
+
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
         });
     </script>
 </body>
