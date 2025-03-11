@@ -20,14 +20,20 @@ body {
     padding: 0 20px;
 }
 
-/* Header */
+/* Header (Estilo Apple) */
 header {
-    background-color: #fff;
-    padding: 15px 0;
+    background-color: #1d1d1f; /* Fundo escuro como o da Apple */
+    padding: 10px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
@@ -37,94 +43,52 @@ header {
 }
 
 .header-logo {
-    width: 72.5px !important;
-    height: 72.5px !important;
+    width: 40px !important; /* Ajustei o tamanho para ficar mais próximo do estilo da Apple */
+    height: 40px !important;
     object-fit: contain;
 }
 
 .logo-text {
-    font-size: 24px;
-    font-weight: 700;
-    color: #1d1d1f;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff; /* Texto branco para combinar com o fundo escuro */
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-categories {
+.nav-links {
     list-style: none;
     display: flex;
     gap: 20px;
     align-items: center;
-    flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+    flex-grow: 1;
+    justify-content: center; /* Centraliza os links */
 }
 
-.nav-categories li a {
+.nav-links li a {
     text-decoration: none;
-    color: #1d1d1f;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    color: #fff; /* Texto branco */
+    font-weight: 400;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
 }
 
-.nav-categories li a:hover {
-    color: #0071e3;
+.nav-links li a:hover {
+    opacity: 0.7; /* Efeito de hover semelhante ao da Apple */
 }
 
-.dropdown {
-    position: relative;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 8px 12px;
-    color: #1d1d1f;
-    text-decoration: none;
-}
-
-.dropdown-content a:hover {
-    background-color: #f5f5f7;
-}
-
-.search-bar {
+.nav-icons {
     display: flex;
-    align-items: center;
+    gap: 20px;
 }
 
-.search-input {
-    padding: 8px;
-    border: 1px solid #d2d2d7;
-    border-radius: 20px 0 0 20px;
-    outline: none;
+.nav-icon {
+    color: #fff;
+    font-size: 16px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
 }
 
-.search-button {
-    padding: 8px 12px;
-    border: 1px solid #d2d2d7;
-    border-left: none;
-    border-radius: 0 20px 20px 0;
-    background-color: #fff;
-    cursor: pointer;
-}
-
-.search-button:hover {
-    background-color: #f5f7f7;
+.nav-icon:hover {
+    opacity: 0.7;
 }
 
 /* Hero Section */
@@ -391,12 +355,13 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .nav-categories {
+    .nav-links {
         flex-wrap: wrap;
         gap: 10px;
+        justify-content: center;
     }
 
-    .nav-categories li {
+    .nav-links li {
         flex: 1 1 auto;
     }
 
