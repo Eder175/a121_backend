@@ -7,7 +7,7 @@
 
 body {
     font-family: 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'sans-serif';
-    background-color: #fff; /* Fundo branco */
+    background-color: #fff;
     color: #1d1d1f;
     line-height: 1.6;
     overflow-x: hidden;
@@ -37,9 +37,9 @@ header {
 }
 
 .header-logo {
-    width: 72.5px !important; /* Tamanho da logo conforme solicitado */
+    width: 72.5px !important;
     height: 72.5px !important;
-    object-fit: contain; /* Garante que a imagem não seja distorcida */
+    object-fit: contain;
 }
 
 .logo-text {
@@ -54,21 +54,22 @@ nav {
     align-items: center;
 }
 
-.nav-categories, .nav-links {
+.nav-categories {
     list-style: none;
     display: flex;
     gap: 20px;
     align-items: center;
+    flex-wrap: wrap; /* Permite quebra de linha em telas menores */
 }
 
-.nav-categories li a, .nav-links li a {
+.nav-categories li a {
     text-decoration: none;
     color: #1d1d1f;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
-.nav-categories li a:hover, .nav-links li a:hover {
+.nav-categories li a:hover {
     color: #0071e3;
 }
 
@@ -130,14 +131,14 @@ nav {
 .hero {
     text-align: center;
     padding: 100px 0;
-    background-color: #fff; /* Fundo branco */
+    background-color: #fff;
 }
 
 .hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px; /* Aumentei o gap para melhor espaçamento */
+    gap: 30px;
 }
 
 .hero-content h1 {
@@ -148,9 +149,9 @@ nav {
 
 .hero-img {
     max-width: 100%;
-    width: 600px; /* Ajustei para um tamanho fixo para melhor proporção */
+    width: 600px;
     height: auto;
-    display: block; /* Garante que a imagem não tenha sobreposição */
+    display: block;
 }
 
 .hero-content p {
@@ -317,12 +318,6 @@ footer {
     text-align: center;
 }
 
-.footer-video video {
-    max-width: 100%;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
 .footer-top p {
     margin-bottom: 10px;
 }
@@ -357,6 +352,7 @@ footer {
 .footer-bottom {
     margin-top: 20px;
     border-top: 1px solid #d2d2d7;
+    padding-top: 10px;
 }
 
 .footer-bottom ul {
@@ -395,12 +391,12 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .nav-categories, .nav-links {
+    .nav-categories {
         flex-wrap: wrap;
         gap: 10px;
     }
 
-    .nav-categories li, .nav-links li {
+    .nav-categories li {
         flex: 1 1 auto;
     }
 

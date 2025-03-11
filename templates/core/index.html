@@ -7,7 +7,7 @@
     {% load static %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <!-- Header com Navegação e Logo -->
@@ -71,8 +71,6 @@
                     </div>
                 </li>
                 <li><a href="#">Suporte</a></li>
-            </ul>
-            <ul class="nav-links">
                 <li><a href="#cursos">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
                 <li><a href="#niveis">Níveis</a></li>
@@ -102,7 +100,7 @@
     <section class="demo-section">
         <h2>Novo iPhone 16e</h2>
         <div class="demo-card">
-            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="iPhone 16e" class="demo-image">
+            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="iPhone 16e" class="demo-img">
         </div>
     </section>
 
@@ -119,12 +117,12 @@
                         <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="889">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1019">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1269">512 GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="R$ 8.999">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="R$ 9.999">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="R$ 10.999">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 889 €</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde R$ 8.999</p>
                 <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
@@ -136,12 +134,12 @@
                         <span class="color-option" data-color="azul" style="background-color: #add8e6;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="989">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1119">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1369">512 GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="R$ 9.499">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="R$ 10.499">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="R$ 11.499">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 989 €</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde R$ 9.499</p>
                 <button class="cta-button">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
@@ -156,13 +154,13 @@
                         <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="1249">128 GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="1379">256 GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="1629">512 GB</button>
-                        <button class="storage-button" data-storage="1TB" data-price="1879">1TB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="R$ 10.999">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="R$ 11.999">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="R$ 12.999">512GB</button>
+                        <button class="storage-button" data-storage="1TB" data-price="R$ 14.999">1TB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde 1249 €</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde R$ 10.999</p>
                 <button class="cta-button">Comprar</button>
             </div>
         </div>
@@ -172,12 +170,12 @@
     <section class="benefits" id="negocio">
         <h2>Por que escolher a A121?</h2>
         <div class="benefits-text">
-            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da humanidade? Aqui, qualquer pessoa pode criar um site de vendas de iPhones, mas só você pode mudar sua vida. Somos os arquitetos de um futuro extraordinário.</p>
-            <p><strong>Entre na revolução:</strong> Mais do que comprar um iPhone, você se junta a uma revolução global para mudar o eixo do planeta com liberdade financeira e geográfica.</p>
-            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora e construir seus sonhos com a A121!</p>
-            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo. Não o use apenas para vídeos ou redes sociais como TikTok — transforme-o em uma ferramenta para conhecimento e revolução pessoal!</p>
-            <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a nós para criar uma família global, onde todos crescem juntos como um só, mudando vidas e o eixo do planeta!</p>
-            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência e construir seus sonhos com a A121!</p>
+            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da sua vida? A A121 te dá essa chance.</p>
+            <p><strong>Entre na revolução:</strong> Mais do que comprar um iPhone, você faz parte de uma transformação.</p>
+            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora!</p>
+            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é só o começo — use-o para crescer.</p>
+            <p><strong>Construa uma comunidade:</strong> Com a A121, você se junta a nossa rede de pessoas que pensam no futuro.</p>
+            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar a A121 para transformar sua vida.</p>
         </div>
         <button class="cta-button">Comece Agora</button>
     </section>
@@ -217,12 +215,6 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-video">
-            <video controls poster="{% static 'images/video-placeholder4.jpg' %}">
-                <source src="{% static 'videos/Video 4.mp4' %}" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
-        </div>
         <div class="footer-top">
             <p>As notícias e atualizações mais recentes, diretamente da A121.</p>
             <a href="#" class="footer-link">Saiba mais</a>
@@ -281,7 +273,7 @@
 
                 // Ajusta a borda da imagem para simular mudança de cor
                 image.style.border = `5px solid ${getColorCode(color)}`;
-                priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price} €`;
+                priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price}`;
             }
 
             // Mapeamento de cores para códigos hex
@@ -303,7 +295,7 @@
                     const color = this.getAttribute('data-color');
                     const cardId = this.closest('.product-card').id;
                     const storage = this.closest('.product-card').querySelector('.storage-button.selected')?.getAttribute('data-storage') || '128GB';
-                    const price = this.closest('.product-card').querySelector(`.storage-button[data-storage="${storage}"]`)?.getAttribute('data-price') || '889';
+                    const price = this.closest('.product-card').querySelector(`.storage-button[data-storage="${storage}"]`).getAttribute('data-price');
                     updateProduct(cardId, color, storage, price);
                 });
             });
@@ -314,7 +306,7 @@
                     const card = this.closest('.product-card');
                     const storage = this.getAttribute('data-storage');
                     const price = this.getAttribute('data-price');
-                    const color = card.querySelector('.color-option.selected')?.getAttribute('data-color') || 'rosa';
+                    const color = card.querySelector('.color-option')?.getAttribute('data-color');
                     card.querySelectorAll('.storage-button').forEach(btn => btn.classList.remove('selected'));
                     this.classList.add('selected');
                     updateProduct(card.id, color, storage, price);
@@ -324,13 +316,15 @@
             // Inicializar seleção padrão
             document.querySelectorAll('.product-card').forEach(card => {
                 card.querySelector('.storage-button').classList.add('selected');
-                const defaultColor = card.querySelector('.color-option')?.getAttribute('data-color') || 'rosa';
-                const defaultStorage = card.querySelector('.storage-button')?.getAttribute('data-storage') || '128GB';
-                const defaultPrice = card.querySelector('.storage-button')?.getAttribute('data-price') || '889';
+                const defaultColor = card.querySelector('.color-option')?.getAttribute('data-color');
+                const defaultStorage = card.querySelector('.storage-button')?.getAttribute('data-storage');
+                const defaultPrice = card.querySelector('.storage-button')?.getAttribute('data-price');
                 updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
             });
         });
     </script>
 </body>
 </html>
+
+
 
