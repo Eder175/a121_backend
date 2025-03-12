@@ -2,14 +2,33 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>{{ produto.nome }} - A121</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A121 - Detalhes do Produto</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>{{ produto.nome }}</h1>
-    <p>{{ produto.descricao }}</p>
-    <p>Preço: €{{ produto.preco }}</p>
-    {% if produto.imagem %}
-    <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
-    {% endif %}
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
+                <span class="logo-text">A121</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/cursos/">Cursos</a></li>
+                <li><a href="/dashboard/">Dashboard</a></li>
+                <li><a href="/cadastro/">Cadastro</a></li>
+                <li><a href="/login/">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="products">
+        <div class="container">
+            <h2>Detalhes do Produto</h2>
+            <p>Produto ID: {{ product_id }}</p>
+            <p>Esta é a página de detalhes do produto. Em breve, adicionaremos mais informações!</p>
+        </div>
+    </section>
 </body>
 </html>

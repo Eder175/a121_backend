@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121 - Login</title>
+    <title>A121 - Cadastro</title>
     {% load static %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -16,19 +16,23 @@
                 <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="auth-logo">
                 <span class="logo-text">A121</span>
             </div>
-            <h2>Login</h2>
+            <h2>Cadastro</h2>
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="username">Usuário</label>
-                    <input type="text" id="username" name="username" required placeholder="Seu usuário">
+                    <input type="text" id="username" name="username" required placeholder="Crie um usuário">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Seu email">
                 </div>
                 <div class="form-group">
                     <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required placeholder="Sua senha">
+                    <input type="password" id="password" name="password" required placeholder="Crie uma senha">
                 </div>
-                <button type="submit" class="cta-button">Entrar</button>
-                <p class="auth-link">Não tem conta? <a href="/cadastro/">Cadastre-se</a></p>
+                <button type="submit" class="cta-button">Cadastrar</button>
+                <p class="auth-link">Já tem conta? <a href="/login/">Faça login</a></p>
             </form>
         </div>
     </section>

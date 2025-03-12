@@ -66,7 +66,7 @@
                 </li>
                 <li><a href="#">Acessórios</a></li>
                 <li><a href="#">Suporte</a></li>
-                <li><a href="#cursos">Cursos</a></li>
+                <li><a href="/cursos/">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
                 <li><a href="#niveis">Níveis</a></li>
                 <li><a href="/cadastro/">Cadastro</a></li>
@@ -110,12 +110,12 @@
                         <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€ 889">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€ 1019">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€ 1269">512GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€889">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€1019">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€1269">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 889</p>
+                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde €889</p>
                 <button class="cta-button buy-button" data-product="1">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
@@ -127,12 +127,12 @@
                         <span class="color-option" data-color="azul" style="background-color: #add8e6;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€ 989">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€ 1119">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€ 1369">512GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€989">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€1119">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€1369">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 989</p>
+                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde €989</p>
                 <button class="cta-button buy-button" data-product="2">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
@@ -147,14 +147,31 @@
                         <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€ 1249">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€ 1379">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€ 1629">512GB</button>
-                        <button class="storage-button" data-storage="1TB" data-price="€ 1879">1TB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€1249">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€1379">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€1629">512GB</button>
+                        <button class="storage-button" data-storage="1TB" data-price="€1879">1TB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
+                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde €1249</p>
                 <button class="cta-button buy-button" data-product="3">Comprar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses-section" id="cursos">
+        <h2>Nossos Cursos</h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <h3>Introdução à IA</h3>
+                <p>Aprenda os fundamentos da inteligência artificial e aplique em projetos reais.</p>
+                <button class="cta-button">Inscrever-se</button>
+            </div>
+            <div class="course-card">
+                <h3>Finanças Pessoais</h3>
+                <p>Domine suas finanças e construa uma vida financeira estável.</p>
+                <button class="cta-button">Inscrever-se</button>
             </div>
         </div>
     </section>
@@ -194,11 +211,6 @@
         <button class="cta-button" onclick="upgradeLevel()">Ganhar Pontos</button>
     </section>
 
-    <!-- Chat ao Vivo -->
-    <button class="chat-button" onclick="window.open('https://tawk.to/chat/default', '_self')">
-        <i class="fas fa-comments"></i> Chat ao Vivo
-    </button>
-
     <!-- AR Section -->
     <section class="ar-section">
         <h2>Veja em Realidade Aumentada</h2>
@@ -226,6 +238,11 @@
     <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
         <i class="fab fa-whatsapp"></i> Fale Conosco
     </a>
+
+    <!-- Chat Button -->
+    <button class="chat-button" onclick="window.open('https://tawk.to/chat/default', '_self')">
+        <i class="fas fa-comments"></i> Chat ao Vivo
+    </button>
 
     <!-- Modal de Pré-carregamento e Pagamento -->
     <div id="preview-modal" class="modal">
