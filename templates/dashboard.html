@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>A121 - Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard de Vendedores</h1>
+    <p>Vendas Globais: R$ {{ total_vendas }}</p>
+    {% for venda in vendas %}
+        <div>
+            <p>Produto: {{ venda.produto.nome }}</p>
+            <p>Quantidade: {{ venda.quantidade }}</p>
+            <p>Valor: R$ {{ venda.amount }}</p>
+            <p>País: {{ venda.country }}</p>
+            <p>Data: {{ venda.data }}</p>
+        </div>
+    {% empty %}
+        <p>Nenhuma venda registrada.</p>
+    {% endfor %}
+    <a href="{% url 'index' %}">Voltar</a>
+</body>
+</html>

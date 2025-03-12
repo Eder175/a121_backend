@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A121 - Transforme o Mundo</title>
     {% load static %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="description" content="Compre iPhones na A121, aprenda com cursos e transforme sua vida com marketing multinível.">
@@ -64,8 +64,8 @@
                         <a href="#bonus-vendas">Bônus por Vendas</a>
                     </div>
                 </li>
-                <li><a href="#acessorios">Acessórios</a></li>
-                <li><a href="#suporte">Suporte</a></li>
+                <li><a href="#">Acessórios</a></li>
+                <li><a href="#">Suporte</a></li>
                 <li><a href="#cursos">Cursos</a></li>
                 <li><a href="#negocio">Negócio</a></li>
                 <li><a href="#niveis">Níveis</a></li>
@@ -83,7 +83,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1>A121 - Transforme o Mundo, Comece por Você</h1>
-            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="iPhone 16e" class="hero-img">
+            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
             <p>Compre iPhones, aprenda com cursos e construa seu futuro global.</p>
             <button class="cta-button">Comece Agora</button>
         </div>
@@ -115,8 +115,8 @@
                         <button class="storage-button" data-storage="512GB" data-price="€ 1269">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde € 889</p>
-                <button class="cta-button buy-button" data-product="iPhone 15">Comprar</button>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 889</p>
+                <button class="cta-button buy-button" data-product="1">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
                 <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul" class="product-image">
@@ -132,8 +132,8 @@
                         <button class="storage-button" data-storage="512GB" data-price="€ 1369">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde € 989</p>
-                <button class="cta-button buy-button" data-product="iPhone 16">Comprar</button>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 989</p>
+                <button class="cta-button buy-button" data-product="2">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
                 <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro" class="product-image">
@@ -153,8 +153,8 @@
                         <button class="storage-button" data-storage="1TB" data-price="€ 1879">1TB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde € 1249</p>
-                <button class="cta-button buy-button" data-product="iPhone 16 Pro">Comprar</button>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
+                <button class="cta-button buy-button" data-product="3">Comprar</button>
             </div>
         </div>
     </section>
@@ -178,8 +178,8 @@
     <section class="vendor-dashboard" id="dashboard">
         <h2>Dashboard de Vendedores</h2>
         <div class="dashboard-content">
-            <p>Vendas por País: <span id="sales-by-country">{"Brazil":1000,"USA":1500,"Portugal":800,"Global":3300}</span></p>
-            <p>Vendas Globais: <span id="global-sales">3300</span></p>
+            <p>Vendas por País: <span id="sales-by-country">Carregando...</span></p>
+            <p>Vendas Globais: <span id="global-sales">Carregando...</span></p>
             <button class="cta-button" onclick="updateSales()">Atualizar Vendas</button>
         </div>
     </section>
@@ -190,9 +190,14 @@
         <div class="progress-bar">
             <div class="progress" id="vendor-progress"></div>
         </div>
-        <p>Seu Nível: <span id="vendor-level">Bronze (0/1000 pontos)</span></p>
+        <p>Seu Nível: <span id="vendor-level">Bronze</span> (0/1000 pontos)</p>
         <button class="cta-button" onclick="upgradeLevel()">Ganhar Pontos</button>
     </section>
+
+    <!-- Chat ao Vivo -->
+    <button class="chat-button" onclick="window.open('https://tawk.to/chat/default', '_self')">
+        <i class="fas fa-comments"></i> Chat ao Vivo
+    </button>
 
     <!-- AR Section -->
     <section class="ar-section">
@@ -217,11 +222,6 @@
         <button class="cta-button">Comece Agora</button>
     </section>
 
-    <!-- Chat ao Vivo -->
-    <button class="chat-button" onclick="window.open('https://tawk.to/chat/default', '_self')">
-        <i class="fas fa-comments"></i> Chat ao Vivo
-    </button>
-
     <!-- WhatsApp Button -->
     <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
         <i class="fab fa-whatsapp"></i> Fale Conosco
@@ -230,7 +230,7 @@
     <!-- Modal de Pré-carregamento e Pagamento -->
     <div id="preview-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2 id="preview-title"></h2>
             <p id="preview-description"></p>
             <button class="cta-button" id="go-to-page">Ir para a Seção</button>
@@ -238,7 +238,7 @@
     </div>
     <div id="payment-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2>Pagamento</h2>
             <p>Produto: <span id="payment-product"></span></p>
             <p>Valor: <span id="payment-price"></span></p>
@@ -272,15 +272,15 @@
             <div class="footer-section">
                 <h3>Loja</h3>
                 <ul>
-                    <li><a href="#iphones">iPhone</a></li>
-                    <li><a href="#acessorios">Acessórios</a></li>
+                    <li><a href="#">iPhone</a></li>
+                    <li><a href="#">Acessórios</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Suporte</h3>
                 <ul>
-                    <li><a href="#suporte">Ajuda</a></li>
-                    <li><a href="#suporte">Contato</a></li>
+                    <li><a href="#">Ajuda</a></li>
+                    <li><a href="#">Contato</a></li>
                 </ul>
             </div>
             <div class="footer-section social">
@@ -340,7 +340,7 @@
                     const card = this.closest('.product-card');
                     const storage = this.getAttribute('data-storage');
                     const price = this.getAttribute('data-price');
-                    const color = card.querySelector('.color-option.selected')?.getAttribute('data-color') || card.querySelector('.color-option').getAttribute('data-color');
+                    const color = card.querySelector('.color-option')?.getAttribute('data-color');
                     card.querySelectorAll('.storage-button').forEach(btn => btn.classList.remove('selected'));
                     this.classList.add('selected');
                     updateProduct(card.id, color, storage, price);
@@ -349,15 +349,14 @@
 
             // Inicializar seleção padrão
             document.querySelectorAll('.product-card').forEach(card => {
-                const defaultStorageButton = card.querySelector('.storage-button');
-                defaultStorageButton.classList.add('selected');
+                card.querySelector('.storage-button').classList.add('selected');
                 const defaultColor = card.querySelector('.color-option')?.getAttribute('data-color');
-                const defaultStorage = defaultStorageButton.getAttribute('data-storage');
-                const defaultPrice = defaultStorageButton.getAttribute('data-price');
+                const defaultStorage = card.querySelector('.storage-button')?.getAttribute('data-storage');
+                const defaultPrice = card.querySelector('.storage-button')?.getAttribute('data-price');
                 updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
             });
 
-            // Modal de Pré-visualização
+            // Redirecionamento na Mesma Aba
             const modal = document.getElementById('preview-modal');
             const previewTitle = document.getElementById('preview-title');
             const previewDescription = document.getElementById('preview-description');
@@ -389,9 +388,9 @@
             // Botão de Compra
             document.querySelectorAll('.buy-button').forEach(button => {
                 button.addEventListener('click', function () {
-                    const product = this.getAttribute('data-product');
+                    const productId = this.getAttribute('data-product');
                     const price = this.closest('.product-card').querySelector('.selected-price').textContent.split('Desde ')[1];
-                    paymentProduct.textContent = product;
+                    paymentProduct.textContent = `iPhone ${productId}`;
                     paymentPrice.textContent = price;
                     paymentModal.style.display = 'block';
                 });
@@ -408,19 +407,19 @@
             });
 
             // Fechar Modais
-            document.querySelectorAll('.close').forEach(close => {
-                close.addEventListener('click', () => {
+            [closeModal, document.querySelector('#payment-modal .close')].forEach(close => {
+                close.onclick = () => {
                     modal.style.display = 'none';
                     paymentModal.style.display = 'none';
-                });
+                };
             });
 
-            window.addEventListener('click', (event) => {
+            window.onclick = (event) => {
                 if (event.target == modal || event.target == paymentModal) {
                     modal.style.display = 'none';
                     paymentModal.style.display = 'none';
                 }
-            });
+            };
 
             // Dashboard de Vendedores
             let salesData = {
@@ -451,16 +450,16 @@
                     level = 'Ouro';
                     nextPoints = Infinity;
                 }
+                document.getElementById('vendor-level').textContent = level;
+                document.getElementById('vendor-progress').style.width = `${(vendorPoints / nextPoints) * 100}%`;
                 document.getElementById('vendor-level').textContent = `${level} (${vendorPoints}/${nextPoints} pontos)`;
-                document.getElementById('vendor-progress').style.width = `${Math.min((vendorPoints / nextPoints) * 100, 100)}%`;
             }
 
             // AR Simulation
             function showAR() {
-                const arPlaceholder = document.getElementById('ar-placeholder');
-                arPlaceholder.style.display = 'block';
+                document.getElementById('ar-placeholder').style.display = 'block';
                 setTimeout(() => {
-                    arPlaceholder.style.display = 'none';
+                    document.getElementById('ar-placeholder').style.display = 'none';
                 }, 5000);
             }
 
