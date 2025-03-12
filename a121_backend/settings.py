@@ -1,4 +1,3 @@
-# Substitua o conteúdo de a121_backend/settings.py
 """
 Django settings for a121_backend project.
 
@@ -74,9 +73,9 @@ WSGI_APPLICATION = 'a121_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'a121_db',
-        'USER': 'your_username',  # Substitua pelo seu usuário PostgreSQL
-        'PASSWORD': 'your_password',  # Substitua pela sua senha PostgreSQL
+        'NAME': 'mlm_site',
+        'USER': 'postgres',
+        'PASSWORD': 'minhasenha123',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -110,6 +109,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
