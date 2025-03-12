@@ -200,26 +200,6 @@ nav {
     max-width: 700px;
 }
 
-/* Demo Section */
-.demo-section {
-    padding: 60px 0;
-    text-align: center;
-    background-color: #f5f7fa;
-}
-
-.demo-section h2 {
-    font-size: 40px;
-    margin-bottom: 25px;
-    color: #1d1d1f;
-}
-
-.demo-card img {
-    max-width: 320px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
 /* Products Section */
 .products {
     padding: 120px 0;
@@ -992,7 +972,7 @@ footer {
         font-size: 28px;
     }
 
-    .demo-section h2, .payment-section h2, .vendor-dashboard h2, .gamification-section h2, .ar-section h2 {
+    .payment-section h2, .vendor-dashboard h2, .gamification-section h2, .ar-section h2 {
         font-size: 28px;
     }
 }
