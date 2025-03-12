@@ -1,16 +1,15 @@
-# Crie o arquivo product_detail.html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>{{ product.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>{{ produto.nome }} - A121</title>
 </head>
 <body>
-    <h1>{{ product.name }}</h1>
-    <p>Preço: {{ product.price }}</p>
-    <p>Armazenamento: {{ product.storage }}</p>
-    <p>Cor: {{ product.color }}</p>
-    <a href="/dashboard/">Ver Dashboard</a>
+    <h1>{{ produto.nome }}</h1>
+    <p>{{ produto.descricao }}</p>
+    <p>Preço: €{{ produto.preco }}</p>
+    {% if produto.imagem %}
+    <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+    {% endif %}
 </body>
 </html>
