@@ -20,7 +20,7 @@
             </div>
             <ul class="nav-links">
                 <li class="dropdown">
-                    <a href="#">Mac</a>
+                    <a href="#"><i class="fas fa-laptop"></i> Mac</a>
                     <div class="dropdown-content">
                         <a href="#macbook-air">MacBook Air</a>
                         <a href="#macbook-pro">MacBook Pro</a>
@@ -28,7 +28,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">iPad</a>
+                    <a href="#"><i class="fas fa-tablet-alt"></i> iPad</a>
                     <div class="dropdown-content">
                         <a href="#ipad-pro">iPad Pro</a>
                         <a href="#ipad-air">iPad Air</a>
@@ -36,7 +36,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">iPhone</a>
+                    <a href="#"><i class="fas fa-mobile-alt"></i> iPhone</a>
                     <div class="dropdown-content">
                         <a href="#iphone-15-card" data-preview="iPhone 15 - Desde €889">iPhone 15</a>
                         <a href="#iphone-16-card" data-preview="iPhone 16 - Desde €989">iPhone 16</a>
@@ -44,37 +44,37 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Watch</a>
+                    <a href="#"><i class="fas fa-watch"></i> Watch</a>
                     <div class="dropdown-content">
                         <a href="#apple-watch-series-9">Apple Watch Series 9</a>
                         <a href="#apple-watch-ultra">Apple Watch Ultra</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">AirPods</a>
+                    <a href="#"><i class="fas fa-headphones"></i> AirPods</a>
                     <div class="dropdown-content">
                         <a href="#airpods-pro">AirPods Pro</a>
                         <a href="#airpods-max">AirPods Max</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Campanhas de Incentivos</a>
+                    <a href="#"><i class="fas fa-gift"></i> Campanhas de Incentivos</a>
                     <div class="dropdown-content">
                         <a href="#recompensas">Programa de Recompensas</a>
                         <a href="#bonus-vendas">Bônus por Vendas</a>
                     </div>
                 </li>
-                <li><a href="#">Acessórios</a></li>
-                <li><a href="#">Suporte</a></li>
-                <li><a href="/cursos/">Cursos</a></li>
-                <li><a href="#negocio">Negócio</a></li>
-                <li><a href="#niveis">Níveis</a></li>
-                <li><a href="/cadastro/">Cadastro</a></li>
-                <li><a href="/login/">Login</a></li>
+                <li><a href="#"><i class="fas fa-tools"></i> Acessórios</a></li>
+                <li><a href="#"><i class="fas fa-headset"></i> Suporte</a></li>
+                <li><a href="/cursos/"><i class="fas fa-book"></i> Cursos</a></li>
+                <li><a href="#negocio"><i class="fas fa-briefcase"></i> Negócio</a></li>
+                <li><a href="#niveis"><i class="fas fa-trophy"></i> Níveis</a></li>
+                <li><a href="/cadastro/"><i class="fas fa-user-plus"></i> Cadastro</a></li>
+                <li><a href="/login/"><i class="fas fa-sign-in-alt"></i> Login</a></li>
             </ul>
             <div class="nav-icons">
-                <a href="#" class="nav-icon"><i class="fas fa-search"></i></a>
-                <a href="#" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                <a href="/carrinho/" class="nav-icon"><i class="fas fa-search"></i></a>
+                <a href="/carrinho/" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
             </div>
         </nav>
     </header>
@@ -101,6 +101,7 @@
     <section class="products" id="iphones">
         <h2>Nossos Produtos</h2>
         <div class="product-grid">
+            <!-- Exemplo dinâmico (ajustaremos a view depois) -->
             <div class="product-card" id="iphone-15-card">
                 <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
                 <h3>iPhone 15</h3>
@@ -110,12 +111,12 @@
                         <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€889">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€1019">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€1269">512GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€ 889">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€ 1019">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€ 1269">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde €889</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 889</p>
                 <button class="cta-button buy-button" data-product="1">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-card">
@@ -127,12 +128,12 @@
                         <span class="color-option" data-color="azul" style="background-color: #add8e6;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€989">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€1119">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€1369">512GB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€ 989">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€ 1119">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€ 1369">512GB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde €989</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 989</p>
                 <button class="cta-button buy-button" data-product="2">Comprar</button>
             </div>
             <div class="product-card" id="iphone-16-pro-card">
@@ -147,31 +148,14 @@
                         <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
                     </div>
                     <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€1249">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€1379">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€1629">512GB</button>
-                        <button class="storage-button" data-storage="1TB" data-price="€1879">1TB</button>
+                        <button class="storage-button" data-storage="128GB" data-price="€ 1249">128GB</button>
+                        <button class="storage-button" data-storage="256GB" data-price="€ 1379">256GB</button>
+                        <button class="storage-button" data-storage="512GB" data-price="€ 1629">512GB</button>
+                        <button class="storage-button" data-storage="1TB" data-price="€ 1879">1TB</button>
                     </div>
                 </div>
-                <p class="selected-price">Selecionado: 128GB Nota de rodapé²: Desde €1249</p>
+                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
                 <button class="cta-button buy-button" data-product="3">Comprar</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Courses Section -->
-    <section class="courses-section" id="cursos">
-        <h2>Nossos Cursos</h2>
-        <div class="course-grid">
-            <div class="course-card">
-                <h3>Introdução à IA</h3>
-                <p>Aprenda os fundamentos da inteligência artificial e aplique em projetos reais.</p>
-                <button class="cta-button">Inscrever-se</button>
-            </div>
-            <div class="course-card">
-                <h3>Finanças Pessoais</h3>
-                <p>Domine suas finanças e construa uma vida financeira estável.</p>
-                <button class="cta-button">Inscrever-se</button>
             </div>
         </div>
     </section>
@@ -211,6 +195,11 @@
         <button class="cta-button" onclick="upgradeLevel()">Ganhar Pontos</button>
     </section>
 
+    <!-- Chat ao Vivo -->
+    <button class="chat-button" onclick="window.open('https://tawk.to/chat/default', '_self')">
+        <i class="fas fa-comments"></i> Chat ao Vivo
+    </button>
+
     <!-- AR Section -->
     <section class="ar-section">
         <h2>Veja em Realidade Aumentada</h2>
@@ -238,11 +227,6 @@
     <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
         <i class="fab fa-whatsapp"></i> Fale Conosco
     </a>
-
-    <!-- Chat Button -->
-    <button class="chat-button" onclick="window.open('https://tawk.to/chat/default', '_self')">
-        <i class="fas fa-comments"></i> Chat ao Vivo
-    </button>
 
     <!-- Modal de Pré-carregamento e Pagamento -->
     <div id="preview-modal" class="modal">
@@ -490,7 +474,6 @@
                 localStorage.setItem('cookiesAccepted', 'true');
                 cookieConsent.style.display = 'none';
             });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
