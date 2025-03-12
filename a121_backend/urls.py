@@ -23,6 +23,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),  # URL para o painel de administração do Django
     path('', include('core.urls')),  # Inclui as URLs do app core (definidas em core/urls.py)
+    path('login/', include('core.urls')),  # Inclui as URLs para login
+    path('cadastro/', include('core.urls')),  # Inclui as URLs para cadastro
+    path('cursos/', include('core.urls')),  # Inclui as URLs para cursos
+    path('dashboard/', include('core.urls')),  # Inclui as URLs para dashboard
+    path('escritorio/', include('core.urls')),  # Inclui as URLs para escritório
+    path('produto/<int:product_id>/', include('core.urls')),  # Inclui as URLs para detalhes de produto
+    path('ganhar-pontos/', include('core.urls')),  # Inclui as URLs para ganhar pontos
 ]
 
 # Serve arquivos estáticos e de mídia durante o desenvolvimento (DEBUG=True)
