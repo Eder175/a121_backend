@@ -69,9 +69,9 @@
                 <li class="dropdown">
                     <a href="#cursos">Cursos</a>
                     <div class="dropdown-content">
-                        <a href="#ia" data-preview="Introdução à IA - Desde R$199,90">Introdução à IA</a>
-                        <a href="#financas" data-preview="Finanças Pessoais - Desde R$149,90">Finanças Pessoais</a>
-                        <a href="#leiloes" data-preview="Leilões Mundiais - Desde R$249,90">Leilões Mundiais</a>
+                        <a href="#ia" data-preview="Introdução à IA - Desde €199,90">Introdução à IA</a>
+                        <a href="#financas" data-preview="Finanças Pessoais - Desde €149,90">Finanças Pessoais</a>
+                        <a href="#leiloes" data-preview="Leilões Mundiais - Desde €249,90">Leilões Mundiais</a>
                     </div>
                 </li>
                 <li><a href="#negocio">Negócio</a></li>
@@ -108,7 +108,6 @@
     <section class="products" id="iphones">
         <h2>Nossos Produtos</h2>
         <div class="product-grid">
-            <!-- Exemplo dinâmico (ajustaremos a view depois) -->
             <div class="product-card" id="iphone-15-card">
                 <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
                 <h3>iPhone 15</h3>
@@ -163,6 +162,40 @@
                 </div>
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
                 <button class="cta-button buy-button" data-product="3">Comprar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses-section" id="cursos">
+        <h2>Nossos Cursos</h2>
+        <div class="course-grid">
+            <div class="course-card" id="ia">
+                <img src="{% static 'images/ia-course.jpg' %}" alt="Introdução à IA" class="course-image">
+                <h3>Introdução à IA</h3>
+                <p>Aprenda os fundamentos da Inteligência Artificial.</p>
+                <p class="category">Tecnologia</p>
+                <p class="price">€199,90</p>
+                <p class="duration">Duração: 10 horas</p>
+                <button class="cta-button">Inscrever-se</button>
+            </div>
+            <div class="course-card" id="financas">
+                <img src="{% static 'images/financas-course.jpg' %}" alt="Finanças Pessoais" class="course-image">
+                <h3>Finanças Pessoais</h3>
+                <p>Gerencie seu dinheiro com eficiência.</p>
+                <p class="category">Finanças</p>
+                <p class="price">€149,90</p>
+                <p class="duration">Duração: 8 horas</p>
+                <button class="cta-button">Inscrever-se</button>
+            </div>
+            <div class="course-card" id="leiloes">
+                <img src="{% static 'images/leiloes-course.jpg' %}" alt="Leilões Mundiais" class="course-image">
+                <h3>Leilões Mundiais</h3>
+                <p>Descubra como lucrar com leilões globais.</p>
+                <p class="category">Negócios</p>
+                <p class="price">€249,90</p>
+                <p class="duration">Duração: 12 horas</p>
+                <button class="cta-button">Inscrever-se</button>
             </div>
         </div>
     </section>
@@ -305,7 +338,8 @@
                 <li><a href="#privacidade">Privacidade</a></li>
                 <li><a href="#termos">Termos</a></li>
             </ul>
-        </footer>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -363,7 +397,7 @@
                 updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
             });
 
-            // Redirecionamento na Mesma Aba
+            // Redirecionamento na Mesma Aba para Produtos e Cursos
             const modal = document.getElementById('preview-modal');
             const previewTitle = document.getElementById('preview-title');
             const previewDescription = document.getElementById('preview-description');
@@ -386,7 +420,10 @@
 
                     goToPageButton.onclick = () => {
                         const targetId = this.getAttribute('href');
-                        document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) {
+                            targetSection.scrollIntoView({ behavior: 'smooth' });
+                        }
                         modal.style.display = 'none';
                     };
                 });
