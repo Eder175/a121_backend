@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A121 - Dashboard</title>
     {% load static %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
@@ -15,12 +17,18 @@
                 <span class="logo-text">A121</span>
             </div>
             <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/cursos/">Cursos</a></li>
-                <li><a href="/dashboard/">Dashboard</a></li>
-                <li><a href="/cadastro/">Cadastro</a></li>
-                <li><a href="/login/">Login</a></li>
+                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/cursos/"><i class="fas fa-book"></i> Cursos</a></li>
+                <li><a href="/dashboard/"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="/escritorio/"><i class="fas fa-briefcase"></i> Escritório</a></li>
+                <li><a href="/ganhar-pontos/"><i class="fas fa-star"></i> Ganhar Pontos</a></li>
+                <li><a href="/cadastro/"><i class="fas fa-user-plus"></i> Cadastro</a></li>
+                <li><a href="/login/"><i class="fas fa-sign-in-alt"></i> Login</a></li>
             </ul>
+            <div class="nav-icons">
+                <a href="/carrinho/" class="nav-icon"><i class="fas fa-shopping-cart"></i></a>
+                <a href="/perfil/" class="nav-icon"><i class="fas fa-user"></i></a>
+            </div>
         </nav>
     </header>
     <section class="vendor-dashboard">
