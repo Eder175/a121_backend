@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A121 - Cursos</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
+                <span class="logo-text">A121</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'core:home' %}">Home</a></li>
+                <li><a href="{% url 'core:cursos' %}">Cursos</a></li>
+                <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'core:cadastro' %}">Cadastro</a></li>
+                <li><a href="{% url 'core:login' %}">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="courses-section" id="cursos">
+        <h2>Nossos Cursos</h2>
+        <div class="course-grid">
+            {% for curso in cursos %}
+                <div class="course-card">
+                    <h3>{{ curso.titulo }}</h3>
+                    <p>{{ curso.descricao }}</p>
+                    <p>Categoria: {{ curso.categoria }}</p>
+                    <p>Preço: € {{ curso.preco }}</p>
+                    <p>Duração: {{ curso.duracao_horas }} horas</p>
+                    <button class="cta-button">Inscrever-se</button>
+                </div>
+            {% empty %}
+                <p>Nenhum curso disponível no momento.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>© 2025 A121. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
