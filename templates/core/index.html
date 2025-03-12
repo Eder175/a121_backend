@@ -19,9 +19,8 @@
                 <span class="logo-text">A121</span>
             </div>
             <ul class="nav-links">
-                <li><a href="{% url 'core:home' %}"><i class="fas fa-home"></i> Home</a></li>
                 <li class="dropdown">
-                    <a href="#"><i class="fas fa-laptop"></i> Mac</a>
+                    <a href="#">Mac</a>
                     <div class="dropdown-content">
                         <a href="#macbook-air">MacBook Air</a>
                         <a href="#macbook-pro">MacBook Pro</a>
@@ -29,7 +28,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#"><i class="fas fa-tablet-alt"></i> iPad</a>
+                    <a href="#">iPad</a>
                     <div class="dropdown-content">
                         <a href="#ipad-pro">iPad Pro</a>
                         <a href="#ipad-air">iPad Air</a>
@@ -37,7 +36,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#"><i class="fas fa-mobile-alt"></i> iPhone</a>
+                    <a href="#">iPhone</a>
                     <div class="dropdown-content">
                         <a href="#iphone-15-card" data-preview="iPhone 15 - Desde €889">iPhone 15</a>
                         <a href="#iphone-16-card" data-preview="iPhone 16 - Desde €989">iPhone 16</a>
@@ -45,33 +44,40 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#"><i class="fas fa-clock"></i> Watch</a>
+                    <a href="#">Watch</a>
                     <div class="dropdown-content">
                         <a href="#apple-watch-series-9">Apple Watch Series 9</a>
                         <a href="#apple-watch-ultra">Apple Watch Ultra</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#"><i class="fas fa-headphones"></i> AirPods</a>
+                    <a href="#">AirPods</a>
                     <div class="dropdown-content">
                         <a href="#airpods-pro">AirPods Pro</a>
                         <a href="#airpods-max">AirPods Max</a>
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#"><i class="fas fa-gift"></i> Campanhas de Incentivos</a>
+                    <a href="#">Campanhas de Incentivos</a>
                     <div class="dropdown-content">
                         <a href="#recompensas">Programa de Recompensas</a>
                         <a href="#bonus-vendas">Bônus por Vendas</a>
                     </div>
                 </li>
-                <li><a href="#"><i class="fas fa-tools"></i> Acessórios</a></li>
-                <li><a href="#"><i class="fas fa-headset"></i> Suporte</a></li>
-                <li><a href="#cursos"><i class="fas fa-book"></i> Cursos</a></li>
-                <li><a href="#negocio"><i class="fas fa-briefcase"></i> Negócio</a></li>
-                <li><a href="#niveis"><i class="fas fa-star"></i> Níveis</a></li>
-                <li><a href="{% url 'core:cadastro' %}"><i class="fas fa-user-plus"></i> Cadastro</a></li>
-                <li><a href="{% url 'core:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="#">Acessórios</a></li>
+                <li><a href="#">Suporte</a></li>
+                <li class="dropdown">
+                    <a href="#cursos">Cursos</a>
+                    <div class="dropdown-content">
+                        <a href="#ia" data-preview="Introdução à IA - Desde R$199,90">Introdução à IA</a>
+                        <a href="#financas" data-preview="Finanças Pessoais - Desde R$149,90">Finanças Pessoais</a>
+                        <a href="#leiloes" data-preview="Leilões Mundiais - Desde R$249,90">Leilões Mundiais</a>
+                    </div>
+                </li>
+                <li><a href="#negocio">Negócio</a></li>
+                <li><a href="#niveis">Níveis</a></li>
+                <li><a href="/cadastro/">Cadastro</a></li>
+                <li><a href="/login/">Login</a></li>
             </ul>
             <div class="nav-icons">
                 <a href="#" class="nav-icon"><i class="fas fa-search"></i></a>
@@ -102,6 +108,7 @@
     <section class="products" id="iphones">
         <h2>Nossos Produtos</h2>
         <div class="product-grid">
+            <!-- Exemplo dinâmico (ajustaremos a view depois) -->
             <div class="product-card" id="iphone-15-card">
                 <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
                 <h3>iPhone 15</h3>
@@ -157,26 +164,6 @@
                 <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
                 <button class="cta-button buy-button" data-product="3">Comprar</button>
             </div>
-        </div>
-    </section>
-
-    <!-- Courses Section -->
-    <section class="courses-section" id="cursos">
-        <h2>Nossos Cursos</h2>
-        <div class="course-grid">
-            {% for curso in cursos %}
-                <div class="course-card">
-                    <img src="{% static 'images/'|add:curso.categoria|lower|add:'.jpg' %}" alt="{{ curso.titulo }}" class="course-image" onerror="this.src='{% static 'images/default_course.jpg' %}'">
-                    <h3>{{ curso.titulo }}</h3>
-                    <p>{{ curso.descricao }}</p>
-                    <p>Categoria: {{ curso.categoria }}</p>
-                    <p>Preço: € {{ curso.preco }}</p>
-                    <p>Duração: {{ curso.duracao_horas }} horas</p>
-                    <button class="cta-button">Inscrever-se</button>
-                </div>
-            {% empty %}
-                <p>Nenhum curso disponível no momento.</p>
-            {% endfor %}
         </div>
     </section>
 
@@ -318,8 +305,7 @@
                 <li><a href="#privacidade">Privacidade</a></li>
                 <li><a href="#termos">Termos</a></li>
             </ul>
-        </div>
-    </footer>
+        </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
