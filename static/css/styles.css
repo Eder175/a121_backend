@@ -22,18 +22,18 @@ body {
 
 /* Header */
 header {
-    background: rgba(0, 0, 0, 0.8); /* Fundo escuro translúcido no estilo Apple */
+    background: rgba(255, 255, 255, 0.1); /* Fundo claro translúcido */
     backdrop-filter: blur(10px); /* Efeito de desfoque */
     padding: 10px 0;
     position: fixed; /* Fixo no topo */
     width: 100%;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 header:hover {
-    background: rgba(0, 0, 0, 0.9); /* Leve mudança ao passar o mouse */
+    background: rgba(255, 255, 255, 0.2); /* Leve mudança ao passar o mouse */
 }
 
 nav {
@@ -53,13 +53,12 @@ nav {
     width: 40px;
     height: 40px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Ícone branco */
 }
 
 .logo-text {
     font-size: 20px;
     font-weight: 600;
-    color: #fff; /* Texto branco */
+    color: #000; /* Texto preto para contraste */
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
@@ -79,7 +78,7 @@ nav {
 
 .nav-links li a {
     text-decoration: none;
-    color: #fff; /* Links brancos */
+    color: #000; /* Links pretos para contraste */
     font-weight: 400;
     font-size: 14px;
     transition: color 0.3s ease;
@@ -88,7 +87,7 @@ nav {
 }
 
 .nav-links li a:hover {
-    color: #d1d1d6; /* Cor ao passar o mouse */
+    color: #666; /* Cor ao passar o mouse */
 }
 
 .nav-links li a i {
@@ -102,7 +101,7 @@ nav {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.9); /* Fundo escuro */
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo claro */
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
@@ -125,7 +124,7 @@ nav {
 .dropdown-content a {
     display: block;
     padding: 8px 12px;
-    color: #fff;
+    color: #000;
     text-decoration: none;
     font-size: 13px;
     border-radius: 5px;
@@ -133,8 +132,8 @@ nav {
 }
 
 .dropdown-content a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #d1d1d6;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #666;
 }
 
 .nav-icons {
@@ -143,14 +142,14 @@ nav {
 }
 
 .nav-icon {
-    color: #fff;
+    color: #000;
     font-size: 18px;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .nav-icon:hover {
-    color: #d1d1d6;
+    color: #666;
 }
 
 /* Hero Section */
