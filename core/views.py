@@ -1,25 +1,37 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+import requests
 
+# Views para as páginas
 def index(request):
-    return render(request, 'core/index.html')
-
-def escritorio(request):
-    return render(request, 'core/escritorio.html')
-
-def cadastro_view(request):
-    return render(request, 'core/cadastro.html')
-
-def login_view(request):
-    return render(request, 'core/login.html')
-
-def product_detail(request, product_id):
-    return render(request, 'core/product_detail.html', {'product_id': product_id})
-
-def dashboard(request):
-    return render(request, 'core/dashboard.html')
-
-def ganhar_pontos(request):
-    return render(request, 'core/ganhar_pontos.html')
+    from .models import Produto
+    produtos = Produto.objects.all()
+    return render(request, 'core/index.html', {'produtos': produtos})
 
 def cursos(request):
     return render(request, 'core/cursos.html')
+
+def cadastro(request):
+    return render(request, 'core/cadastro.html')
+
+def login(request):
+    return render(request, 'core/login.html')
+
+# View para obter taxas de câmbio
+def get_exchange_rate(request):
+    base_currency = request.GET.get('base', 'EUR')
+    url = f"https://api.exchangerate-api.com/v4/latest/{base_currency}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return JsonResponse({'success': True, 'rates': data['rates']})
+    return JsonResponse({'success': False, 'error': 'Failed to fetch exchange rates'})
+
+# View para mudar a moeda
+def change_currency(request):
+    if request.method == 'POST':
+        currency = request.POST.get('currency')
+        if currency in ['EUR', 'USD', 'BRL']:
+            request.session['currency'] = currency
+            return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Invalid currency'})
