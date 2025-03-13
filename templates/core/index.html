@@ -1,514 +1,163 @@
+{% load i18n static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121 - Transforme o Mundo</title>
-    {% load static %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
+    <title>{% trans "Cursos A121 Revolution" %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <meta name="description" content="Compre iPhones na A121, aprenda com cursos e transforme sua vida com marketing multinível.">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header com Navegação e Logo -->
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
-            </div>
-            <ul class="nav-links">
-                <li class="dropdown">
-                    <a href="#">Mac</a>
-                    <div class="dropdown-content">
-                        <a href="#macbook-air">MacBook Air</a>
-                        <a href="#macbook-pro">MacBook Pro</a>
-                        <a href="#imac">iMac</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">iPad</a>
-                    <div class="dropdown-content">
-                        <a href="#ipad-pro">iPad Pro</a>
-                        <a href="#ipad-air">iPad Air</a>
-                        <a href="#ipad-mini">iPad Mini</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">iPhone</a>
-                    <div class="dropdown-content">
-                        <a href="#iphone-15-card" data-preview="iPhone 15 - Desde €889">iPhone 15</a>
-                        <a href="#iphone-16-card" data-preview="iPhone 16 - Desde €989">iPhone 16</a>
-                        <a href="#iphone-16-pro-card" data-preview="iPhone 16 Pro - Desde €1249">iPhone 16 Pro</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">Watch</a>
-                    <div class="dropdown-content">
-                        <a href="#apple-watch-series-9">Apple Watch Series 9</a>
-                        <a href="#apple-watch-ultra">Apple Watch Ultra</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">AirPods</a>
-                    <div class="dropdown-content">
-                        <a href="#airpods-pro">AirPods Pro</a>
-                        <a href="#airpods-max">AirPods Max</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">Campanha</a>
-                    <div class="dropdown-content">
-                        <a href="#recompensas">Programa de Recompensas</a>
-                        <a href="#bonus-vendas">Bônus por Vendas</a>
-                    </div>
-                </li>
-                <li><a href="#">Acessórios</a></li>
-                <li><a href="#">Suporte</a></li>
-                <li class="dropdown">
-                    <a href="#cursos">Cursos</a>
-                    <div class="dropdown-content">
-                        <a href="#ia" data-preview="Introdução à IA - Desde €199,90">Introdução à IA</a>
-                        <a href="#financas" data-preview="Finanças Pessoais - Desde €149,90">Finanças Pessoais</a>
-                        <a href="#leiloes" data-preview="Leilões Mundiais - Desde €249,90">Leilões Mundiais</a>
-                    </div>
-                </li>
-                <li><a href="#negocio">Negócio</a></li>
-                <li><a href="#niveis">Níveis</a></li>
-                <li><a href="/cadastro/">Cadastro</a></li>
-                <li><a href="/login/">Login</a></li>
-            </ul>
-            <div class="nav-icons">
-                <a href="#" class="nav-icon"><i class="fas fa-search"></i></a>
-                <a href="#" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
-            </div>
-        </nav>
+    <!-- Partículas de Fundo -->
+    <div id="particles-js"></div>
+
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="container">
+            <img src="{% static 'images/A121 atualizado 3.png' %}" alt="{% trans 'A121 Logo' %}">
+            <nav class="nav">
+                <ul>
+                    <li><a href="{% url 'core:index' %}">{% trans "A Revolução" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#produtos">{% trans "iPhones" %}</a></li>
+                    <li><a href="{% url 'core:cursos' %}">{% trans "Cursos" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#mmn">{% trans "Negócio" %}</a></li>
+                    <li><a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></li>
+                    <li><a href="{% url 'core:login' %}">{% trans "Login" %}</a></li>
+                </ul>
+                <div class="nav-icons">
+                    <a href="#search"><i class="fas fa-search"></i></a>
+                    <a href="#cart"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+                <select id="language-selector" class="language-selector">
+                    <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
+                </select>
+                <select id="currency-selector" class="currency-selector">
+                    <option value="EUR" {% if request.session.currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
+                    <option value="USD" {% if request.session.currency == 'USD' %}selected{% endif %}>$ (USD)</option>
+                    <option value="BRL" {% if request.session.currency == 'BRL' %}selected{% endif %}>R$ (BRL)</option>
+                </select>
+            </nav>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>A121 - Transforme o Mundo, Comece por Você</h1>
-            <img src="{% static 'images/Iphone 16e.jpg' %}" alt="A121 Hero" class="hero-img">
-            <p>Compre iPhones, aprenda com cursos e construa seu futuro global.</p>
-            <button class="cta-button">Comece Agora</button>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section class="products" id="iphones">
-        <h2>Nossos Produtos</h2>
-        <div class="product-grid">
-            <div class="product-card" id="iphone-15-card">
-                <img src="{% static 'images/iPhone-15-rosa.jpg' %}" alt="iPhone 15 Rosa" class="product-image">
-                <h3>iPhone 15</h3>
-                <p>Impressionante como sempre.</p>
-                <div class="options">
-                    <div class="color-options">
-                        <span class="color-option" data-color="rosa" style="background-color: #ffcccb;"></span>
+    <!-- Seção de Cursos -->
+    <section class="products" id="cursos">
+        <div class="container">
+            <h2>{% trans "Cursos do Futuro" %}</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="{% static 'images/ia-course.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
                     </div>
-                    <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€ 889">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€ 1019">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€ 1269">512GB</button>
-                    </div>
+                    <h3>{% trans "Introdução à IA" %}</h3>
+                    <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="199.90">199.90 €</span></p>
+                    <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
+                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 889</p>
-                <button class="cta-button buy-button" data-product="1">Comprar</button>
-            </div>
-            <div class="product-card" id="iphone-16-card">
-                <img src="{% static 'images/iPhone-16-azul.jpg' %}" alt="iPhone 16 Azul" class="product-image">
-                <h3>iPhone 16</h3>
-                <p>Potente em tudo.</p>
-                <div class="options">
-                    <div class="color-options">
-                        <span class="color-option" data-color="azul" style="background-color: #add8e6;"></span>
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="{% static 'images/finance-course.jpg' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
                     </div>
-                    <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€ 989">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€ 1119">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€ 1369">512GB</button>
-                    </div>
+                    <h3>{% trans "Finanças Pessoais" %}</h3>
+                    <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="149.90">149.90 €</span></p>
+                    <p>{% trans "Duração" %}: 8 {% trans "horas" %}</p>
+                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
                 </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 989</p>
-                <button class="cta-button buy-button" data-product="2">Comprar</button>
-            </div>
-            <div class="product-card" id="iphone-16-pro-card">
-                <img src="{% static 'images/iPhone-16-pro-dourado claro.jpg' %}" alt="iPhone 16 Pro Dourado Claro" class="product-image">
-                <h3>iPhone 16 Pro</h3>
-                <p>O iPhone de topo.</p>
-                <div class="options">
-                    <div class="color-options">
-                        <span class="color-option" data-color="dourado claro" style="background-color: #d4af37;"></span>
-                        <span class="color-option" data-color="preto" style="background-color: #000000;"></span>
-                        <span class="color-option" data-color="branco" style="background-color: #ffffff;"></span>
-                        <span class="color-option" data-color="roxo" style="background-color: #800080;"></span>
-                    </div>
-                    <div class="storage-options">
-                        <button class="storage-button" data-storage="128GB" data-price="€ 1249">128GB</button>
-                        <button class="storage-button" data-storage="256GB" data-price="€ 1379">256GB</button>
-                        <button class="storage-button" data-storage="512GB" data-price="€ 1629">512GB</button>
-                        <button class="storage-button" data-storage="1TB" data-price="€ 1879">1TB</button>
-                    </div>
-                </div>
-                <p class="selected-price">Selecionado: 128 GB Nota de rodapé²: Desde € 1249</p>
-                <button class="cta-button buy-button" data-product="3">Comprar</button>
             </div>
         </div>
     </section>
 
-    <!-- Courses Section -->
-    <section class="courses-section" id="cursos">
-        <h2>Nossos Cursos</h2>
-        <div class="course-grid">
-            <div class="course-card" id="ia">
-                <img src="{% static 'images/ia-course.jpg' %}" alt="Introdução à IA" class="course-image">
-                <h3>Introdução à IA</h3>
-                <p>Aprenda os fundamentos da Inteligência Artificial.</p>
-                <p class="category">Tecnologia</p>
-                <p class="price">€199,90</p>
-                <p class="duration">Duração: 10 horas</p>
-                <button class="cta-button">Inscrever-se</button>
-            </div>
-            <div class="course-card" id="financas">
-                <img src="{% static 'images/financas-course.jpg' %}" alt="Finanças Pessoais" class="course-image">
-                <h3>Finanças Pessoais</h3>
-                <p>Gerencie seu dinheiro com eficiência.</p>
-                <p class="category">Finanças</p>
-                <p class="price">€149,90</p>
-                <p class="duration">Duração: 8 horas</p>
-                <button class="cta-button">Inscrever-se</button>
-            </div>
-            <div class="course-card" id="leiloes">
-                <img src="{% static 'images/leiloes-course.jpg' %}" alt="Leilões Mundiais" class="course-image">
-                <h3>Leilões Mundiais</h3>
-                <p>Descubra como lucrar com leilões globais.</p>
-                <p class="category">Negócios</p>
-                <p class="price">€249,90</p>
-                <p class="duration">Duração: 12 horas</p>
-                <button class="cta-button">Inscrever-se</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Payment Section -->
-    <section class="payment-section" id="payment">
-        <h2>Escolha sua Forma de Pagamento</h2>
-        <div class="payment-options">
-            <button class="payment-button" data-method="mbway">MBWay</button>
-            <button class="payment-button" data-method="card">Cartão</button>
-            <button class="payment-button" data-method="wise">Wise</button>
-            <button class="payment-button" data-method="paypal">PayPal</button>
-            <button class="payment-button" data-method="btc">BTC</button>
-            <button class="payment-button" data-method="eth">ETH</button>
-            <button class="payment-button" data-method="xrp">XRP</button>
-        </div>
-        <p id="payment-result">Selecione uma opção para simular o pagamento.</p>
-    </section>
-
-    <!-- Vendor Dashboard Section -->
-    <section class="vendor-dashboard" id="dashboard">
-        <h2>Dashboard de Vendedores</h2>
-        <div class="dashboard-content">
-            <p>Vendas por País: <span id="sales-by-country">Carregando...</span></p>
-            <p>Vendas Globais: <span id="global-sales">Carregando...</span></p>
-            <button class="cta-button" onclick="updateSales()">Atualizar Vendas</button>
-        </div>
-    </section>
-
-    <!-- Gamification Section -->
-    <section class="gamification-section" id="niveis">
-        <h2>Níveis de Vendedores</h2>
-        <div class="progress-bar">
-            <div class="progress" id="vendor-progress"></div>
-        </div>
-        <p>Seu Nível: <span id="vendor-level">Bronze</span> (0/1000 pontos)</p>
-        <button class="cta-button" onclick="upgradeLevel()">Ganhar Pontos</button>
-    </section>
-
-    <!-- Chat ao Vivo -->
-    <button class="chat-button" onclick="window.open('https://tawk.to/chat/default', '_self')">
-        <i class="fas fa-comments"></i> Chat ao Vivo
-    </button>
-
-    <!-- AR Section -->
-    <section class="ar-section">
-        <h2>Veja em Realidade Aumentada</h2>
-        <button class="cta-button ar-button" onclick="showAR()">Visualizar iPhone 16 Pro em AR</button>
-        <div id="ar-placeholder" style="display:none;">
-            <p>Simulação de AR: Gire o dispositivo para ver o iPhone 16 Pro em 3D.</p>
-        </div>
-    </section>
-
-    <!-- Benefits Section -->
-    <section class="benefits" id="negocio">
-        <h2>Por que escolher a A121?</h2>
-        <div class="benefits-text">
-            <p><strong>Reescreva seu destino:</strong> Você já imaginou reescrever o destino da humanidade? Aqui, qualquer pessoa pode criar um site de vendas de iPhones, mas só você pode transformar sua vida. Com a A121, você se torna um arquiteto de um futuro extraordinário.</p>
-            <p><strong>Entre na revolução global:</strong> Mais do que comprar um iPhone, você se junta a uma revolução para mudar o eixo do planeta, alcançando liberdade financeira e geográfica enquanto constrói seus sonhos.</p>
-            <p><strong>Aja agora:</strong> Não seja refém do medo — a hora de agir é agora! Construa seus sonhos com a A121 e transforme sua realidade.</p>
-            <p><strong>Desperte seu potencial:</strong> Ter o melhor iPhone do mundo é apenas o começo. Não o use apenas para vídeos ou redes sociais como TikTok — transforme-o em uma ferramenta de conhecimento, crescimento e revolução pessoal.</p>
-            <p><strong>Construa uma família global:</strong> Com a A121, você se junta a uma comunidade que cresce unida, formando uma família global que muda vidas e o eixo do planeta, juntos como um só.</p>
-            <p><strong>Aja agora:</strong> Pare de perder tempo. Hoje é o dia de usar sua inteligência para transformar sua vida e o mundo com a A121!</p>
-        </div>
-        <button class="cta-button">Comece Agora</button>
-    </section>
-
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/1234567890" class="whatsapp-button" target="_blank">
-        <i class="fab fa-whatsapp"></i> Fale Conosco
-    </a>
-
-    <!-- Modal de Pré-carregamento e Pagamento -->
-    <div id="preview-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">×</span>
-            <h2 id="preview-title"></h2>
-            <p id="preview-description"></p>
-            <button class="cta-button" id="go-to-page">Ir para a Seção</button>
-        </div>
-    </div>
-    <div id="payment-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">×</span>
-            <h2>Pagamento</h2>
-            <p>Produto: <span id="payment-product"></span></p>
-            <p>Valor: <span id="payment-price"></span></p>
-            <select id="payment-method">
-                <option value="mbway">MBWay</option>
-                <option value="card">Cartão</option>
-                <option value="wise">Wise</option>
-                <option value="paypal">PayPal</option>
-                <option value="btc">BTC</option>
-                <option value="eth">ETH</option>
-                <option value="xrp">XRP</option>
-            </select>
-            <button class="cta-button" id="confirm-payment">Confirmar Pagamento</button>
-            <p id="payment-status"></p>
-        </div>
+    <!-- Botões Flutuantes -->
+    <div class="floating-buttons">
+        <a href="#chat" class="chat-button">{% trans "Chat com IA" %}</a>
+        <a href="https://wa.me/1234567890" class="whatsapp-button">{% trans "Fale Conosco" %}</a>
     </div>
 
-    <!-- Cookie Consent -->
-    <div id="cookie-consent" class="cookie-consent">
-        <p>Usamos cookies para melhorar sua experiência. <a href="#privacidade">Saiba mais</a>.</p>
-        <button class="cta-button" id="accept-cookies">Aceitar</button>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-top">
-            <p>As últimas notícias da A121.</p>
-            <a href="#" class="footer-link">Saiba Mais</a>
-        </div>
-        <div class="footer-main container">
-            <div class="footer-section">
-                <h3>Loja</h3>
-                <ul>
-                    <li><a href="#">iPhone</a></li>
-                    <li><a href="#">Acessórios</a></li>
-                </ul>
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <img src="{% static 'images/A121 atualizado 3.png' %}" alt="{% trans 'A121 Logo' %}" class="footer-logo">
+                <p>© 2025 {% trans "A121 Revolution" %}. {% trans "Todos os direitos reservados." %}</p>
             </div>
-            <div class="footer-section">
-                <h3>Suporte</h3>
-                <ul>
-                    <li><a href="#">Ajuda</a></li>
-                    <li><a href="#">Contato</a></li>
-                </ul>
-            </div>
-            <div class="footer-section social">
-                <h3>Redes Sociais</h3>
-                <ul>
-                    <li><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 A121. Todos os direitos reservados.</p>
-            <ul>
-                <li><a href="#privacidade">Privacidade</a></li>
-                <li><a href="#termos">Termos</a></li>
-            </ul>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% url 'javascript-catalog' %}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Função para atualizar cor e armazenamento
-            function updateProduct(cardId, color, storage, price) {
-                const card = document.getElementById(cardId);
-                const image = card.querySelector('.product-image');
-                const priceElement = card.querySelector('.selected-price');
-                image.style.border = `5px solid ${getColorCode(color)}`;
-                priceElement.textContent = `Selecionado: ${storage} Nota de rodapé²: Desde ${price}`;
-            }
+        // Inicializar Partículas
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: '#00ffcc' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.6, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 3, direction: 'none', random: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 120, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
 
-            // Mapeamento de cores
-            function getColorCode(color) {
-                const colors = {
-                    'rosa': '#ffcccb',
-                    'azul': '#add8e6',
-                    'dourado claro': '#d4af37',
-                    'preto': '#000000',
-                    'branco': '#ffffff',
-                    'roxo': '#800080'
-                };
-                return colors[color] || '#000000';
-            }
+        // Mudança de Idioma
+        document.getElementById('language-selector').addEventListener('change', function() {
+            var selectedLanguage = this.value;
+            var url = window.location.pathname;
+            window.location.href = url + '?language=' + selectedLanguage;
+        });
 
-            // Evento para cores e armazenamento
-            document.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', function () {
-                    const color = this.getAttribute('data-color');
-                    const cardId = this.closest('.product-card').id;
-                    const storage = this.closest('.product-card').querySelector('.storage-button.selected')?.getAttribute('data-storage') || '128GB';
-                    const price = this.closest('.product-card').querySelector(`.storage-button[data-storage="${storage}"]`).getAttribute('data-price');
-                    updateProduct(cardId, color, storage, price);
-                });
-            });
-
-            document.querySelectorAll('.storage-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    const card = this.closest('.product-card');
-                    const storage = this.getAttribute('data-storage');
-                    const price = this.getAttribute('data-price');
-                    const color = card.querySelector('.color-option')?.getAttribute('data-color');
-                    card.querySelectorAll('.storage-button').forEach(btn => btn.classList.remove('selected'));
-                    this.classList.add('selected');
-                    updateProduct(card.id, color, storage, price);
-                });
-            });
-
-            // Inicializar seleção padrão
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.querySelector('.storage-button').classList.add('selected');
-                const defaultColor = card.querySelector('.color-option')?.getAttribute('data-color');
-                const defaultStorage = card.querySelector('.storage-button')?.getAttribute('data-storage');
-                const defaultPrice = card.querySelector('.storage-button')?.getAttribute('data-price');
-                updateProduct(card.id, defaultColor, defaultStorage, defaultPrice);
-            });
-
-            // Redirecionamento na Mesma Aba para Produtos e Cursos
-            const modal = document.getElementById('preview-modal');
-            const previewTitle = document.getElementById('preview-title');
-            const previewDescription = document.getElementById('preview-description');
-            const goToPageButton = document.getElementById('go-to-page');
-            const closeModal = document.querySelector('.close');
-            const paymentModal = document.getElementById('payment-modal');
-            const paymentProduct = document.getElementById('payment-product');
-            const paymentPrice = document.getElementById('payment-price');
-            const paymentMethod = document.getElementById('payment-method');
-            const confirmPayment = document.getElementById('confirm-payment');
-            const paymentStatus = document.getElementById('payment-status');
-
-            document.querySelectorAll('.dropdown-content a[data-preview]').forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const previewText = this.getAttribute('data-preview');
-                    previewTitle.textContent = previewText.split(' - ')[0];
-                    previewDescription.textContent = `Preço inicial: ${previewText.split(' - ')[1]}. Clique para explorar!`;
-                    modal.style.display = 'block';
-
-                    goToPageButton.onclick = () => {
-                        const targetId = this.getAttribute('href');
-                        const targetSection = document.querySelector(targetId);
-                        if (targetSection) {
-                            targetSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                        modal.style.display = 'none';
-                    };
-                });
-            });
-
-            // Botão de Compra
-            document.querySelectorAll('.buy-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    const productId = this.getAttribute('data-product');
-                    const price = this.closest('.product-card').querySelector('.selected-price').textContent.split('Desde ')[1];
-                    paymentProduct.textContent = `iPhone ${productId}`;
-                    paymentPrice.textContent = price;
-                    paymentModal.style.display = 'block';
-                });
-            });
-
-            // Pagamento
-            confirmPayment.addEventListener('click', function () {
-                const method = paymentMethod.value;
-                paymentStatus.textContent = `Pagamento simulado com ${method} para ${paymentProduct.textContent} no valor de ${paymentPrice.textContent}. Transação concluída!`;
-                setTimeout(() => {
-                    paymentStatus.textContent = '';
-                    paymentModal.style.display = 'none';
-                }, 3000);
-            });
-
-            // Fechar Modais
-            [closeModal, document.querySelector('#payment-modal .close')].forEach(close => {
-                close.onclick = () => {
-                    modal.style.display = 'none';
-                    paymentModal.style.display = 'none';
-                };
-            });
-
-            window.onclick = (event) => {
-                if (event.target == modal || event.target == paymentModal) {
-                    modal.style.display = 'none';
-                    paymentModal.style.display = 'none';
+        // Mudança de Moeda com Taxa de Câmbio
+        document.getElementById('currency-selector').addEventListener('change', function() {
+            var selectedCurrency = this.value;
+            fetch('{% url "core:change_currency" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: 'currency=' + selectedCurrency
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    location.reload();
                 }
-            };
-
-            // Dashboard de Vendedores
-            let salesData = {
-                Brazil: 1000,
-                USA: 1500,
-                Portugal: 800,
-                Global: 3300
-            };
-
-            function updateSales() {
-                document.getElementById('sales-by-country').textContent = JSON.stringify(salesData);
-                document.getElementById('global-sales').textContent = salesData.Global;
-            }
-
-            updateSales();
-
-            // Gamification
-            let vendorPoints = 0;
-            function upgradeLevel() {
-                vendorPoints += 200;
-                let level = 'Bronze';
-                let nextPoints = 1000;
-                if (vendorPoints >= 1000) {
-                    level = 'Prata';
-                    nextPoints = 2000;
-                }
-                if (vendorPoints >= 2000) {
-                    level = 'Ouro';
-                    nextPoints = Infinity;
-                }
-                document.getElementById('vendor-level').textContent = level;
-                document.getElementById('vendor-progress').style.width = `${(vendorPoints / nextPoints) * 100}%`;
-                document.getElementById('vendor-level').textContent = `${level} (${vendorPoints}/${nextPoints} pontos)`;
-            }
-
-            // AR Simulation
-            function showAR() {
-                document.getElementById('ar-placeholder').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('ar-placeholder').style.display = 'none';
-                }, 5000);
-            }
-
-            // Cookie Consent
-            const cookieConsent = document.getElementById('cookie-consent');
-            const acceptCookies = document.getElementById('accept-cookies');
-            if (!localStorage.getItem('cookiesAccepted')) {
-                cookieConsent.style.display = 'block';
-            }
-            acceptCookies.addEventListener('click', () => {
-                localStorage.setItem('cookiesAccepted', 'true');
-                cookieConsent.style.display = 'none';
             });
         });
+
+        // Atualizar Preços com Taxa de Câmbio
+        function updatePrices(currency, rate) {
+            document.querySelectorAll('.product-price').forEach(priceElement => {
+                var basePrice = parseFloat(priceElement.getAttribute('data-price'));
+                var convertedPrice = basePrice * rate;
+                priceElement.textContent = convertedPrice.toFixed(2) + ' ' + currency;
+            });
+        }
+
+        // Carregar Taxa de Câmbio
+        fetch('{% url "core:get_exchange_rate" %}?base=EUR')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    var currency = document.getElementById('currency-selector').value || 'EUR';
+                    var rate = data.rates[currency] || 1;
+                    updatePrices(currency, rate);
+                }
+            });
     </script>
 </body>
 </html>
