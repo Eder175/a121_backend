@@ -74,6 +74,42 @@
         </div>
     </section>
 
+    <!-- Seção de Produtos (iPhones) -->
+    <section class="products" id="produtos">
+        <div class="container">
+            <h2>{% trans "iPhones A121" %}</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="{% static 'images/iphone-14.jpg' %}" alt="{% trans 'iPhone 14' %}" class="product-image">
+                    </div>
+                    <h3>{% trans "iPhone 14" %}</h3>
+                    <p>{% trans "O mais recente iPhone com câmera avançada e desempenho superior." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="799.00">799.00 €</span></p>
+                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Comprar" %}</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="{% static 'images/iphone-13.jpg' %}" alt="{% trans 'iPhone 13' %}" class="product-image">
+                    </div>
+                    <h3>{% trans "iPhone 13" %}</h3>
+                    <p>{% trans "Desempenho excepcional com bateria de longa duração." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="699.00">699.00 €</span></p>
+                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Comprar" %}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de MMN -->
+    <section class="mmn" id="mmn">
+        <div class="container">
+            <h2>{% trans "Marketing Multinível" %}</h2>
+            <p>{% trans "Participe do nosso plano de marketing multinível e ganhe comissões!" %}</p>
+            <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Saiba Mais" %}</a>
+        </div>
+    </section>
+
     <!-- Botões Flutuantes -->
     <div class="floating-buttons">
         <a href="#chat" class="chat-button">{% trans "Chat com IA" %}</a>
