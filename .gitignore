@@ -14,5 +14,3 @@ db.sqlite3
 *.sqlite3
 media/  # Para arquivos de upload (ex.: documentos dos parceiros)
 desktop.ini
-__pycache__/
-db.sqlite3
