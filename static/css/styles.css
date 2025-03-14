@@ -292,16 +292,238 @@ body {
     animation: float 4s ease-in-out infinite;
 }
 
-/* Seção de Produtos (iPhones) e Outros Estilos */
-.products, .courses, .mmn {
+/* Seção de Produtos (iPhones) */
+.products {
     padding: 120px 0;
 }
 
-.products h2, .courses h2, .mmn h2 {
+.products h2 {
     text-align: center;
     font-size: 3rem;
     text-shadow: 0 0 15px #00ffcc;
     margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.product-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+}
+
+.product-item h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+.product-item p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.product-item .price {
+    font-size: 1.5rem;
+    color: #00ffcc;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.product-item .btn {
+    display: inline-block;
+    padding: 10px 30px;
+    background: #00ffcc;
+    color: #0d1b2a;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-item .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+.product-item img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+/* Seção de Cursos */
+.courses {
+    padding: 120px 0;
+}
+
+.courses h2 {
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.course-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+}
+
+.course-item h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+.course-item p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.course-item .price {
+    font-size: 1.5rem;
+    color: #00ffcc;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.course-item .btn {
+    display: inline-block;
+    padding: 10px 30px;
+    background: #00ffcc;
+    color: #0d1b2a;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-item .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+/* Seção de Negócio (MMN) */
+.mmn {
+    padding: 120px 0;
+}
+
+.mmn h2 {
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.mmn-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mmn-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+}
+
+.mmn-item h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+.mmn-item p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.mmn-item ul {
+    list-style: none;
+    margin: 15px 0;
+}
+
+.mmn-item ul li {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.mmn-item ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #00ffcc;
+    font-size: 1.5rem;
+}
+
+.mmn-item .btn {
+    display: inline-block;
+    padding: 10px 30px;
+    background: #00ffcc;
+    color: #0d1b2a;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mmn-item .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+/* Histórias de Sucesso */
+.success-stories {
+    padding: 50px 0;
+}
+
+.success-stories h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+.success-stories p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 15px;
+    font-style: italic;
 }
 
 /* Rodapé */
