@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import requests
+from .models import Produto
 
-# Views para as páginas
 def index(request):
-    from .models import Produto
     produtos = Produto.objects.all()
     return render(request, 'core/index.html', {'produtos': produtos, 'section': 'index'})
 
@@ -17,7 +16,6 @@ def cadastro(request):
 def login(request):
     return render(request, 'core/login.html')
 
-# View para obter taxas de câmbio
 def get_exchange_rate(request):
     base_currency = request.GET.get('base', 'EUR')
     url = f"https://api.exchangerate-api.com/v4/latest/{base_currency}"
@@ -27,7 +25,6 @@ def get_exchange_rate(request):
         return JsonResponse({'success': True, 'rates': data['rates']})
     return JsonResponse({'success': False, 'error': 'Failed to fetch exchange rates'})
 
-# View para mudar a moeda
 def change_currency(request):
     if request.method == 'POST':
         currency = request.POST.get('currency')

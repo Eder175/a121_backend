@@ -1,12 +1,12 @@
 {% load i18n static %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'en-us' }}">
+<html lang="{{ LANGUAGE_CODE|default:'pt-br' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Cursos A121 Revolution" %}</title>
+    <title>{% trans "A121 Evolution - A Revolução do Futuro" %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Partículas de Fundo -->
@@ -15,7 +15,7 @@
     <!-- Cabeçalho -->
     <header class="header">
         <div class="container">
-            <img src="{% static 'images/A121 atualizado 3.png' %}" alt="{% trans 'A121 Logo' %}">
+            <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution Logo' %}" class="logo">
             <nav class="nav">
                 <ul>
                     <li><a href="{% url 'core:index' %}">{% trans "A Revolução" %}</a></li>
@@ -23,7 +23,7 @@
                     <li><a href="{% url 'core:cursos' %}">{% trans "Cursos" %}</a></li>
                     <li><a href="{% url 'core:index' %}#mmn">{% trans "Negócio" %}</a></li>
                     <li><a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></li>
-                    <li><a href="{% url 'core:login' %}">{% trans "Login" %}</a></li>
+                    <li><a href="{% url 'core:login' %}">{% trans "Conecte-se" %}</a></li>
                 </ul>
                 <div class="nav-icons">
                     <a href="#search"><i class="fas fa-search"></i></a>
@@ -45,74 +45,143 @@
         </div>
     </header>
 
-    <!-- Seção de Cursos -->
-    <section class="products" id="cursos">
+    <!-- Seção Hero com Mensagens Impactantes -->
+    {% if section == 'index' %}
+    <section class="hero">
         <div class="container">
-            <h2>{% trans "Cursos do Futuro" %}</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image-wrapper">
-                        <img src="{% static 'images/ia-course.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
+            <h1>{% trans "A121 Evolution" %}</h1>
+            <h2>{% trans "Faça Parte da Revolução Global do Futuro" %}</h2>
+            <p>{% trans "Transforme sua vida com tecnologia, inovação e oportunidades ilimitadas. O futuro começa com você!" %}</p>
+            <div class="hero-buttons">
+                <a href="{% url 'core:cursos' %}" class="btn btn-primary">{% trans "Explore Nossos Cursos" %}</a>
+                <a href="{% url 'core:index' %}#mmn" class="btn btn-secondary">{% trans "Descubra Nosso Negócio" %}</a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Seção de Cursos (Exibida apenas na página /cursos/) -->
+    {% if section == 'cursos' %}
+    <section class="courses" id="cursos">
+        <div class="container">
+            <h2>{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
+            <p class="section-subtitle">{% trans "Domine finanças, IA e leilões para transformar sua vida e seus negócios." %}</p>
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-image-wrapper">
+                        <img src="{% static 'images/ia-course.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="course-image">
                     </div>
-                    <h3>{% trans "Introdução à IA" %}</h3>
-                    <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="199.90">199.90 €</span></p>
-                    <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+                    <h3>{% trans "Introdução à IA para Criadores" %}</h3>
+                    <p>{% trans "Aprenda como usar inteligência artificial para criar conteúdo inovador e automatizar processos." %}</p>
+                    <p>{% trans "Preço" %}: <span class="course-price" data-price="249.90">249.90 €</span></p>
+                    <p>{% trans "Duração" %}: 12 {% trans "horas" %}</p>
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
                 </div>
-                <div class="product-card">
-                    <div class="product-image-wrapper">
-                        <img src="{% static 'images/finance-course.jpg' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                <div class="course-card">
+                    <div class="course-image-wrapper">
+                        <img src="{% static 'images/finance-course.jpg' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image">
                     </div>
-                    <h3>{% trans "Finanças Pessoais" %}</h3>
-                    <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="149.90">149.90 €</span></p>
-                    <p>{% trans "Duração" %}: 8 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+                    <h3>{% trans "Finanças para Criadores de Conteúdo" %}</h3>
+                    <p>{% trans "Domine suas finanças pessoais e aprenda a lucrar mais com seus conteúdos." %}</p>
+                    <p>{% trans "Preço" %}: <span class="course-price" data-price="199.90">199.90 €</span></p>
+                    <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
+                </div>
+                <div class="course-card">
+                    <div class="course-image-wrapper">
+                        <img src="{% static 'images/auction-course.jpg' %}" alt="{% trans 'Leilões Lucrativos' %}" class="course-image">
+                    </div>
+                    <h3>{% trans "Leilões Lucrativos" %}</h3>
+                    <p>{% trans "Descubra como ganhar dinheiro com leilões online e físicos, passo a passo." %}</p>
+                    <p>{% trans "Preço" %}: <span class="course-price" data-price="299.90">299.90 €</span></p>
+                    <p>{% trans "Duração" %}: 15 {% trans "horas" %}</p>
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
+                </div>
+            </div>
+            <!-- Depoimentos -->
+            <div class="testimonials">
+                <h3>{% trans "O que Nossos Alunos Dizem" %}</h3>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p>{% trans "“O curso de IA mudou minha forma de criar conteúdo. Hoje, automatizo tudo e ganho mais!”" %}</p>
+                        <h4>{% trans "João Silva, Criador de Conteúdo" %}</h4>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>{% trans "“Aprendi a investir com o curso de finanças. Minha renda triplicou em 6 meses!”" %}</p>
+                        <h4>{% trans "Maria Oliveira, Empreendedora" %}</h4>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    {% endif %}
 
     <!-- Seção de Produtos (iPhones) -->
+    {% if section == 'index' %}
     <section class="products" id="produtos">
         <div class="container">
-            <h2>{% trans "iPhones A121" %}</h2>
+            <h2>{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
+            <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro." %}</p>
             <div class="product-grid">
                 <div class="product-card">
                     <div class="product-image-wrapper">
-                        <img src="{% static 'images/iphone-14.jpg' %}" alt="{% trans 'iPhone 14' %}" class="product-image">
+                        <img src="{% static 'images/iPhone_15_Pro_Max_512GB.jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image">
                     </div>
-                    <h3>{% trans "iPhone 14" %}</h3>
-                    <p>{% trans "O mais recente iPhone com câmera avançada e desempenho superior." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="799.00">799.00 €</span></p>
-                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Comprar" %}</a>
+                    <h3>{% trans "iPhone 15 Pro Max (512GB)" %}</h3>
+                    <p>{% trans "O mais avançado iPhone com câmera revolucionária e desempenho incomparável." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="1399.00">1399.00 €</span></p>
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-product">{% trans "Comprar Agora" %}</a>
                 </div>
                 <div class="product-card">
                     <div class="product-image-wrapper">
-                        <img src="{% static 'images/iphone-13.jpg' %}" alt="{% trans 'iPhone 13' %}" class="product-image">
+                        <img src="{% static 'images/iPhone_16_Pro_Max_Titanio_Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image">
                     </div>
-                    <h3>{% trans "iPhone 13" %}</h3>
-                    <p>{% trans "Desempenho excepcional com bateria de longa duração." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="699.00">699.00 €</span></p>
-                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Comprar" %}</a>
+                    <h3>{% trans "iPhone 16 Pro Max Titânio Deserto" %}</h3>
+                    <p>{% trans "Design futurista com tecnologia de ponta para o futuro." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="1499.00">1499.00 €</span></p>
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-product">{% trans "Comprar Agora" %}</a>
                 </div>
             </div>
         </div>
     </section>
+    {% endif %}
 
-    <!-- Seção de MMN -->
+    <!-- Seção de Marketing Multinível -->
+    {% if section == 'index' %}
     <section class="mmn" id="mmn">
         <div class="container">
-            <h2>{% trans "Marketing Multinível" %}</h2>
-            <p>{% trans "Participe do nosso plano de marketing multinível e ganhe comissões!" %}</p>
-            <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Saiba Mais" %}</a>
+            <h2>{% trans "Marketing Multinível A121 Evolution" %}</h2>
+            <p class="section-subtitle">{% trans "Transforme sua vida financeira com nosso plano de MMN revolucionário!" %}</p>
+            <div class="mmn-content">
+                <div class="mmn-info">
+                    <h3>{% trans "Por que Escolher Nosso MMN?" %}</h3>
+                    <ul>
+                        <li>{% trans "Comissões de até 50% por indicação direta." %}</li>
+                        <li>{% trans "Bônus por equipes de até 7 níveis." %}</li>
+                        <li>{% trans "Treinamento exclusivo para líderes." %}</li>
+                        <li>{% trans "Pagamentos semanais e transparentes." %}</li>
+                    </ul>
+                    <a href="{% url 'core:cadastro' %}" class="btn btn-mmn">{% trans "Junte-se Agora" %}</a>
+                </div>
+                <div class="mmn-testimonials">
+                    <h3>{% trans "Histórias de Sucesso" %}</h3>
+                    <div class="testimonial-card">
+                        <p>{% trans "“Em 3 meses, ganhei €10.000 com o MMN da A121. Minha vida mudou!”" %}</p>
+                        <h4>{% trans "Carlos Mendes, Líder de Equipe" %}</h4>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>{% trans "“O treinamento da A121 me transformou em um líder. Hoje, minha equipe fatura milhões!”" %}</p>
+                        <h4>{% trans "Ana Costa, Empreendedora" %}</h4>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+    {% endif %}
 
     <!-- Botões Flutuantes -->
     <div class="floating-buttons">
-        <a href="#chat" class="chat-button">{% trans "Chat com IA" %}</a>
+        <a href="#chat" class="chat-button">{% trans "Bate-papo com IA" %}</a>
         <a href="https://wa.me/1234567890" class="whatsapp-button">{% trans "Fale Conosco" %}</a>
     </div>
 
@@ -120,8 +189,8 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <img src="{% static 'images/A121 atualizado 3.png' %}" alt="{% trans 'A121 Logo' %}" class="footer-logo">
-                <p>© 2025 {% trans "A121 Revolution" %}. {% trans "Todos os direitos reservados." %}</p>
+                <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution Logo' %}" class="footer-logo">
+                <p>© 2025 {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
             </div>
         </div>
     </footer>
@@ -134,13 +203,13 @@
         // Inicializar Partículas
         particlesJS('particles-js', {
             particles: {
-                number: { value: 100, density: { enable: true, value_area: 800 } },
+                number: { value: 150, density: { enable: true, value_area: 800 } },
                 color: { value: '#00ffcc' },
                 shape: { type: 'circle' },
                 opacity: { value: 0.6, random: true },
                 size: { value: 4, random: true },
                 line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 3, direction: 'none', random: false }
+                move: { enable: true, speed: 5, direction: 'none', random: false }
             },
             interactivity: {
                 detect_on: 'canvas',
@@ -148,23 +217,6 @@
                 modes: { repulse: { distance: 120, duration: 0.4 }, push: { particles_nb: 4 } }
             },
             retina_detect: true
-        });
-
-        // Mudança de Idioma
-        document.getElementById('language-selector').addEventListener('change', function() {
-            var selectedLanguage = this.value;
-            fetch('/i18n/setlang/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: 'language=' + selectedLanguage
-            }).then(response => {
-                if (response.ok) {
-                    location.reload();
-                }
-            });
         });
 
         // Mudança de Moeda com Taxa de Câmbio
@@ -186,7 +238,7 @@
 
         // Atualizar Preços com Taxa de Câmbio
         function updatePrices(currency, rate) {
-            document.querySelectorAll('.product-price').forEach(priceElement => {
+            document.querySelectorAll('.product-price, .course-price').forEach(priceElement => {
                 var basePrice = parseFloat(priceElement.getAttribute('data-price'));
                 var convertedPrice = basePrice * rate;
                 priceElement.textContent = convertedPrice.toFixed(2) + ' ' + currency;
