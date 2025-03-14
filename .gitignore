@@ -13,3 +13,4 @@ db.sqlite3
 *.log
 *.sqlite3
 media/  # Para arquivos de upload (ex.: documentos dos parceiros)
+desktop.ini
