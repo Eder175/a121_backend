@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = 'core'  # Adicionado para suportar o namespace no a121_backend/urls.py
+app_name = 'core'  # Necessário para o namespace
 
 urlpatterns = [
     path('', views.index, name='index'),
