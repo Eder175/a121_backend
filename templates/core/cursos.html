@@ -1,65 +1,161 @@
+{% load i18n static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121 - Cursos</title>
-    {% load static %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
+    <title>{% trans "Cursos A121 Revolution" %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
-                <span class="logo-text">A121</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/cursos/"><i class="fas fa-book"></i> Cursos</a></li>
-                <li><a href="/dashboard/"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="/escritorio/"><i class="fas fa-briefcase"></i> Escritório</a></li>
-                <li><a href="/ganhar-pontos/"><i class="fas fa-star"></i> Ganhar Pontos</a></li>
-                <li><a href="/cadastro/"><i class="fas fa-user-plus"></i> Cadastro</a></li>
-                <li><a href="/login/"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            </ul>
-            <div class="nav-icons">
-                <a href="/carrinho/" class="nav-icon"><i class="fas fa-shopping-cart"></i></a>
-                <a href="/perfil/" class="nav-icon"><i class="fas fa-user"></i></a>
-            </div>
-        </nav>
-    </header>
-    <section class="courses-section">
+    <!-- Partículas de Fundo -->
+    <div id="particles-js"></div>
+
+    <!-- Cabeçalho -->
+    <header class="header">
         <div class="container">
-            <h2>Nossos Cursos</h2>
-            <div class="course-grid">
-                <div class="course-card">
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Introdução à IA" class="course-image">
-                    <h3>Introdução à IA</h3>
-                    <p>Aprenda os fundamentos da inteligência artificial e como aplicá-la em seu dia a dia.</p>
-                    <p class="category">Tecnologia</p>
-                    <p class="price">R$ 199,90</p>
-                    <p class="duration">Duração: 10 horas</p>
-                    <button class="cta-button">Inscrever-se</button>
+            <img src="{% static 'images/A121 atualizada 3.png' %}" alt="{% trans 'A121 Logo' %}">
+            <nav class="nav">
+                <ul>
+                    <li><a href="{% url 'core:index' %}">{% trans "A Revolução" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#produtos">{% trans "iPhones" %}</a></li>
+                    <li><a href="{% url 'core:cursos' %}">{% trans "Cursos" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#mmn">{% trans "Negócio" %}</a></li>
+                    <li><a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></li>
+                    <li><a href="{% url 'core:login' %}">{% trans "Login" %}</a></li>
+                </ul>
+                <div class="nav-icons">
+                    <a href="#search"><i class="fas fa-search"></i></a>
+                    <a href="#cart"><i class="fas fa-shopping-cart"></i></a>
                 </div>
-                <div class="course-card">
-                    <img src="https://images.unsplash.com/photo-1554224154-260328981e1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Finanças Pessoais" class="course-image">
-                    <h3>Finanças Pessoais</h3>
-                    <p>Domine suas finanças e planeje seu futuro com este curso prático.</p>
-                    <p class="category">Finanças</p>
-                    <p class="price">R$ 149,90</p>
-                    <p class="duration">Duração: 8 horas</p>
-                    <button class="cta-button">Inscrever-se</button>
+                <select id="language-selector" class="language-selector">
+                    <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
+                </select>
+                <select id="currency-selector" class="currency-selector">
+                    <option value="EUR" {% if currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
+                    <option value="USD" {% if currency == 'USD' %}selected{% endif %}>$ (USD)</option>
+                    <option value="BRL" {% if currency == 'BRL' %}selected{% endif %}>R$ (BRL)</option>
+                </select>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Seção de Cursos -->
+    <section class="products" id="cursos">
+        <div class="container">
+            <h2>{% trans "Cursos do Futuro" %}</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="{% static 'images/ia-course.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
+                    </div>
+                    <h3>{% trans "Introdução à IA" %}</h3>
+                    <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="199.90">199.90 €</span></p>
+                    <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
+                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="{% static 'images/finance-course.jpg' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                    </div>
+                    <h3>{% trans "Finanças Pessoais" %}</h3>
+                    <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
+                    <p>{% trans "Preço" %}: <span class="product-price" data-price="149.90">149.90 €</span></p>
+                    <p>{% trans "Duração" %}: 8 {% trans "horas" %}</p>
+                    <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
                 </div>
             </div>
         </div>
     </section>
-    <footer>
-        <div class="footer-bottom">
-            <p>© 2025 A121. Todos os direitos reservados.</p>
+
+    <!-- Botões Flutuantes -->
+    <div class="floating-buttons">
+        <a href="#chat" class="chat-button">{% trans "Chat com IA" %}</a>
+        <a href="https://wa.me/1234567890" class="whatsapp-button">{% trans "Fale Conosco" %}</a>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="{% trans 'A121 Logo' %}" class="footer-logo">
+                <p>© 2025 {% trans "A121 Revolution" %}. {% trans "Todos os direitos reservados." %}</p>
+            </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% url 'javascript-catalog' %}"></script>
+    <script>
+        // Inicializar Partículas
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: '#00ffcc' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.6, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 3, direction: 'none', random: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 120, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // Mudança de Idioma
+        document.getElementById('language-selector').addEventListener('change', function() {
+            var selectedLanguage = this.value;
+            var url = window.location.pathname;
+            window.location.href = url + '?language=' + selectedLanguage;
+        });
+
+        // Mudança de Moeda com Taxa de Câmbio
+        document.getElementById('currency-selector').addEventListener('change', function() {
+            var selectedCurrency = this.value;
+            fetch('{% url "core:change_currency" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: 'currency=' + selectedCurrency
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            });
+        });
+
+        // Atualizar Preços com Taxa de Câmbio
+        function updatePrices(currency, rate) {
+            document.querySelectorAll('.product-price').forEach(priceElement => {
+                var basePrice = parseFloat(priceElement.getAttribute('data-price'));
+                var convertedPrice = basePrice * rate;
+                priceElement.textContent = convertedPrice.toFixed(2) + ' ' + currency;
+            });
+        }
+
+        // Carregar Taxa de Câmbio
+        fetch('{% url "core:get_exchange_rate" %}?base=EUR')
+            .then(response => response.json())
+            .then(data => {
+                var currency = document.getElementById('currency-selector').value;
+                var rate = data.rates[currency] || 1;
+                updatePrices(currency, rate);
+            });
+    </script>
 </body>
 </html>
