@@ -1,61 +1,129 @@
+{% load i18n static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ LANGUAGE_CODE|default:'pt-br' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121 - Cadastro</title>
-    {% load static %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
+    <title>{% trans "A121 Evolution - Cadastro" %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
-                <span class="logo-text">A121</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/cursos/"><i class="fas fa-book"></i> Cursos</a></li>
-                <li><a href="/dashboard/"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="/escritorio/"><i class="fas fa-briefcase"></i> Escritório</a></li>
-                <li><a href="/ganhar-pontos/"><i class="fas fa-star"></i> Ganhar Pontos</a></li>
-                <li><a href="/cadastro/"><i class="fas fa-user-plus"></i> Cadastro</a></li>
-                <li><a href="/login/"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            </ul>
-            <div class="nav-icons">
-                <a href="/carrinho/" class="nav-icon"><i class="fas fa-shopping-cart"></i></a>
-                <a href="/perfil/" class="nav-icon"><i class="fas fa-user"></i></a>
-            </div>
-        </nav>
+    <!-- Partículas de Fundo -->
+    <div id="particles-js"></div>
+
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="container">
+            <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="logo">
+            <nav class="nav">
+                <ul>
+                    <li><a href="{% url 'core:index' %}">{% trans "A Revolução" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#produtos">{% trans "iPhones" %}</a></li>
+                    <li><a href="{% url 'core:cursos' %}">{% trans "Cursos" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#mmn">{% trans "Negócio" %}</a></li>
+                    <li><a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></li>
+                    <li><a href="{% url 'core:login' %}">{% trans "Conecte-se" %}</a></li>
+                </ul>
+                <div class="nav-icons">
+                    <a href="#search"><i class="fas fa-search"></i></a>
+                    <a href="#cart"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+                <select id="language-selector" class="language-selector">
+                    <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
+                </select>
+                <select id="currency-selector" class="currency-selector">
+                    <option value="EUR" {% if request.session.currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
+                    <option value="USD" {% if request.session.currency == 'USD' %}selected{% endif %}>$ (USD)</option>
+                    <option value="BRL" {% if request.session.currency == 'BRL' %}selected{% endif %}>R$ (BRL)</option>
+                </select>
+            </nav>
+        </div>
     </header>
-    <section class="auth-section">
-        <div class="auth-container">
-            <div class="logo">
-                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="auth-logo">
-                <span class="logo-text">A121</span>
-            </div>
-            <h2>Cadastro</h2>
-            <form method="post">
+
+    <!-- Seção de Cadastro -->
+    <section class="cadastro">
+        <div class="container">
+            <h2>{% trans "Junte-se à Revolução A121 Evolution" %}</h2>
+            <p class="section-subtitle">{% trans "Crie sua conta e comece a transformar sua vida hoje mesmo!" %}</p>
+            <form method="POST" class="cadastro-form">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="username">Usuário</label>
-                    <input type="text" id="username" name="username" required placeholder="Crie um usuário">
+                    <label for="nome">{% trans "Nome Completo" %}</label>
+                    <input type="text" id="nome" name="nome" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="Seu email">
+                    <label for="email">{% trans "E-mail" %}</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required placeholder="Crie uma senha">
+                    <label for="senha">{% trans "Senha" %}</label>
+                    <input type="password" id="senha" name="senha" required>
                 </div>
-                <button type="submit" class="cta-button">Cadastrar</button>
-                <p class="auth-link">Já tem conta? <a href="/login/">Faça login</a></p>
+                <div class="form-group">
+                    <label for="confirmar-senha">{% trans "Confirmar Senha" %}</label>
+                    <input type="password" id="confirmar-senha" name="confirmar_senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary">{% trans "Cadastrar" %}</button>
+                <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}">{% trans "Faça login" %}</a></p>
             </form>
         </div>
     </section>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="footer-logo">
+                <p>© 2025 {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        // Inicializar Partículas
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 150, density: { enable: true, value_area: 800 } },
+                color: { value: '#00ffcc' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.6, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 5, direction: 'none', random: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 120, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // Mudança de Moeda com Taxa de Câmbio
+        document.getElementById('currency-selector').addEventListener('change', function() {
+            var selectedCurrency = this.value;
+            fetch('{% url "core:change_currency" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: 'currency=' + selectedCurrency
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
