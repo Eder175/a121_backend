@@ -135,6 +135,28 @@ body {
     transform: scale(1.05);
 }
 
+/* Seção Hero */
+.hero {
+    padding: 150px 0 50px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc;
+    margin-bottom: 20px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.hero .subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    color: #cccccc;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
 /* Seção de Cadastro */
 .cadastro-section {
     padding: 150px 0 50px;
