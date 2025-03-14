@@ -1,19 +1,54 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import requests
-from .models import Produto
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 def index(request):
-    produtos = Produto.objects.all()
-    return render(request, 'core/index.html', {'produtos': produtos, 'section': 'index'})
+    return render(request, 'core/index.html', {'section': 'index'})
 
 def cursos(request):
     return render(request, 'core/index.html', {'section': 'cursos'})
 
 def cadastro(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        confirmar_senha = request.POST.get('confirmar_senha')
+
+        # Validação simples
+        if senha != confirmar_senha:
+            messages.error(request, 'As senhas não coincidem.')
+            return render(request, 'core/cadastro.html')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'E-mail já cadastrado.')
+            return render(request, 'core/cadastro.html')
+
+        # Criar o usuário
+        user = User.objects.create_user(username=email, email=email, password=senha, first_name=nome)
+        user.save()
+        messages.success(request, 'Cadastro realizado com sucesso! Faça login para continuar.')
+        return redirect('core:login')
+
     return render(request, 'core/cadastro.html')
 
 def login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+
+        user = authenticate(request, username=email, password=senha)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Login realizado com sucesso!')
+            return redirect('core:index')
+        else:
+            messages.error(request, 'E-mail ou senha incorretos.')
+            return render(request, 'core/login.html')
+
     return render(request, 'core/login.html')
 
 def get_exchange_rate(request):
