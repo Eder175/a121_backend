@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Partículas de Fundo -->
-    <div id="particles-js"></div>
+    <!-- Fundo com Animação de Partículas Avançada -->
+    <div id="particles-js" class="particles-background"></div>
 
     <!-- Cabeçalho -->
     <header class="header">
@@ -45,24 +45,26 @@
         </div>
     </header>
 
-    <!-- Seção de Login -->
-    <section class="login">
+    <!-- Seção de Login com Design Futurista -->
+    <section class="login-section">
         <div class="container">
-            <h2>{% trans "Conecte-se à A121 Evolution" %}</h2>
-            <p class="section-subtitle">{% trans "Faça login para acessar sua conta e continuar sua jornada!" %}</p>
-            <form method="POST" class="login-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="email">{% trans "E-mail" %}</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="senha">{% trans "Senha" %}</label>
-                    <input type="password" id="senha" name="senha" required>
-                </div>
-                <button type="submit" class="btn btn-primary">{% trans "Entrar" %}</button>
-                <p class="form-footer">{% trans "Ainda não tem uma conta?" %} <a href="{% url 'core:cadastro' %}">{% trans "Cadastre-se" %}</a></p>
-            </form>
+            <div class="login-container">
+                <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
+                <p class="subtitle">{% trans "Acesse o futuro agora!" %}</p>
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="email">{% trans "E-mail" %}</label>
+                        <input type="email" id="email" name="email" required class="input-glow">
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">{% trans "Senha" %}</label>
+                        <input type="password" id="senha" name="senha" required class="input-glow">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-glow">{% trans "ENTRAR" %}</button>
+                    <p class="form-footer">{% trans "Ainda não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Cadastre-se" %}</a></p>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -81,40 +83,22 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script>
-        // Inicializar Partículas
         particlesJS('particles-js', {
             particles: {
-                number: { value: 150, density: { enable: true, value_area: 800 } },
+                number: { value: 200, density: { enable: true, value_area: 800 } },
                 color: { value: '#00ffcc' },
-                shape: { type: 'circle' },
-                opacity: { value: 0.6, random: true },
-                size: { value: 4, random: true },
-                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 5, direction: 'none', random: false }
+                shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } },
+                opacity: { value: 0.7, random: true },
+                size: { value: 5, random: true },
+                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 },
+                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out' }
             },
             interactivity: {
                 detect_on: 'canvas',
                 events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
-                modes: { repulse: { distance: 120, duration: 0.4 }, push: { particles_nb: 4 } }
+                modes: { repulse: { distance: 150, duration: 0.4 }, push: { particles_nb: 4 } }
             },
             retina_detect: true
-        });
-
-        // Mudança de Moeda com Taxa de Câmbio
-        document.getElementById('currency-selector').addEventListener('change', function() {
-            var selectedCurrency = this.value;
-            fetch('{% url "core:change_currency" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: 'currency=' + selectedCurrency
-            }).then(response => response.json()).then(data => {
-                if (data.success) {
-                    location.reload();
-                }
-            });
         });
     </script>
 </body>
