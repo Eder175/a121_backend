@@ -6,10 +6,10 @@ import requests
 def index(request):
     from .models import Produto
     produtos = Produto.objects.all()
-    return render(request, 'core/index.html', {'produtos': produtos})
+    return render(request, 'core/index.html', {'produtos': produtos, 'section': 'index'})
 
 def cursos(request):
-    return render(request, 'core/cursos.html')
+    return render(request, 'core/index.html', {'section': 'cursos'})
 
 def cadastro(request):
     return render(request, 'core/cadastro.html')

@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admindocs',  # Necessário para 'javascript-catalog'
+    'django.contrib.admindocs',  # Necessário para 'javascript-catalog' (mas vamos evitar usá-lo por agora)
     'core',  # Seu app
 ]
 
