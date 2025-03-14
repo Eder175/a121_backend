@@ -1,0 +1,16 @@
+# Ignorar a pasta do ambiente virtual
+venv/
+
+# Ignorar arquivos de cache do Python
+__pycache__/
+*.pyc
+
+# Ignorar o banco de dados SQLite
+db.sqlite3
+
+# Ignorar arquivos de configuração sensíveis
+.env
+*.log
+*.sqlite3
+media/  # Para arquivos de upload (ex.: documentos dos parceiros)
+desktop.ini
