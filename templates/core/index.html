@@ -130,7 +130,6 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="/i18n/javascript-catalog/"></script>  <!-- Ajustado para URL fixa -->
     <script>
         // Inicializar Partículas
         particlesJS('particles-js', {
@@ -154,8 +153,18 @@
         // Mudança de Idioma
         document.getElementById('language-selector').addEventListener('change', function() {
             var selectedLanguage = this.value;
-            var url = window.location.pathname;
-            window.location.href = url + '?language=' + selectedLanguage;
+            fetch('/i18n/setlang/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: 'language=' + selectedLanguage
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
         });
 
         // Mudança de Moeda com Taxa de Câmbio
