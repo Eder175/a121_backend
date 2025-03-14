@@ -7,6 +7,9 @@
     <title>{% trans "A121 Evolution - A Revolução do Futuro" %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Adicionar Three.js e AR.js para Realidade Aumentada -->
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
     <!-- Partículas de Fundo -->
@@ -15,7 +18,7 @@
     <!-- Cabeçalho -->
     <header class="header">
         <div class="container">
-            <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution Logo' %}" class="logo">
+            <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="logo">
             <nav class="nav">
                 <ul>
                     <li><a href="{% url 'core:index' %}">{% trans "A Revolução" %}</a></li>
@@ -116,16 +119,25 @@
     </section>
     {% endif %}
 
-    <!-- Seção de Produtos (iPhones) -->
+    <!-- Seção de Produtos (iPhones) com Realidade Aumentada -->
     {% if section == 'index' %}
     <section class="products" id="produtos">
         <div class="container">
             <h2>{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
-            <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro." %}</p>
+            <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro. Visualize em Realidade Aumentada!" %}</p>
             <div class="product-grid">
                 <div class="product-card">
                     <div class="product-image-wrapper">
                         <img src="{% static 'images/iPhone_15_Pro_Max_512GB.jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image">
+                        <!-- Realidade Aumentada -->
+                        <a href="{% static 'models/iphone15.glb' %}" class="ar-button">{% trans "Ver em AR" %}</a>
+                        <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+                            <a-assets>
+                                <a-asset-item id="iphone15-model" src="{% static 'models/iphone15.glb' %}"></a-asset-item>
+                            </a-assets>
+                            <a-entity gltf-model="#iphone15-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
+                            <a-marker-camera preset="hiro"></a-marker-camera>
+                        </a-scene>
                     </div>
                     <h3>{% trans "iPhone 15 Pro Max (512GB)" %}</h3>
                     <p>{% trans "O mais avançado iPhone com câmera revolucionária e desempenho incomparável." %}</p>
@@ -135,6 +147,15 @@
                 <div class="product-card">
                     <div class="product-image-wrapper">
                         <img src="{% static 'images/iPhone_16_Pro_Max_Titanio_Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image">
+                        <!-- Realidade Aumentada -->
+                        <a href="{% static 'models/iphone16.glb' %}" class="ar-button">{% trans "Ver em AR" %}</a>
+                        <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+                            <a-assets>
+                                <a-asset-item id="iphone16-model" src="{% static 'models/iphone16.glb' %}"></a-asset-item>
+                            </a-assets>
+                            <a-entity gltf-model="#iphone16-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
+                            <a-marker-camera preset="hiro"></a-marker-camera>
+                        </a-scene>
                     </div>
                     <h3>{% trans "iPhone 16 Pro Max Titânio Deserto" %}</h3>
                     <p>{% trans "Design futurista com tecnologia de ponta para o futuro." %}</p>
@@ -189,7 +210,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution Logo' %}" class="footer-logo">
+                <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="footer-logo">
                 <p>© 2025 {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
             </div>
         </div>
@@ -255,6 +276,16 @@
                     updatePrices(currency, rate);
                 }
             });
+
+        // Script para Realidade Aumentada
+        document.querySelectorAll('.ar-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const scene = this.nextElementSibling;
+                const model = scene.querySelector('a-entity');
+                model.setAttribute('visible', 'true');
+            });
+        });
     </script>
 </body>
 </html>
