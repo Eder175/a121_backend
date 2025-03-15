@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.views.i18n import JavaScriptCatalog
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
-    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),  # Adicionando suporte para traduções JS
-]
+    path('', include('core.urls', namespace='core')),  # Incluindo core.urls com namespace 'core'
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
