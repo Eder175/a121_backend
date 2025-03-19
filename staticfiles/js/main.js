@@ -98,12 +98,12 @@ function sendUserMessage() {
             if (data.response) {
                 addIAMessage(data.response);
             } else {
-                addIAMessage('Desculpe, não entendi. Pode repetir?');
+                addIAMessage('Desculpe, não entendi. Pode repetir ou me dar mais detalhes?');
             }
         })
         .catch(error => {
             console.error('Erro ao se comunicar com o Dialogflow:', error);
-            addIAMessage('Ocorreu um erro. Tente novamente mais tarde.');
+            addIAMessage('Desculpe, houve um problema. Tente novamente ou me dê mais detalhes.');
         });
         userInput.value = '';
     }
@@ -184,16 +184,13 @@ document.querySelectorAll('.nav-link').forEach(link => {
         const sectionId = this.getAttribute('data-section');
         const section = document.getElementById(sectionId);
         if (section) {
-            // Remover a classe active de todos os links
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             this.classList.add('active');
-            // Rolar suavemente até a seção
             window.scrollTo({
                 top: section.offsetTop - 80,
                 behavior: 'smooth'
             });
         } else {
-            // Carregar página via AJAX (para páginas como cadastro e login)
             const url = this.getAttribute('href');
             loadSection(url);
         }
@@ -227,7 +224,6 @@ function loadSection(url) {
 }
 
 function loadProductDetails(productId) {
-    // Simulação de detalhes do produto (pode ser uma chamada AJAX para uma API)
     const productDetails = {
         'iphone15': {
             title: 'iPhone 15 Pro Max (512GB)',
