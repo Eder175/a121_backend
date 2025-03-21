@@ -28,3 +28,6 @@ ngrok.exe
 # Ignorar backups ou arquivos temporários
 *.bak
 *.tmp
+
+# Ignorar a pasta staticfiles gerada pelo Django
+staticfiles/
