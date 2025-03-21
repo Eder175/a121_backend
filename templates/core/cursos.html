@@ -2,40 +2,109 @@
 {% load i18n static %}
 
 {% block title %}
-{% trans "Cursos A121 Revolution" %}
+{% trans "Cursos A121 Revolution - Experiência do Futuro" %}
 {% endblock %}
 
 {% block extra_head %}
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<!-- TensorFlow.js para IA Neural -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 {% endblock %}
 
 {% block content %}
 <!-- Seção de Cursos -->
 <section class="products" id="cursos">
     <div class="container">
-        <h2>{% trans "Cursos do Futuro" %}</h2>
+        <h2>{% trans "Cursos do Futuro - Powered by A121 Neural AI" %}</h2>
+
+        <!-- Experiência Imersiva com IA Emocional -->
+        <section class="ai-emotional-experience">
+            <h3>{% trans "A IA está analisando suas emoções..." %}</h3>
+            <p id="emotional-feedback">{% trans "Você parece interessado! Vamos sugerir algo interativo!" %}</p>
+        </section>
+
+        <!-- Recomendações de Cursos com IA Neural -->
+        <section class="ai-recommendations">
+            <h3>{% trans "Cursos Personalizados para Você (A121 Neural AI)" %}</h3>
+            <div id="ai-course-suggestions" class="product-grid"></div>
+        </section>
+
+        <!-- Lista de Cursos -->
         <div class="product-grid">
-            <div class="product-card">
+            <div class="product-card" data-course="ia">
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/ia-course.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
+                    <!-- Prévia Holográfica em AR com Interação por Voz -->
+                    <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
+                    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="ar-scene">
+                        <a-assets>
+                            <a-asset-item id="course-ia-hologram" src="{% static 'models/course-ia-hologram.glb' %}"></a-asset-item>
+                        </a-assets>
+                        <a-entity id="hologram-ia" gltf-model="#course-ia-hologram" scale="0.1 0.1 0.1" position="0 0 -1" visible="false">
+                            <a-text id="hologram-text-ia" value="Aula 1: O que é IA?" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                        </a-entity>
+                        <a-marker-camera preset="hiro"></a-marker-camera>
+                    </a-scene>
                 </div>
                 <h3>{% trans "Introdução à IA" %}</h3>
                 <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="199.90">199.90 €</span></p>
                 <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+                <!-- Prévia Gerada por IA em Tempo Real -->
+                <button class="btn btn-ai-preview" data-course="ia">{% trans "Gerar Prévia com IA Neural" %}</button>
+                <div class="ai-preview-content" id="ai-preview-ia"></div>
+                <!-- Certificado Holográfico em Blockchain -->
+                <button class="btn btn-blockchain-cert" data-course="ia">{% trans "Visualizar Certificado Holográfico (Blockchain)" %}</button>
+                <a-scene embedded class="blockchain-cert-scene" style="display: none;">
+                    <a-assets>
+                        <a-asset-item id="cert-ia-hologram" src="{% static 'models/cert-ia-hologram.glb' %}"></a-asset-item>
+                    </a-assets>
+                    <a-entity gltf-model="#cert-ia-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
+                    <a-marker-camera preset="hiro"></a-marker-camera>
+                </a-scene>
             </div>
-            <div class="product-card">
+            <div class="product-card" data-course="finance">
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/finance-course.jpg' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                    <!-- Prévia Holográfica em AR com Interação por Voz -->
+                    <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
+                    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="ar-scene">
+                        <a-assets>
+                            <a-asset-item id="course-finance-hologram" src="{% static 'models/course-finance-hologram.glb' %}"></a-asset-item>
+                        </a-assets>
+                        <a-entity id="hologram-finance" gltf-model="#course-finance-hologram" scale="0.1 0.1 0.1" position="0 0 -1" visible="false">
+                            <a-text id="hologram-text-finance" value="Aula 1: Criando um Orçamento" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                        </a-entity>
+                        <a-marker-camera preset="hiro"></a-marker-camera>
+                    </a-scene>
                 </div>
                 <h3>{% trans "Finanças Pessoais" %}</h3>
                 <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="149.90">149.90 €</span></p>
                 <p>{% trans "Duração" %}: 8 {% trans "horas" %}</p>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+                <!-- Prévia Gerada por IA em Tempo Real -->
+                <button class="btn btn-ai-preview" data-course="finance">{% trans "Gerar Prévia com IA Neural" %}</button>
+                <div class="ai-preview-content" id="ai-preview-finance"></div>
+                <!-- Certificado Holográfico em Blockchain -->
+                <button class="btn btn-blockchain-cert" data-course="finance">{% trans "Visualizar Certificado Holográfico (Blockchain)" %}</button>
+                <a-scene embedded class="blockchain-cert-scene" style="display: none;">
+                    <a-assets>
+                        <a-asset-item id="cert-finance-hologram" src="{% static 'models/cert-finance-hologram.glb' %}"></a-asset-item>
+                    </a-assets>
+                    <a-entity gltf-model="#cert-finance-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
+                    <a-marker-camera preset="hiro"></a-marker-camera>
+                </a-scene>
             </div>
         </div>
+
+        <!-- Sistema de Gamificação com Tokens Holográficos -->
+        <section class="gamification">
+            <h3>{% trans "Ganhe Tokens Holográficos (NFTs)!" %}</h3>
+            <p id="gamification-tokens">{% trans "Você tem 0 tokens. Interaja para ganhar mais!" %}</p>
+            <div id="holographic-reward"></div>
+        </section>
     </div>
 </section>
 {% endblock %}
@@ -103,5 +172,129 @@ fetch('{% url "core:get_exchange_rate" %}?base=EUR')
         var rate = data.rates[currency] || 1;
         updatePrices(currency, rate);
     });
+
+// IA Emocional (Simulação)
+let userEngagement = 0;
+function trackUserEngagement() {
+    const feedbackElement = document.getElementById('emotional-feedback');
+    document.addEventListener('click', () => {
+        userEngagement += 1;
+        if (userEngagement > 5) {
+            feedbackElement.textContent = "{% trans 'Você está muito engajado! Vamos sugerir uma experiência interativa!' %}";
+        } else if (userEngagement > 2) {
+            feedbackElement.textContent = "{% trans 'Você parece interessado! Que tal uma prévia holográfica?' %}";
+        }
+    });
+}
+
+// Recomendações de Cursos com IA Neural (Simulação com TensorFlow.js)
+async function loadAIRecommendations() {
+    const suggestionsContainer = document.getElementById('ai-course-suggestions');
+    const model = tf.sequential();
+    model.add(tf.layers.dense({ units: 10, inputShape: [2], activation: 'relu' }));
+    model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+    model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy' });
+
+    // Simulação de dados de entrada (interesses do usuário)
+    const userData = tf.tensor2d([[userEngagement, Math.random() * 10]], [1, 2]);
+    const prediction = model.predict(userData).dataSync()[0];
+
+    const suggestions = [
+        { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "{% static 'images/ia-course.jpg' %}" },
+        { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "{% static 'images/finance-course.jpg' %}" }
+    ];
+
+    const recommendedCourse = prediction > 0.5 ? suggestions[0] : suggestions[1];
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+        <div class="product-image-wrapper">
+            <img src="${recommendedCourse.image}" alt="${recommendedCourse.title}" class="product-image">
+        </div>
+        <h3>${recommendedCourse.title}</h3>
+        <p>${recommendedCourse.description}</p>
+        <p>{% trans "Preço" %}: ${recommendedCourse.price}</p>
+        <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+    `;
+    suggestionsContainer.appendChild(card);
+}
+
+// Prévia Holográfica com Interação por Voz
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+recognition.continuous = false;
+
+document.querySelectorAll('.voice-interaction').forEach(button => {
+    button.addEventListener('click', () => {
+        const hologram = button.parentElement.querySelector('a-entity');
+        const hologramText = button.parentElement.querySelector('a-text');
+        hologram.setAttribute('visible', 'true');
+        recognition.start();
+
+        recognition.onresult = (event) => {
+            const command = event.results[0][0].transcript.toLowerCase();
+            if (command.includes('aula 1')) {
+                hologramText.setAttribute('value', 'Aula 1: Iniciando sua Jornada');
+            } else if (command.includes('aula 2')) {
+                hologramText.setAttribute('value', 'Aula 2: Conceitos Avançados');
+            }
+        };
+    });
+});
+
+// Prévia Gerada por IA em Tempo Real (Simulação)
+document.querySelectorAll('.btn-ai-preview').forEach(button => {
+    button.addEventListener('click', function() {
+        const course = this.getAttribute('data-course');
+        const previewContainer = document.getElementById(`ai-preview-${course}`);
+        const previews = {
+            ia: `Nesta aula, você aprenderá como a IA pode transformar sua vida. Vamos explorar os conceitos básicos e criar um projeto prático usando IA generativa.`,
+            finance: `Descubra como criar um orçamento eficiente e investir de forma inteligente. Nesta aula, você aprenderá a usar ferramentas financeiras modernas.`
+        };
+        previewContainer.innerHTML = `<p><strong>{% trans "Prévia Gerada por IA Neural:" %}</strong> ${previews[course]}</p>`;
+    });
+});
+
+// Sistema de Gamificação com Tokens Holográficos (NFTs)
+let userTokens = 0;
+function updateGamification() {
+    const tokensElement = document.getElementById('gamification-tokens');
+    tokensElement.textContent = `{% trans "Você tem" %} ${userTokens} {% trans "tokens holográficos. Interaja para ganhar mais!" %}`;
+    const rewardContainer = document.getElementById('holographic-reward');
+    if (userTokens >= 5) {
+        rewardContainer.innerHTML = `
+            <p>{% trans "Parabéns! Você ganhou um Certificado Holográfico NFT!" %}</p>
+            <a-scene embedded>
+                <a-assets>
+                    <a-asset-item id="reward-hologram" src="{% static 'models/reward-hologram.glb' %}"></a-asset-item>
+                </a-assets>
+                <a-entity gltf-model="#reward-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
+                <a-marker-camera preset="hiro"></a-marker-camera>
+            </a-scene>
+        `;
+    }
+}
+
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', () => {
+        userTokens += 1;
+        updateGamification();
+    });
+});
+
+// Certificado Holográfico em Blockchain (Simulação)
+document.querySelectorAll('.btn-blockchain-cert').forEach(button => {
+    button.addEventListener('click', () => {
+        const certScene = button.parentElement.querySelector('.blockchain-cert-scene');
+        certScene.style.display = 'block';
+    });
+});
+
+// Inicializar Funcionalidades
+document.addEventListener('DOMContentLoaded', () => {
+    trackUserEngagement();
+    loadAIRecommendations();
+    updateGamification();
+});
 </script>
 {% endblock %}
