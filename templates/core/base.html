@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+{% load static i18n widget_tweaks %}
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE|default:'pt-br' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A121 Evolution - A Revolução do Futuro. Transforme sua vida com tecnologia, cursos e oportunidades de negócio.">
+    <meta name="keywords" content="A121, tecnologia, iPhones, cursos, marketing multinível, realidade aumentada, futuro">
+    <meta name="author" content="A121 Evolution Team">
+    <meta name="robots" content="index, follow">
+    <title>{% block title %}{% trans "A121 Evolution - A Revolução do Futuro" %}{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <!-- Three.js para hologramas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    
+    <!-- A-Frame e AR.js para Realidade Aumentada -->
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    
+    {% block extra_head %}
+    {% endblock %}
+</head>
+<body>
+    <!-- Partículas de Fundo Avançadas -->
+    <div id="particles-js" class="particles-background"></div>
+
+    <!-- Holograma (usando Three.js) -->
+    <div id="hologram-container"></div>
+
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="container">
+            <img src="{% static 'images/A121.png' %}" alt="{% trans 'A121 Evolution' %}" class="logo">
+            <nav class="nav">
+                <ul>
+                    <li><a href="{% url 'core:index' %}" class="nav-link" data-section="hero">{% trans "A Revolução" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#produtos" class="nav-link" data-section="products">{% trans "iPhones" %}</a></li>
+                    <li><a href="{% url 'core:cursos' %}" class="nav-link" data-section="courses">{% trans "Cursos" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#mmn" class="nav-link" data-section="mmn">{% trans "Negócio" %}</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'core:dashboard' %}" class="nav-link">{% trans "Dashboard" %}</a></li>
+                        <li><a href="{% url 'core:ganhar_pontos' %}" class="nav-link">{% trans "Ganhar Pontos" %}</a></li>
+                        <li><a href="{% url 'core:escritorio' %}" class="nav-link">{% trans "Escritório" %}</a></li>
+                        <li><a href="{% url 'logout' %}" class="nav-link">{% trans "Sair" %}</a></li>
+                    {% else %}
+                        <li><a href="{% url 'core:cadastro' %}" class="nav-link">{% trans "Junte-se" %}</a></li>
+                        <li><a href="{% url 'core:login' %}" class="nav-link">{% trans "Conecte-se" %}</a></li>
+                    {% endif %}
+                </ul>
+                <div class="nav-icons">
+                    <a href="#search"><i class="fas fa-search"></i></a>
+                    <a href="#cart"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+                <select id="language-selector" class="language-selector">
+                    <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
+                </select>
+                <select id="currency-selector" class="currency-selector">
+                    <option value="EUR" {% if request.session.currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
+                    <option value="USD" {% if request.session.currency == 'USD' %}selected{% endif %}>$ (USD)</option>
+                    <option value="BRL" {% if request.session.currency == 'BRL' %}selected{% endif %}>R$ (BRL)</option>
+                </select>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mensagens (para exibir alertas de sucesso, erro, etc.) -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Conteúdo principal -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Modal de Chat com IA Avançada -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>{% trans "Chat com IA A121" %}</h2>
+            <div id="chatBox" class="chat-box"></div>
+            <div class="chat-input-container">
+                <input type="text" id="userInput" placeholder="{% trans 'Digite sua mensagem...' %}" class="input-glow">
+                <button id="sendMessage" class="btn-glow">{% trans "Enviar" %}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botões Flutuantes -->
+    <div class="floating-buttons">
+        <a href="#modal" class="chat-button">{% trans "Bate-papo com IA" %}</a>
+        <a href="https://wa.me/1234567890" class="whatsapp-button">{% trans "Fale Conosco" %}</a>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <img src="{% static 'images/A121.png' %}" alt="{% trans 'A121 Evolution' %}" class="footer-logo">
+                <p>© {% now "Y" %} {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% block extra_js %}
+    {% endblock %}
+</body>
+</html>
