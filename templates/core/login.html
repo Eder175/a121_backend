@@ -1,105 +1,274 @@
+{% extends 'core/base.html' %}
 {% load i18n static %}
-<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'pt-br' }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "A121 Evolution - Login" %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Fundo com Animação de Partículas Avançada -->
-    <div id="particles-js" class="particles-background"></div>
 
-    <!-- Cabeçalho -->
-    <header class="header">
-        <div class="container">
-            <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="logo">
-            <nav class="nav">
-                <ul>
-                    <li><a href="{% url 'core:index' %}">{% trans "A Revolução" %}</a></li>
-                    <li><a href="{% url 'core:index' %}#produtos">{% trans "iPhones" %}</a></li>
-                    <li><a href="{% url 'core:cursos' %}">{% trans "Cursos" %}</a></li>
-                    <li><a href="{% url 'core:index' %}#mmn">{% trans "Negócio" %}</a></li>
-                    <li><a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></li>
-                    <li><a href="{% url 'core:login' %}">{% trans "Conecte-se" %}</a></li>
-                </ul>
-                <div class="nav-icons">
-                    <a href="#search"><i class="fas fa-search"></i></a>
-                    <a href="#cart"><i class="fas fa-shopping-cart"></i></a>
+{% block title %}
+{% trans "A121 Evolution - Login do Futuro Cósmico" %}
+{% endblock %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<!-- TensorFlow.js para IA -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<style>
+    .quantum-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: none;
+        z-index: 9999;
+    }
+    .quantum-particles {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Fundo com Animação de Partículas Avançada -->
+<div id="particles-js" class="particles-background"></div>
+
+<!-- Transição Quântica -->
+<div class="quantum-transition" id="quantum-transition">
+    <div id="quantum-particles" class="quantum-particles"></div>
+</div>
+
+<!-- Seção de Login com Design Futurista -->
+<section class="login-section">
+    <div class="container">
+        <!-- Carteira Virtual A121Coin -->
+        <div class="a121coin-wallet">
+            <h3>{% trans "Sua Carteira A121Coin" %}</h3>
+            <p id="a121coin-balance">{% trans "Saldo:" %} 0 A121Coin</p>
+            <p id="a121coin-nfts">{% trans "Seus NFTs:" %} 0</p>
+        </div>
+
+        <!-- IA Emocional -->
+        <div class="ai-emotional-experience">
+            <h3>{% trans "A IA está analisando suas emoções..." %}</h3>
+            <p id="emotional-feedback">{% trans "Você parece pronto para se conectar ao futuro!" %}</p>
+        </div>
+
+        <!-- Assistente Holográfico -->
+        <div class="assistant-hologram">
+            <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="assistant-ar-scene">
+                <a-assets>
+                    <a-asset-item id="assistant-hologram" src="{% static 'models/assistant-hologram.glb' %}"></a-asset-item>
+                </a-assets>
+                <a-entity id="assistant-hologram-entity" gltf-model="#assistant-hologram" scale="0.1 0.1 0.1" position="0 0 -1">
+                    <a-text id="assistant-text" value="Bem-vindo à A121 Evolution! Fale 'login' para começar." align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                </a-entity>
+                <a-marker-camera preset="hiro"></a-marker-camera>
+            </a-scene>
+        </div>
+
+        <!-- Formulário de Login Holográfico em AR -->
+        <div class="login-container">
+            <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
+            <p class="subtitle">{% trans "Acesse o futuro cósmico agora!" %}</p>
+
+            <!-- Opção de Autenticação Biométrica -->
+            <button class="btn btn-biometric" id="biometric-login">{% trans "Login com Reconhecimento de Voz" %}</button>
+
+            <!-- Opção de Login por Pensamento -->
+            <button class="btn btn-mind-login" id="mind-login">{% trans "Login com Pensamento (Interface Cérebro-Máquina)" %}</button>
+            <p id="mind-login-instruction" style="display: none;">{% trans "Foco no botão 'ENTRAR' por 5 segundos para logar!" %}</p>
+
+            <!-- Formulário em AR -->
+            <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="login-ar-scene">
+                <a-assets>
+                    <a-asset-item id="login-hologram" src="{% static 'models/login-hologram.glb' %}"></a-asset-item>
+                </a-assets>
+                <a-entity id="login-hologram-entity" gltf-model="#login-hologram" scale="0.1 0.1 0.1" position="0 0 -1">
+                    <a-text id="login-text" value="A121 Evolution Login" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                </a-entity>
+                <a-marker-camera preset="hiro"></a-marker-camera>
+            </a-scene>
+
+            <!-- Formulário Tradicional -->
+            <form method="POST" class="login-form" id="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">{% trans "E-mail" %}</label>
+                    <input type="email" id="email" name="email" required class="input-glow">
                 </div>
-                <select id="language-selector" class="language-selector">
-                    <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
-                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
-                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
-                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
-                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
-                </select>
-                <select id="currency-selector" class="currency-selector">
-                    <option value="EUR" {% if request.session.currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
-                    <option value="USD" {% if request.session.currency == 'USD' %}selected{% endif %}>$ (USD)</option>
-                    <option value="BRL" {% if request.session.currency == 'BRL' %}selected{% endif %}>R$ (BRL)</option>
-                </select>
-            </nav>
-        </div>
-    </header>
+                <div class="form-group">
+                    <label for="senha">{% trans "Senha" %}</label>
+                    <input type="password" id="senha" name="senha" required class="input-glow">
+                </div>
+                <button type="submit" class="btn btn-primary btn-glow" id="submit-button">{% trans "ENTRAR" %}</button>
+                <p class="form-footer">{% trans "Ainda não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Cadastre-se" %}</a></p>
+            </form>
 
-    <!-- Seção de Login com Design Futurista -->
-    <section class="login-section">
-        <div class="container">
-            <div class="login-container">
-                <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
-                <p class="subtitle">{% trans "Acesse o futuro agora!" %}</p>
-                <form method="POST" class="login-form">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="email">{% trans "E-mail" %}</label>
-                        <input type="email" id="email" name="email" required class="input-glow">
-                    </div>
-                    <div class="form-group">
-                        <label for="senha">{% trans "Senha" %}</label>
-                        <input type="password" id="senha" name="senha" required class="input-glow">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-glow">{% trans "ENTRAR" %}</button>
-                    <p class="form-footer">{% trans "Ainda não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Cadastre-se" %}</a></p>
-                </form>
-            </div>
+            <!-- Opção de Login em VR -->
+            <button class="btn btn-vr" id="vr-login">{% trans "Login em Realidade Virtual Cósmica" %}</button>
+            <a-scene embedded vr-mode-ui="enabled: true" class="vr-login-scene" style="display: none;">
+                <a-assets>
+                    <a-asset-item id="vr-login-hologram" src="{% static 'models/vr-login-hologram.glb' %}"></a-asset-item>
+                    <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
+                </a-assets>
+                <!-- Ambiente Cósmico -->
+                <a-sky src="#cosmic-skybox"></a-sky>
+                <a-entity gltf-model="#vr-login-hologram" scale="0.1 0.1 0.1" position="0 1.6 -1">
+                    <a-text value="A121 Evolution VR Login" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                </a-entity>
+                <!-- Formulário Interativo em VR -->
+                <a-entity id="vr-form" position="0 1.6 -1">
+                    <a-text value="E-mail:" position="-0.5 0.2 0" color="#00ffcc"></a-text>
+                    <a-box id="vr-email-input" color="#00ffcc" width="1" height="0.1" depth="0.01" position="0.5 0.2 0"></a-box>
+                    <a-text value="Senha:" position="-0.5 0 0" color="#00ffcc"></a-text>
+                    <a-box id="vr-password-input" color="#00ffcc" width="1" height="0.1" depth="0.01" position="0.5 0 0"></a-box>
+                    <a-box id="vr-submit-button" color="#ff00cc" width="0.5" height="0.1" depth="0.01" position="0 -0.2 0">
+                        <a-text value="ENTRAR" align="center" position="0 0 0.01" color="#ffffff"></a-text>
+                    </a-box>
+                </a-entity>
+                <a-entity camera look-controls position="0 1.6 0">
+                    <a-entity cursor="fuse: true; fuseTimeout: 500" raycaster="objects: #vr-submit-button" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" material="color: #00ffcc; shader: flat"></a-entity>
+                </a-entity>
+            </a-scene>
         </div>
-    </section>
 
-    <!-- Rodapé -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="footer-logo">
-                <p>© 2025 {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
-            </div>
+        <!-- Hash de Autenticação Blockchain -->
+        <div class="blockchain-auth" id="blockchain-auth" style="display: none;">
+            <p>{% trans "Autenticação Segura via A121Chain" %}</p>
+            <p id="auth-hash"></p>
         </div>
-    </footer>
+    </div>
+</section>
+{% endblock %}
 
-    <!-- Scripts -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script>
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 200, density: { enable: true, value_area: 800 } },
-                color: { value: '#00ffcc' },
-                shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } },
-                opacity: { value: 0.7, random: true },
-                size: { value: 5, random: true },
-                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 },
-                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out' }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
-                modes: { repulse: { distance: 150, duration: 0.4 }, push: { particles_nb: 4 } }
-            },
-            retina_detect: true
-        });
-    </script>
-</body>
-</html>
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+// Estado do Usuário (Persistente entre Páginas)
+let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
+let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
+
+// Atualizar Carteira Virtual
+function updateWallet() {
+    const balanceElement = document.getElementById('a121coin-balance');
+    const nftsElement = document.getElementById('a121coin-nfts');
+    balanceElement.textContent = `{% trans "Saldo:" %} ${userA121Coin} A121Coin`;
+    nftsElement.textContent = `{% trans "Seus NFTs:" %} ${userNFTs.length}`;
+}
+
+// IA Emocional (Simulação)
+let userEngagement = 0;
+function trackUserEngagement() {
+    const feedbackElement = document.getElementById('emotional-feedback');
+    document.addEventListener('click', () => {
+        userEngagement += 1;
+        if (userEngagement > 5) {
+            feedbackElement.textContent = "{% trans 'Você está muito animado! Vamos tornar sua experiência ainda mais incrível!' %}";
+            document.querySelector('.login-section').style.background = 'linear-gradient(135deg, #00ffcc, #ff00cc)';
+        } else if (userEngagement > 2) {
+            feedbackElement.textContent = "{% trans 'Você parece focado! Vamos te ajudar a se conectar rapidamente!' %}";
+        }
+    });
+}
+
+// Animação de Partículas Avançada com IA Generativa (Simulação)
+particlesJS('particles-js', {
+    particles: {
+        number: { value: 200, density: { enable: true, value_area: 800 } },
+        color: { value: '#00ffcc' },
+        shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } },
+        opacity: { value: 0.7, random: true },
+        size: { value: 5, random: true },
+        line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 },
+        move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out' }
+    },
+    interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+        modes: { repulse: { distance: 150, duration: 0.4 }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+});
+
+// Autenticação Biométrica com Reconhecimento de Voz (Simulação)
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+recognition.continuous = false;
+
+document.getElementById('biometric-login').addEventListener('click', () => {
+    const assistantText = document.getElementById('assistant-text');
+    assistantText.setAttribute('value', 'Fale "login" para entrar!');
+    recognition.start();
+    recognition.onresult = (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        if (command.includes('login') || command.includes('entrar')) {
+            document.getElementById('login-form').submit();
+        } else {
+            assistantText.setAttribute('value', 'Comando não reconhecido. Tente dizer "login" ou "entrar".');
+        }
+    };
+});
+
+// Login com Pensamento (Simulação de Interface Cérebro-Máquina)
+let focusTime = 0;
+document.getElementById('mind-login').addEventListener('click', () => {
+    const instruction = document.getElementById('mind-login-instruction');
+    instruction.style.display = 'block';
+    const submitButton = document.getElementById('submit-button');
+    const interval = setInterval(() => {
+        if (document.activeElement === submitButton) {
+            focusTime += 1;
+            if (focusTime >= 5) {
+                document.getElementById('login-form').submit();
+                clearInterval(interval);
+            }
+        } else {
+            focusTime = 0;
+        }
+    }, 1000);
+});
+
+// Login em Realidade Virtual Cósmica
+document.getElementById('vr-login').addEventListener('click', () => {
+    const vrScene = document.querySelector('.vr-login-scene');
+    vrScene.style.display = 'block';
+    vrScene.enterVR();
+    const vrSubmitButton = document.getElementById('vr-submit-button');
+    vrSubmitButton.addEventListener('click', () => {
+        document.getElementById('login-form').submit();
+    });
+});
+
+// Transição Quântica ao Fazer Login
+document.getElementById('login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const quantumTransition = document.getElementById('quantum-transition');
+    quantumTransition.style.display = 'block';
+    particlesJS('quantum-particles', {
+        particles: {
+            number: { value: 500, density: { enable: true, value_area: 800 } },
+            color: { value: '#ff00cc' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.7, random: true },
+            size: { value: 3, random: true },
+            move: { enable: true, speed: 10, direction: 'none', random: true, out_mode: 'out' }
+        }
+    });
+    setTimeout(() => {
+        const authHash = `0x${Math.random().toString(16).substr(2, 40)}`;
+        document.getElementById('blockchain-auth').style.display = 'block';
+        document.getElementById('auth-hash').textContent = `Hash: ${authHash}`;
+        setTimeout(() => {
+            document.getElementById('login-form').submit();
+        }, 2000);
+    }, 2000);
+});
+
+// Inicializar Funcionalidades
+document.addEventListener('DOMContentLoaded', () => {
+    trackUserEngagement();
+    updateWallet();
+});
+</script>
+{% endblock %}
