@@ -58,6 +58,25 @@
                 <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="199.90">199.90 €</span></p>
                 <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
+                <!-- Seletor de Idioma -->
+                <div class="language-selector-course">
+                    <label for="language-ia">{% trans "Idioma do Curso:" %}</label>
+                    <select id="language-ia" class="course-language-selector" data-course="ia">
+                        <option value="en">English</option>
+                        <option value="pt-br">Português</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+                <!-- Conteúdo Traduzido -->
+                <div class="translated-content" id="translated-content-ia">
+                    <p>{% trans "Prévia do Vídeo Traduzido:" %}</p>
+                    <audio id="translated-audio-ia" controls style="display: none;"></audio>
+                    <p id="translated-text-ia"></p>
+                    <p>{% trans "Material em PDF Traduzido:" %}</p>
+                    <a id="translated-pdf-ia" href="#" style="display: none;">{% trans "Baixar PDF Traduzido" %}</a>
+                </div>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
                 <!-- Prévia Gerada por IA em Tempo Real -->
                 <button class="btn btn-ai-preview" data-course="ia">{% trans "Gerar Prévia com IA Neural" %}</button>
@@ -91,6 +110,25 @@
                 <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="149.90">149.90 €</span></p>
                 <p>{% trans "Duração" %}: 8 {% trans "horas" %}</p>
+                <!-- Seletor de Idioma -->
+                <div class="language-selector-course">
+                    <label for="language-finance">{% trans "Idioma do Curso:" %}</label>
+                    <select id="language-finance" class="course-language-selector" data-course="finance">
+                        <option value="en">English</option>
+                        <option value="pt-br">Português</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+                <!-- Conteúdo Traduzido -->
+                <div class="translated-content" id="translated-content-finance">
+                    <p>{% trans "Prévia do Vídeo Traduzido:" %}</p>
+                    <audio id="translated-audio-finance" controls style="display: none;"></audio>
+                    <p id="translated-text-finance"></p>
+                    <p>{% trans "Material em PDF Traduzido:" %}</p>
+                    <a id="translated-pdf-finance" href="#" style="display: none;">{% trans "Baixar PDF Traduzido" %}</a>
+                </div>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
                 <!-- Prévia Gerada por IA em Tempo Real -->
                 <button class="btn btn-ai-preview" data-course="finance">{% trans "Gerar Prévia com IA Neural" %}</button>
@@ -327,6 +365,42 @@ document.querySelectorAll('.btn-blockchain-cert').forEach(button => {
         } else {
             alert("{% trans 'Você precisa de pelo menos 2 A121Coin para emitir um certificado!' %}");
         }
+    });
+});
+
+// Tradução Automática de Cursos
+document.querySelectorAll('.course-language-selector').forEach(selector => {
+    selector.addEventListener('change', async (event) => {
+        const course = event.target.getAttribute('data-course');
+        const targetLanguage = event.target.value;
+
+        // URLs fictícias para simulação
+        const videoUrl = course === 'ia' ? 'https://example.com/ia-video.mp4' : 'https://example.com/finance-video.mp4';
+        const pdfUrl = course === 'ia' ? 'https://example.com/ia-material.pdf' : 'https://example.com/finance-material.pdf';
+
+        // Traduzir Vídeo
+        const videoResponse = await fetch('{% url "translation:translate_video" %}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ video_url: videoUrl, target_language: targetLanguage })
+        });
+        const videoData = await videoResponse.json();
+        const audioElement = document.getElementById(`translated-audio-${course}`);
+        const textElement = document.getElementById(`translated-text-${course}`);
+        audioElement.src = videoData.translated_audio_url || '';
+        audioElement.style.display = 'block';
+        textElement.textContent = videoData.translated_text || 'Texto traduzido (simulação).';
+
+        // Traduzir PDF
+        const pdfResponse = await fetch('{% url "translation:translate_pdf" %}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pdf_url: pdfUrl, target_language: targetLanguage })
+        });
+        const pdfData = await pdfResponse.json();
+        const pdfLink = document.getElementById(`translated-pdf-${course}`);
+        pdfLink.href = pdfData.translated_pdf_url || '#';
+        pdfLink.style.display = 'block';
     });
 });
 
