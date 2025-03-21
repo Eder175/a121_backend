@@ -7,13 +7,12 @@
 
 body {
     font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+    background: #0d1b2a;
     color: #ffffff;
-    position: relative;
     overflow-x: hidden;
 }
 
-/* Partículas de Fundo */
+/* Partículas de Fundo (mantido do seu código) */
 #particles-js {
     position: fixed;
     width: 100%;
@@ -21,7 +20,25 @@ body {
     z-index: -1;
 }
 
-/* Holograma */
+/* Fundo Holográfico (novo, para complementar as partículas) */
+#holographic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(13, 27, 42, 0.8), rgba(27, 38, 59, 0.8));
+    z-index: -1;
+    animation: holographicShift 15s infinite linear;
+}
+
+@keyframes holographicShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Holograma (mantido do seu código) */
 #hologram-container {
     position: absolute;
     top: 50%;
@@ -43,8 +60,8 @@ body {
 /* Cabeçalho */
 .header {
     padding: 20px 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(15px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
     position: fixed;
     width: 100%;
     top: 0;
@@ -53,9 +70,10 @@ body {
 }
 
 .header .logo {
-    width: 72.5px;
-    height: 72.5px;
-    transition: transform 0.3s ease;
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 0 10px #00ffcc);
+    transition: transform 0.5s ease;
 }
 
 .header .logo:hover {
@@ -71,10 +89,7 @@ body {
 .nav ul {
     list-style: none;
     display: flex;
-}
-
-.nav ul li {
-    margin-left: 30px;
+    gap: 30px;
 }
 
 .nav ul li a {
@@ -88,33 +103,27 @@ body {
 
 .nav ul li a:hover {
     color: #ffffff;
-    text-shadow: 0 0 10px #00ffcc;
+    text-shadow: 0 0 15px #00ffcc;
 }
 
-.nav-icons i {
-    color: #00ffcc;
-    margin-left: 15px;
-    font-size: 20px;
-    transition: color 0.3s ease;
-}
-
-.nav-icons i:hover {
+.nav-link.active {
     color: #ffffff;
+    text-shadow: 0 0 15px #00ffcc;
+    border-bottom: 2px solid #00ffcc;
 }
 
 .language-selector, .currency-selector {
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     border: 1px solid #00ffcc;
     color: #00ffcc;
     padding: 8px;
-    border-radius: 25px;
-    margin-left: 15px;
+    border-radius: 20px;
     font-family: 'Roboto', sans-serif;
     transition: box-shadow 0.3s ease;
 }
 
 .language-selector:hover, .currency-selector:hover {
-    box-shadow: 0 0 10px #00ffcc;
+    box-shadow: 0 0 15px #00ffcc;
 }
 
 /* Seção Hero */
@@ -142,43 +151,39 @@ body {
 .hero::before {
     content: '';
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(0, 255, 204, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, transparent 70%);
     z-index: -1;
 }
 
-.hero h1 {
-    font-size: 6rem;
+.hero-title {
+    font-size: 5rem;
     font-weight: 700;
     text-transform: uppercase;
-    text-shadow: 0 0 30px #00ffcc, 0 0 60px #00ffcc;
+    text-shadow: 0 0 20px #00ffcc;
     animation: glow 2s ease-in-out infinite alternate;
+    opacity: 0;
 }
 
-.hero h2 {
-    font-size: 3rem;
-    margin: 20px 0;
-    text-shadow: 0 0 15px #00ffcc;
-    animation: fadeIn 2s ease-in-out;
-}
-
-.hero p {
+.hero-subtitle {
     font-family: 'Roboto', sans-serif;
-    font-size: 1.8rem;
-    margin-bottom: 40px;
+    font-size: 1.5rem;
+    margin: 20px 0;
     text-shadow: 0 0 10px #00ffcc;
     animation: fadeIn 2.5s ease-in-out;
+    opacity: 0;
 }
 
 .hero-buttons {
     display: flex;
     gap: 20px;
-    justify-content: center;
+    opacity: 0;
 }
 
 .btn {
-    display: inline-block;
     padding: 15px 40px;
     text-decoration: none;
     border-radius: 50px;
@@ -212,115 +217,17 @@ body {
     box-shadow: 0 0 30px #00ffcc;
 }
 
-/* Seção de Cursos */
-.courses {
-    padding: 120px 0;
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.courses h2 {
-    text-align: center;
-    font-size: 3rem;
-    text-shadow: 0 0 15px #00ffcc;
-    margin-bottom: 20px;
-}
-
-.section-subtitle {
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.2rem;
-    color: #cccccc;
-    margin-bottom: 50px;
-}
-
-.course-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-}
-
-.course-card {
-    background: rgba(255, 255, 254, 0.1);
-    border: 1px solid #00ffcc;
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.course-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 255, 204, 0.3) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.course-card:hover::before {
-    opacity: 1;
-}
-
-.course-card:hover {
-    transform: translateY(-15px);
-    box-shadow: 0 0 30px #00ffcc;
-}
-
-.course-image-wrapper {
-    overflow: hidden;
-    border-radius: 15px;
-    margin-bottom: 20px;
-}
-
-.course-image {
-    width: 100%;
-    height: auto;
-    transition: transform 0.5s ease;
-}
-
-.course-card:hover .course-image {
-    transform: scale(1.15);
-}
-
-.course-card h3 {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-    text-shadow: 0 0 5px #00ffcc;
-}
-
-.course-card p {
-    font-family: 'Roboto', sans-serif;
-    color: #cccccc;
-    margin-bottom: 15px;
-}
-
-.btn-course {
-    background: #00ffcc;
-    color: #0d1b2a;
-    padding: 12px 30px;
-    box-shadow: 0 0 15px #00ffcc;
-}
-
-.btn-course:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px #00ffcc;
-}
-
-/* Seção de Produtos (iPhones) */
+/* Seção de Produtos */
 .products {
-    padding: 120px 0;
+    padding: 100px 0;
 }
 
 .products h2 {
     text-align: center;
     font-size: 3rem;
     text-shadow: 0 0 15px #00ffcc;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
+    opacity: 0;
 }
 
 .product-grid {
@@ -330,14 +237,15 @@ body {
 }
 
 .product-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid #00ffcc;
     border-radius: 20px;
     padding: 30px;
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
     position: relative;
     overflow: hidden;
+    opacity: 0;
 }
 
 .product-card::before {
@@ -357,15 +265,15 @@ body {
 }
 
 .product-card:hover {
-    transform: translateY(-15px);
+    transform: translateY(-10px);
     box-shadow: 0 0 30px #00ffcc;
 }
 
 .product-image-wrapper {
+    position: relative;
     overflow: hidden;
     border-radius: 15px;
     margin-bottom: 20px;
-    position: relative;
 }
 
 .product-image {
@@ -375,11 +283,11 @@ body {
 }
 
 .product-card:hover .product-image {
-    transform: scale(1.15);
+    transform: scale(1.1);
 }
 
 .product-card h3 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     margin-bottom: 15px;
     text-shadow: 0 0 5px #00ffcc;
 }
@@ -402,7 +310,6 @@ body {
     box-shadow: 0 0 25px #00ffcc;
 }
 
-/* Estilo para Realidade Aumentada */
 .ar-button {
     display: inline-block;
     padding: 10px 20px;
@@ -411,7 +318,6 @@ body {
     text-decoration: none;
     border-radius: 25px;
     font-weight: 700;
-    text-transform: uppercase;
     margin-top: 10px;
     box-shadow: 0 0 15px #00ffcc;
     transition: transform 0.3s ease;
@@ -432,9 +338,122 @@ a-scene[embedded] {
     display: block;
 }
 
+/* Hologramas nos Produtos (mantido do seu código) */
+.hologram-product {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 150px;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+/* Seção de Cursos */
+.courses {
+    padding: 100px 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.courses h2 {
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 50px;
+    opacity: 0;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    color: #cccccc;
+    margin-bottom: 50px;
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.course-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 255, 204, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.course-card:hover::before {
+    opacity: 1;
+}
+
+.course-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+.course-image-wrapper {
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.course-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.course-card:hover .course-image {
+    transform: scale(1.1);
+}
+
+.course-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px #00ffcc;
+}
+
+.course-card p {
+    font-family: 'Roboto', sans-serif;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.btn-course {
+    background: #00ffcc;
+    color: #0d1b2a;
+    padding: 12px 30px;
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+.btn-course:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00ffcc;
+}
+
 /* Seção de Marketing Multinível */
 .mmn {
-    padding: 120px 0;
+    padding: 100px 0;
     background: rgba(0, 0, 0, 0.5);
 }
 
@@ -442,7 +461,8 @@ a-scene[embedded] {
     text-align: center;
     font-size: 3rem;
     text-shadow: 0 0 15px #00ffcc;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
+    opacity: 0;
 }
 
 .mmn-content {
@@ -456,6 +476,7 @@ a-scene[embedded] {
 .mmn-info {
     flex: 1;
     min-width: 300px;
+    text-align: center;
 }
 
 .mmn-info h3 {
@@ -471,10 +492,11 @@ a-scene[embedded] {
 
 .mmn-info ul li {
     font-family: 'Roboto', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-bottom: 15px;
     position: relative;
     padding-left: 25px;
+    opacity: 0;
 }
 
 .mmn-info ul li::before {
@@ -490,6 +512,7 @@ a-scene[embedded] {
     color: #0d1b2a;
     padding: 15px 40px;
     box-shadow: 0 0 20px #00ffcc;
+    opacity: 0;
 }
 
 .btn-mmn:hover {
@@ -508,7 +531,7 @@ a-scene[embedded] {
     text-shadow: 0 0 10px #00ffcc;
 }
 
-/* Depoimentos */
+/* Depoimentos (mantido do seu código) */
 .testimonials {
     margin-top: 80px;
     text-align: center;
@@ -552,7 +575,7 @@ a-scene[embedded] {
     text-shadow: 0 0 5px #00ffcc;
 }
 
-/* Seção de Cadastro */
+/* Seção de Cadastro e Login (mantido do seu código) */
 .cadastro-section, .login-section {
     padding: 120px 0;
     min-height: 100vh;
@@ -676,7 +699,7 @@ a-scene[embedded] {
     text-shadow: 0 0 15px #00ffcc;
 }
 
-/* Modal de Chat */
+/* Modal de Chat (mantido do seu código) */
 .modal {
     display: none;
     position: fixed;
@@ -784,7 +807,7 @@ a-scene[embedded] {
     transform: scale(1.02);
 }
 
-/* Botões Flutuantes */
+/* Botões Flutuantes (mantido do seu código) */
 .floating-buttons {
     position: fixed;
     bottom: 30px;
@@ -835,47 +858,7 @@ a-scene[embedded] {
     font-size: 0.9rem;
 }
 
-/* Animações */
-@keyframes glow {
-    from { text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc; }
-    to { text-shadow: 0 0 30px #00ffcc, 0 0 60px #00ffcc; }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInChat {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
-}
-
-/* Transições Suaves */
-.section-transition {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
-
-.section-transition.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.nav-link.active {
-    color: #ffffff;
-    text-shadow: 0 0 15px #00ffcc;
-    border-bottom: 2px solid #00ffcc;
-}
-
-/* Detalhes do Produto */
+/* Detalhes do Produto (mantido do seu código) */
 .product-details {
     padding: 120px 0;
     background: rgba(0, 0, 0, 0.5);
@@ -923,14 +906,36 @@ a-scene[embedded] {
     box-shadow: 0 0 30px #00ffcc;
 }
 
-/* Hologramas nos Produtos */
-.hologram-product {
-    position: absolute;
-    top: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 150px;
-    height: 150px;
-    z-index: 0;
-    opacity: 0.3;
+/* Animações (mantido do seu código e ajustado) */
+@keyframes glow {
+    from { text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc; }
+    to { text-shadow: 0 0 30px #00ffcc, 0 0 60px #00ffcc; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInChat {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* Transições Suaves (mantido do seu código) */
+.section-transition {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.section-transition.active {
+    opacity: 1;
+    transform: translateY(0);
 }

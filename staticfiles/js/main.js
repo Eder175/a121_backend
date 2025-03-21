@@ -292,3 +292,86 @@ function createProductHologram(containerClass, color) {
 
 createProductHologram('hologram-iphone15', 0x00ffcc);
 createProductHologram('hologram-iphone16', 0x00ccff);
+
+// Animações com GSAP (adicionado)
+document.addEventListener('DOMContentLoaded', () => {
+    // Animações da seção Hero
+    gsap.from('.hero-title', {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        ease: 'power3.out'
+    });
+
+    gsap.from('.hero-subtitle', {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        delay: 0.5,
+        ease: 'power3.out'
+    });
+
+    gsap.from('.hero-buttons', {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        delay: 1,
+        ease: 'power3.out'
+    });
+
+    // Animações das seções ao rolar
+    gsap.utils.toArray('.products h2, .courses h2, .mmn h2').forEach(title => {
+        gsap.from(title, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            scrollTrigger: {
+                trigger: title,
+                start: 'top 80%',
+                end: 'top 20%',
+                scrub: true
+            }
+        });
+    });
+
+    gsap.utils.toArray('.product-card, .course-card').forEach(card => {
+        gsap.from(card, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                end: 'top 20%',
+                scrub: true
+            }
+        });
+    });
+
+    gsap.utils.toArray('.mmn-info ul li').forEach((item, index) => {
+        gsap.from(item, {
+            opacity: 0,
+            x: -50,
+            duration: 1,
+            delay: index * 0.2,
+            scrollTrigger: {
+                trigger: item,
+                start: 'top 80%',
+                end: 'top 20%',
+                scrub: true
+            }
+        });
+    });
+
+    gsap.from('.btn-mmn', {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        scrollTrigger: {
+            trigger: '.btn-mmn',
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: true
+        }
+    });
+});
