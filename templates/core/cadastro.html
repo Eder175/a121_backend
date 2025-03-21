@@ -1,113 +1,65 @@
+{% extends 'core/base.html' %}
 {% load i18n static %}
-<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'pt-br' }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "A121 Evolution - Cadastro" %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Fundo com Animação de Partículas Avançada -->
-    <div id="particles-js" class="particles-background"></div>
 
-    <!-- Cabeçalho -->
-    <header class="header">
-        <div class="container">
-            <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="logo">
-            <nav class="nav">
-                <ul>
-                    <li><a href="{% url 'core:index' %}">{% trans "A Revolução" %}</a></li>
-                    <li><a href="{% url 'core:index' %}#produtos">{% trans "iPhones" %}</a></li>
-                    <li><a href="{% url 'core:cursos' %}">{% trans "Cursos" %}</a></li>
-                    <li><a href="{% url 'core:index' %}#mmn">{% trans "Negócio" %}</a></li>
-                    <li><a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></li>
-                    <li><a href="{% url 'core:login' %}">{% trans "Conecte-se" %}</a></li>
-                </ul>
-                <div class="nav-icons">
-                    <a href="#search"><i class="fas fa-search"></i></a>
-                    <a href="#cart"><i class="fas fa-shopping-cart"></i></a>
+{% block title %}
+{% trans "A121 Evolution - Cadastro" %}
+{% endblock %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Seção de Cadastro com Design Futurista -->
+<section class="cadastro-section">
+    <div class="container">
+        <div class="cadastro-container">
+            <h2 class="title-glow">{% trans "Junte-se à Revolução A121 Evolution" %}</h2>
+            <p class="subtitle">{% trans "Transforme o futuro com tecnologia e inovação!" %}</p>
+            <form method="POST" class="cadastro-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nome">{% trans "Nome Completo" %}</label>
+                    <input type="text" id="nome" name="nome" required class="input-glow">
                 </div>
-                <select id="language-selector" class="language-selector">
-                    <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
-                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
-                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
-                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
-                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
-                </select>
-                <select id="currency-selector" class="currency-selector">
-                    <option value="EUR" {% if request.session.currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
-                    <option value="USD" {% if request.session.currency == 'USD' %}selected{% endif %}>$ (USD)</option>
-                    <option value="BRL" {% if request.session.currency == 'BRL' %}selected{% endif %}>R$ (BRL)</option>
-                </select>
-            </nav>
+                <div class="form-group">
+                    <label for="email">{% trans "E-mail" %}</label>
+                    <input type="email" id="email" name="email" required class="input-glow">
+                </div>
+                <div class="form-group">
+                    <label for="senha">{% trans "Senha" %}</label>
+                    <input type="password" id="senha" name="senha" required class="input-glow">
+                </div>
+                <div class="form-group">
+                    <label for="confirmar-senha">{% trans "Confirmar Senha" %}</label>
+                    <input type="password" id="confirmar-senha" name="confirmar_senha" required class="input-glow">
+                </div>
+                <button type="submit" class="btn btn-primary btn-glow">{% trans "CADASTRAR" %}</button>
+                <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}" class="link-glow">{% trans "Faça login" %}</a></p>
+            </form>
         </div>
-    </header>
+    </div>
+</section>
+{% endblock %}
 
-    <!-- Seção de Cadastro com Design Futurista -->
-    <section class="cadastro-section">
-        <div class="container">
-            <div class="cadastro-container">
-                <h2 class="title-glow">{% trans "Junte-se à Revolução A121 Evolution" %}</h2>
-                <p class="subtitle">{% trans "Transforme o futuro com tecnologia e inovação!" %}</p>
-                <form method="POST" class="cadastro-form">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="nome">{% trans "Nome Completo" %}</label>
-                        <input type="text" id="nome" name="nome" required class="input-glow">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">{% trans "E-mail" %}</label>
-                        <input type="email" id="email" name="email" required class="input-glow">
-                    </div>
-                    <div class="form-group">
-                        <label for="senha">{% trans "Senha" %}</label>
-                        <input type="password" id="senha" name="senha" required class="input-glow">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmar-senha">{% trans "Confirmar Senha" %}</label>
-                        <input type="password" id="confirmar-senha" name="confirmar_senha" required class="input-glow">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-glow">{% trans "CADASTRAR" %}</button>
-                    <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}" class="link-glow">{% trans "Faça login" %}</a></p>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Rodapé -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <img src="{% static 'images/A121_atualizado_3.png' %}" alt="{% trans 'A121 Evolution' %}" class="footer-logo">
-                <p>© 2025 {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script>
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 200, density: { enable: true, value_area: 800 } },
-                color: { value: '#00ffcc' },
-                shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } },
-                opacity: { value: 0.7, random: true },
-                size: { value: 5, random: true },
-                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 },
-                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out' }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
-                modes: { repulse: { distance: 150, duration: 0.4 }, push: { particles_nb: 4 } }
-            },
-            retina_detect: true
-        });
-    </script>
-</body>
-</html>
+{% block extra_js %}
+<script>
+particlesJS('particles-js', {
+    particles: {
+        number: { value: 200, density: { enable: true, value_area: 800 } },
+        color: { value: '#00ffcc' },
+        shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } },
+        opacity: { value: 0.7, random: true },
+        size: { value: 5, random: true },
+        line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 },
+        move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out' }
+    },
+    interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+        modes: { repulse: { distance: 150, duration: 0.4 }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+});
+</script>
+{% endblock %}
