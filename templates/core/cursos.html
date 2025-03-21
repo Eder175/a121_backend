@@ -2,7 +2,7 @@
 {% load i18n static %}
 
 {% block title %}
-{% trans "Cursos A121 Revolution - Experiência do Futuro" %}
+{% trans "Cursos A121 Revolution - Experiência do Futuro com A121Coin" %}
 {% endblock %}
 
 {% block extra_head %}
@@ -15,7 +15,15 @@
 <!-- Seção de Cursos -->
 <section class="products" id="cursos">
     <div class="container">
-        <h2>{% trans "Cursos do Futuro - Powered by A121 Neural AI" %}</h2>
+        <h2>{% trans "Cursos do Futuro - Powered by A121 Neural AI & A121Coin" %}</h2>
+
+        <!-- Carteira Virtual A121Coin -->
+        <section class="a121coin-wallet">
+            <h3>{% trans "Sua Carteira A121Coin" %}</h3>
+            <p id="a121coin-balance">{% trans "Saldo:" %} 0 A121Coin</p>
+            <p id="a121coin-nfts">{% trans "Seus NFTs:" %} 0</p>
+            <div id="nft-gallery" class="nft-gallery"></div>
+        </section>
 
         <!-- Experiência Imersiva com IA Emocional -->
         <section class="ai-emotional-experience">
@@ -55,7 +63,7 @@
                 <button class="btn btn-ai-preview" data-course="ia">{% trans "Gerar Prévia com IA Neural" %}</button>
                 <div class="ai-preview-content" id="ai-preview-ia"></div>
                 <!-- Certificado Holográfico em Blockchain -->
-                <button class="btn btn-blockchain-cert" data-course="ia">{% trans "Visualizar Certificado Holográfico (Blockchain)" %}</button>
+                <button class="btn btn-blockchain-cert" data-course="ia">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
                 <a-scene embedded class="blockchain-cert-scene" style="display: none;">
                     <a-assets>
                         <a-asset-item id="cert-ia-hologram" src="{% static 'models/cert-ia-hologram.glb' %}"></a-asset-item>
@@ -88,7 +96,7 @@
                 <button class="btn btn-ai-preview" data-course="finance">{% trans "Gerar Prévia com IA Neural" %}</button>
                 <div class="ai-preview-content" id="ai-preview-finance"></div>
                 <!-- Certificado Holográfico em Blockchain -->
-                <button class="btn btn-blockchain-cert" data-course="finance">{% trans "Visualizar Certificado Holográfico (Blockchain)" %}</button>
+                <button class="btn btn-blockchain-cert" data-course="finance">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
                 <a-scene embedded class="blockchain-cert-scene" style="display: none;">
                     <a-assets>
                         <a-asset-item id="cert-finance-hologram" src="{% static 'models/cert-finance-hologram.glb' %}"></a-asset-item>
@@ -99,10 +107,10 @@
             </div>
         </div>
 
-        <!-- Sistema de Gamificação com Tokens Holográficos -->
+        <!-- Sistema de Gamificação com A121Coin e NFTs -->
         <section class="gamification">
-            <h3>{% trans "Ganhe Tokens Holográficos (NFTs)!" %}</h3>
-            <p id="gamification-tokens">{% trans "Você tem 0 tokens. Interaja para ganhar mais!" %}</p>
+            <h3>{% trans "Ganhe A121Coin e NFTs Únicos!" %}</h3>
+            <p id="gamification-tokens">{% trans "Você tem 0 A121Coin. Interaja para ganhar mais!" %}</p>
             <div id="holographic-reward"></div>
         </section>
     </div>
@@ -255,38 +263,70 @@ document.querySelectorAll('.btn-ai-preview').forEach(button => {
     });
 });
 
-// Sistema de Gamificação com Tokens Holográficos (NFTs)
-let userTokens = 0;
+// Sistema de Gamificação com A121Coin e NFTs
+let userA121Coin = 0;
+let userNFTs = [];
 function updateGamification() {
     const tokensElement = document.getElementById('gamification-tokens');
-    tokensElement.textContent = `{% trans "Você tem" %} ${userTokens} {% trans "tokens holográficos. Interaja para ganhar mais!" %}`;
+    const balanceElement = document.getElementById('a121coin-balance');
+    const nftsElement = document.getElementById('a121coin-nfts');
+    const nftGallery = document.getElementById('nft-gallery');
+    tokensElement.textContent = `{% trans "Você tem" %} ${userA121Coin} A121Coin. {% trans "Interaja para ganhar mais!" %}`;
+    balanceElement.textContent = `{% trans "Saldo:" %} ${userA121Coin} A121Coin`;
+    nftsElement.textContent = `{% trans "Seus NFTs:" %} ${userNFTs.length}`;
     const rewardContainer = document.getElementById('holographic-reward');
-    if (userTokens >= 5) {
+    if (userA121Coin >= 5) {
+        const nftId = `A121-NFT-${Math.random().toString(36).substr(2, 9)}`;
+        userNFTs.push(nftId);
         rewardContainer.innerHTML = `
-            <p>{% trans "Parabéns! Você ganhou um Certificado Holográfico NFT!" %}</p>
+            <p>{% trans "Parabéns! Você ganhou um NFT Holográfico Único!" %}</p>
+            <p>{% trans "ID do NFT:" %} ${nftId}</p>
             <a-scene embedded>
                 <a-assets>
-                    <a-asset-item id="reward-hologram" src="{% static 'models/reward-hologram.glb' %}"></a-asset-item>
+                    <a-asset-item id="reward-hologram-${nftId}" src="{% static 'models/reward-hologram-${nftId}.glb' %}"></a-asset-item>
                 </a-assets>
-                <a-entity gltf-model="#reward-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
+                <a-entity gltf-model="#reward-hologram-${nftId}" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
                 <a-marker-camera preset="hiro"></a-marker-camera>
             </a-scene>
+        `;
+        nftGallery.innerHTML += `
+            <div class="nft-item">
+                <p>{% trans "NFT ID:" %} ${nftId}</p>
+                <a-scene embedded>
+                    <a-assets>
+                        <a-asset-item id="reward-hologram-${nftId}" src="{% static 'models/reward-hologram-${nftId}.glb' %}"></a-asset-item>
+                    </a-assets>
+                    <a-entity gltf-model="#reward-hologram-${nftId}" scale="0.05 0.05 0.05" position="0 0 -1"></a-entity>
+                    <a-marker-camera preset="hiro"></a-marker-camera>
+                </a-scene>
+            </div>
         `;
     }
 }
 
 document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', () => {
-        userTokens += 1;
+        userA121Coin += 1;
         updateGamification();
     });
 });
 
-// Certificado Holográfico em Blockchain (Simulação)
+// Certificado Holográfico em Blockchain com A121Coin (Simulação)
 document.querySelectorAll('.btn-blockchain-cert').forEach(button => {
     button.addEventListener('click', () => {
-        const certScene = button.parentElement.querySelector('.blockchain-cert-scene');
-        certScene.style.display = 'block';
+        if (userA121Coin >= 2) {
+            userA121Coin -= 2; // Custa 2 A121Coin para emitir o certificado
+            const course = button.getAttribute('data-course');
+            const certScene = button.parentElement.querySelector('.blockchain-cert-scene');
+            const transactionHash = `0x${Math.random().toString(16).substr(2, 40)}`;
+            certScene.style.display = 'block';
+            certScene.innerHTML += `
+                <a-text value="Certificado Emitido na A121Chain\nHash: ${transactionHash}" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+            `;
+            updateGamification();
+        } else {
+            alert("{% trans 'Você precisa de pelo menos 2 A121Coin para emitir um certificado!' %}");
+        }
     });
 });
 
