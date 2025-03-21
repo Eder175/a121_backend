@@ -1,0 +1,941 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', sans-serif;
+    background: #0d1b2a;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Partículas de Fundo (mantido do seu código) */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Fundo Holográfico (novo, para complementar as partículas) */
+#holographic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(13, 27, 42, 0.8), rgba(27, 38, 59, 0.8));
+    z-index: -1;
+    animation: holographicShift 15s infinite linear;
+}
+
+@keyframes holographicShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Holograma (mantido do seu código) */
+#hologram-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Cabeçalho */
+.header {
+    padding: 20px 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+}
+
+.header .logo {
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 0 10px #00ffcc);
+    transition: transform 0.5s ease;
+}
+
+.header .logo:hover {
+    transform: rotate(360deg);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav ul li a {
+    color: #00ffcc;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav ul li a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 15px #00ffcc;
+}
+
+.nav-link.active {
+    color: #ffffff;
+    text-shadow: 0 0 15px #00ffcc;
+    border-bottom: 2px solid #00ffcc;
+}
+
+.language-selector, .currency-selector {
+    background: transparent;
+    border: 1px solid #00ffcc;
+    color: #00ffcc;
+    padding: 8px;
+    border-radius: 20px;
+    font-family: 'Roboto', sans-serif;
+    transition: box-shadow 0.3s ease;
+}
+
+.language-selector:hover, .currency-selector:hover {
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+/* Seção Hero */
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 0.5;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.hero-title {
+    font-size: 5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px #00ffcc;
+    animation: glow 2s ease-in-out infinite alternate;
+    opacity: 0;
+}
+
+.hero-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    margin: 20px 0;
+    text-shadow: 0 0 10px #00ffcc;
+    animation: fadeIn 2.5s ease-in-out;
+    opacity: 0;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+}
+
+.btn {
+    padding: 15px 40px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary {
+    background: #00ffcc;
+    color: #0d1b2a;
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+.btn-primary:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid #00ffcc;
+    color: #00ffcc;
+    box-shadow: 0 0 10px #00ffcc;
+}
+
+.btn-secondary:hover {
+    transform: scale(1.1);
+    background: #00ffcc;
+    color: #0d1b2a;
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+/* Seção de Produtos */
+.products {
+    padding: 100px 0;
+}
+
+.products h2 {
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 50px;
+    opacity: 0;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 255, 204, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+.product-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1);
+}
+
+.product-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px #00ffcc;
+}
+
+.product-card p {
+    font-family: 'Roboto', sans-serif;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.btn-product {
+    background: #00ffcc;
+    color: #0d1b2a;
+    padding: 12px 30px;
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+.btn-product:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00ffcc;
+}
+
+.ar-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #00ffcc;
+    color: #0d1b2a;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 700;
+    margin-top: 10px;
+    box-shadow: 0 0 15px #00ffcc;
+    transition: transform 0.3s ease;
+}
+
+.ar-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00ffcc;
+}
+
+a-scene {
+    width: 100%;
+    height: 200px;
+    display: none;
+}
+
+a-scene[embedded] {
+    display: block;
+}
+
+/* Hologramas nos Produtos (mantido do seu código) */
+.hologram-product {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 150px;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+/* Seção de Cursos */
+.courses {
+    padding: 100px 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.courses h2 {
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 50px;
+    opacity: 0;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    color: #cccccc;
+    margin-bottom: 50px;
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.course-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 255, 204, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.course-card:hover::before {
+    opacity: 1;
+}
+
+.course-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+.course-image-wrapper {
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.course-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.course-card:hover .course-image {
+    transform: scale(1.1);
+}
+
+.course-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px #00ffcc;
+}
+
+.course-card p {
+    font-family: 'Roboto', sans-serif;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.btn-course {
+    background: #00ffcc;
+    color: #0d1b2a;
+    padding: 12px 30px;
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+.btn-course:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00ffcc;
+}
+
+/* Seção de Marketing Multinível */
+.mmn {
+    padding: 100px 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.mmn h2 {
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 50px;
+    opacity: 0;
+}
+
+.mmn-content {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.mmn-info {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+}
+
+.mmn-info h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+.mmn-info ul {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.mmn-info ul li {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 25px;
+    opacity: 0;
+}
+
+.mmn-info ul li::before {
+    content: '✔';
+    position: absolute;
+    left: 0;
+    color: #00ffcc;
+    font-size: 1.2rem;
+}
+
+.btn-mmn {
+    background: #00ffcc;
+    color: #0d1b2a;
+    padding: 15px 40px;
+    box-shadow: 0 0 20px #00ffcc;
+    opacity: 0;
+}
+
+.btn-mmn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+.mmn-testimonials {
+    flex: 1;
+    min-width: 300px;
+}
+
+.mmn-testimonials h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+/* Depoimentos (mantido do seu código) */
+.testimonials {
+    margin-top: 80px;
+    text-align: center;
+}
+
+.testimonials h3 {
+    font-size: 2rem;
+    text-shadow: 0 0 10px #00ffcc;
+    margin-bottom: 40px;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.testimonial-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #00ffcc;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+.testimonial-card p {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.testimonial-card h4 {
+    font-size: 1.2rem;
+    text-shadow: 0 0 5px #00ffcc;
+}
+
+/* Seção de Cadastro e Login (mantido do seu código) */
+.cadastro-section, .login-section {
+    padding: 120px 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(10, 15, 27, 0.9), rgba(26, 42, 59, 0.9));
+    position: relative;
+    overflow: hidden;
+}
+
+.cadastro-section::before, .login-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(0, 255, 204, 0.2) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.cadastro-container, .login-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+    animation: float 4s ease-in-out infinite;
+}
+
+.title-glow {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc;
+    margin-bottom: 20px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.3rem;
+    color: #cccccc;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+.cadastro-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cadastro-form p {
+    font-family: 'Roboto', sans-serif;
+    color: #cccccc;
+}
+
+.cadastro-form p label {
+    display: block;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc;
+}
+
+.cadastro-form p input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #00ffcc;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.cadastro-form p input:focus {
+    outline: none;
+    box-shadow: 0 0 25px #00ffcc;
+    transform: scale(1.02);
+}
+
+.btn-glow {
+    padding: 15px 40px;
+    background: #00ffcc;
+    color: #0d1b2a;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 20px #00ffcc;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-glow:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px #00ffcc;
+}
+
+.form-footer {
+    margin-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+}
+
+.link-glow {
+    color: #00ffcc;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.link-glow:hover {
+    color: #ffffff;
+    text-shadow: 0 0 15px #00ffcc;
+}
+
+/* Modal de Chat (mantido do seu código) */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, rgba(10, 15, 27, 0.9), rgba(26, 42, 59, 0.9));
+    margin: 10% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 20px;
+    position: relative;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 40px rgba(0, 255, 204, 0.5);
+    animation: float 4s ease-in-out infinite;
+}
+
+.modal-content h2 {
+    font-size: 2rem;
+    text-align: center;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 20px;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #00ffcc;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.close:hover {
+    color: #ffffff;
+    transform: rotate(90deg);
+}
+
+.chat-box {
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #00ffcc;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 15px rgba(0, 255, 204, 0.3);
+}
+
+.chat-box p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    animation: fadeInChat 0.5s ease-in-out;
+}
+
+.chat-box p.user-message {
+    background: rgba(0, 255, 204, 0.2);
+    color: #00ffcc;
+    align-self: flex-end;
+    margin-left: 20%;
+    text-align: right;
+}
+
+.chat-box p.ia-message {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    align-self: flex-start;
+    margin-right: 20%;
+    text-align: left;
+}
+
+.chat-input-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.input-glow {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid #00ffcc;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.input-glow:focus {
+    outline: none;
+    box-shadow: 0 0 25px #00ffcc;
+    transform: scale(1.02);
+}
+
+/* Botões Flutuantes (mantido do seu código) */
+.floating-buttons {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chat-button, .whatsapp-button {
+    padding: 15px 30px;
+    background: #00ffcc;
+    color: #0d1b2a;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px #00ffcc;
+    transition: transform 0.3s ease;
+}
+
+.chat-button:hover, .whatsapp-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #00ffcc;
+}
+
+/* Rodapé */
+.footer {
+    padding: 40px 0;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    box-shadow: 0 -5px 20px rgba(0, 255, 204, 0.3);
+}
+
+.footer-logo {
+    width: 72.5px;
+    height: 72.5px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.footer-logo:hover {
+    transform: rotate(360deg);
+}
+
+.footer p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+}
+
+/* Detalhes do Produto (mantido do seu código) */
+.product-details {
+    padding: 120px 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.product-detail-content {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.product-detail-image {
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.product-detail-image:hover {
+    transform: scale(1.05);
+}
+
+.product-detail-info {
+    max-width: 500px;
+}
+
+.product-detail-info p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    color: #cccccc;
+    margin-bottom: 20px;
+}
+
+.product-detail-info .btn-product {
+    background: #00ffcc;
+    color: #0d1b2a;
+    padding: 15px 40px;
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+.product-detail-info .btn-product:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+/* Animações (mantido do seu código e ajustado) */
+@keyframes glow {
+    from { text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc; }
+    to { text-shadow: 0 0 30px #00ffcc, 0 0 60px #00ffcc; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInChat {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* Transições Suaves (mantido do seu código) */
+.section-transition {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.section-transition.active {
+    opacity: 1;
+    transform: translateY(0);
+}
