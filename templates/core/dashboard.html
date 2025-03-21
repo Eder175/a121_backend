@@ -1,45 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A121 - Dashboard</title>
-    {% load static %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <img src="{% static 'images/A121 atualizada 3.png' %}" alt="A121 Logo" class="header-logo">
-                <span class="logo-text">A121</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/cursos/"><i class="fas fa-book"></i> Cursos</a></li>
-                <li><a href="/dashboard/"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="/escritorio/"><i class="fas fa-briefcase"></i> Escritório</a></li>
-                <li><a href="/ganhar-pontos/"><i class="fas fa-star"></i> Ganhar Pontos</a></li>
-                <li><a href="/cadastro/"><i class="fas fa-user-plus"></i> Cadastro</a></li>
-                <li><a href="/login/"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            </ul>
-            <div class="nav-icons">
-                <a href="/carrinho/" class="nav-icon"><i class="fas fa-shopping-cart"></i></a>
-                <a href="/perfil/" class="nav-icon"><i class="fas fa-user"></i></a>
-            </div>
-        </nav>
-    </header>
-    <section class="vendor-dashboard">
-        <div class="container">
-            <h2>Dashboard de Vendedores</h2>
-            <div class="dashboard-content">
-                <p>Vendas por País:</p>
-                <p>Vendas Globais: <span>17999,80</span></p>
-                <button class="cta-button">Atualizar Vendas</button>
-            </div>
+{% extends 'core/base.html' %}
+{% load static i18n %}
+
+{% block title %}
+{% trans "A121 - Dashboard" %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<section class="vendor-dashboard">
+    <div class="container">
+        <h2>{% trans "Dashboard de Vendedores" %}</h2>
+        <div class="dashboard-content">
+            <p>{% trans "Vendas por País:" %}</p>
+            <p>{% trans "Vendas Globais:" %} <span>17999,80</span></p>
+            <button class="cta-button">{% trans "Atualizar Vendas" %}</button>
         </div>
-    </section>
-</body>
-</html>
+    </div>
+</section>
+{% endblock %}
