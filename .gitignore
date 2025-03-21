@@ -12,5 +12,19 @@ db.sqlite3
 .env
 *.log
 *.sqlite3
-media/  # Para arquivos de upload (ex.: documentos dos parceiros)
+
+# Ignorar a pasta de uploads
+media/
+
+# Ignorar arquivos do sistema
 desktop.ini
+
+# Ignorar o executável do Ngrok
+ngrok.exe
+
+# Ignorar arquivos do Blender
+*.blend
+
+# Ignorar backups ou arquivos temporários
+*.bak
+*.tmp
