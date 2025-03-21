@@ -19,12 +19,64 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     
+    <!-- Three.js para hologramas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    
+    <!-- A-Frame e AR.js para Realidade Aumentada e VR -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-ar@0.9.0/dist/aframe-ar.min.js"></script>
+    
+    <!-- TensorFlow.js para IA -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    
     {% block extra_head %}
     {% endblock %}
+
+    <style>
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .chatbot-hologram {
+            width: 300px;
+            height: 400px;
+        }
+        .chatbot-messages {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffcc;
+            padding: 10px;
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .chatbot-input {
+            width: 100%;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffcc;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .chatbot-vr-scene {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+        }
+    </style>
 </head>
 <body>
     <!-- Partículas de Fundo Avançadas -->
     <div id="particles-js" class="particles-background"></div>
+
+    <!-- Holograma (usando Three.js) -->
+    <div id="hologram-container"></div>
 
     <!-- Cabeçalho -->
     <header class="header">
@@ -96,6 +148,42 @@
         </div>
     </div>
 
+    <!-- Chatbot Revolucionário -->
+    <div class="chatbot-container">
+        <div class="chatbot-hologram">
+            <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="chatbot-ar-scene">
+                <a-assets>
+                    <a-asset-item id="chatbot-hologram" src="{% static 'models/chatbot-hologram.glb' %}"></a-asset-item>
+                </a-assets>
+                <a-entity id="chatbot-hologram-entity" gltf-model="#chatbot-hologram" scale="0.1 0.1 0.1" position="0 0 -1">
+                    <a-text id="chatbot-text" value="Olá! Sou o A121Bot. Fale comigo!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                </a-entity>
+                <a-marker-camera preset="hiro"></a-marker-camera>
+            </a-scene>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+            <p>{% trans "A121Bot: Olá! Como posso te ajudar hoje?" %}</p>
+        </div>
+        <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
+        <button id="chatbot-voice">{% trans "Falar" %}</button>
+        <button id="chatbot-vr">{% trans "Interagir em VR" %}</button>
+    </div>
+
+    <!-- Chatbot em VR -->
+    <a-scene embedded vr-mode-ui="enabled: true" class="chatbot-vr-scene" id="chatbot-vr-scene">
+        <a-assets>
+            <a-asset-item id="vr-chatbot-hologram" src="{% static 'models/vr-chatbot-hologram.glb' %}"></a-asset-item>
+            <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
+        </a-assets>
+        <a-sky src="#cosmic-skybox"></a-sky>
+        <a-entity gltf-model="#vr-chatbot-hologram" scale="0.1 0.1 0.1" position="0 1.6 -1">
+            <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+        </a-entity>
+        <a-entity camera look-controls position="0 1.6 0">
+            <a-entity cursor="fuse: true; fuseTimeout: 500" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" material="color: #00ffcc; shader: flat"></a-entity>
+        </a-entity>
+    </a-scene>
+
     <!-- Botões Flutuantes -->
     <div class="floating-buttons">
         <a href="#modal" class="chat-button">{% trans "Bate-papo com IA" %}</a>
@@ -136,36 +224,97 @@
             retina_detect: true
         });
 
-        // Modal de Chat
-        const modal = document.getElementById('modal');
-        const chatButton = document.querySelector('.chat-button');
-        const closeModal = document.querySelector('.close');
-        const sendMessage = document.getElementById('sendMessage');
-        const userInput = document.getElementById('userInput');
-        const chatBox = document.getElementById('chatBox');
+        // Chatbot Revolucionário
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotText = document.getElementById('chatbot-text');
+        const vrChatbotText = document.getElementById('vr-chatbot-text');
+        let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
+        let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
+        let userEngagement = 0;
 
-        chatButton.addEventListener('click', () => {
-            modal.style.display = 'flex';
+        // Reconhecimento de Voz
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+        recognition.continuous = false;
+
+        document.getElementById('chatbot-voice').addEventListener('click', () => {
+            recognition.start();
         });
 
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
+        recognition.onresult = (event) => {
+            const message = event.results[0][0].transcript.toLowerCase();
+            chatbotInput.value = message;
+            processMessage(message);
+        };
 
-        sendMessage.addEventListener('click', () => {
-            const message = userInput.value.trim();
-            if (message) {
-                chatBox.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
-                chatBox.innerHTML += `<p>{% trans "A121Bot:" %} {% trans "Entendido! Como posso te ajudar mais?" %}</p>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-                userInput.value = '';
+        // Processar Mensagens
+        function processMessage(message) {
+            userEngagement += 1;
+            userA121Coin += 1;
+            localStorage.setItem('userA121Coin', userA121Coin);
+
+            // Adicionar mensagem do usuário
+            chatbotMessages.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+            // Respostas do Chatbot
+            let response = '';
+            if (message.includes('curso') || message.includes('cursos')) {
+                response = '{% trans "Recomendo o curso de Introdução à IA! Quer saber mais? Ou prefere o curso de Finanças Pessoais?" %}';
+            } else if (message.includes('a121coin') || message.includes('saldo')) {
+                response = `{% trans "Seu saldo é" %} ${userA121Coin} A121Coin. {% trans "Continue interagindo para ganhar mais!" %}`;
+            } else if (message.includes('nft')) {
+                if (userA121Coin >= 5) {
+                    const nftId = `A121-NFT-${Math.random().toString(36).substr(2, 9)}`;
+                    userNFTs.push(nftId);
+                    localStorage.setItem('userNFTs', JSON.stringify(userNFTs));
+                    response = `{% trans "Parabéns! Você ganhou um NFT Holográfico Único! ID:" %} ${nftId}`;
+                } else {
+                    response = `{% trans "Você precisa de pelo menos 5 A121Coin para ganhar um NFT. Continue interagindo!" %}`;
+                }
+            } else {
+                response = '{% trans "Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs?" %}';
+            }
+
+            // IA Emocional
+            if (userEngagement > 5) {
+                response += ' {% trans "Você está muito engajado! Que tal uma experiência em VR?" %}';
+            } else if (userEngagement > 2) {
+                response += ' {% trans "Você parece interessado! Vamos explorar mais?" %}';
+            }
+
+            // Registrar na Blockchain (Simulação)
+            const transactionHash = `0x${Math.random().toString(16).substr(2, 40)}`;
+            response += ` {% trans "Interação registrada na A121Chain. Hash:" %} ${transactionHash}`;
+
+            // Atualizar Holograma
+            chatbotText.setAttribute('value', response);
+            vrChatbotText.setAttribute('value', response);
+
+            // Adicionar resposta do Chatbot
+            chatbotMessages.innerHTML += `<p>{% trans "A121Bot:" %} ${response}</p>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        // Enviar Mensagem ao Pressionar Enter
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+                processMessage(chatbotInput.value.trim());
+                chatbotInput.value = '';
             }
         });
 
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage.click();
-            }
+        // Modo VR
+        document.getElementById('chatbot-vr').addEventListener('click', () => {
+            const vrScene = document.getElementById('chatbot-vr-scene');
+            vrScene.style.display = 'block';
+            vrScene.enterVR();
+        });
+
+        // Inicializar Chatbot
+        document.addEventListener('DOMContentLoaded', () => {
+            chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
         });
     </script>
     
