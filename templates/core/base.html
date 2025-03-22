@@ -565,14 +565,14 @@
         }
 
         // Processar Mensagens
-        async function processMessage(message) {
+        async function processMessage(message, targetElement = chatbotMessages) {
             userEngagement += 1;
             userA121Coin += 1;
             localStorage.setItem('userA121Coin', userA121Coin);
 
             // Adicionar mensagem do usuário
-            chatbotMessages.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            targetElement.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
+            targetElement.scrollTop = targetElement.scrollHeight;
 
             // Detectar idioma da mensagem
             detectedLanguage = detectLanguage(message);
@@ -599,8 +599,8 @@
                         response = `{% trans "A121Bot: Quase! A frase correta é:" %} ${expectedPhrase}. {% trans "Tente novamente!" %}`;
                     }
                 }
-                chatbotMessages.innerHTML += `<p>${response}</p>`;
-                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                targetElement.innerHTML += `<p>${response}</p>`;
+                targetElement.scrollTop = targetElement.scrollHeight;
                 chatbotText.setAttribute('value', response);
 
                 const vrChatbotText = document.getElementById('vr-chatbot-text');
@@ -680,11 +680,11 @@
             }
 
             // Adicionar resposta do Chatbot
-            chatbotMessages.innerHTML += `<p>{% trans "A121Bot:" %} ${response}</p>`;
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            targetElement.innerHTML += `<p>{% trans "A121Bot:" %} ${response}</p>`;
+            targetElement.scrollTop = targetElement.scrollHeight;
         }
 
-        // Enviar Mensagem ao Pressionar Enter
+        // Enviar Mensagem ao Pressionar Enter no Chatbot
         chatbotInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
                 processMessage(chatbotInput.value.trim());
@@ -726,13 +726,11 @@
                 }
             });
 
-            // Enviar mensagem no modal
+            // Enviar mensagem no modal usando a mesma função processMessage
             sendMessageButton.addEventListener('click', () => {
                 const message = userInput.value.trim();
                 if (message) {
-                    chatBox.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                    processMessage(message);
+                    processMessage(message, chatBox);
                     userInput.value = '';
                 }
             });
@@ -745,6 +743,7 @@
 
             // Mensagem inicial do chatbot
             chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
+            chatBox.innerHTML += `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
         });
     </script>
     
