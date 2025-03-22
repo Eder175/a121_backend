@@ -86,7 +86,7 @@
             background: #00ccff;
         }
         .chatbot-vr-scene {
-            display: none !important; /* Garantir que a cena VR esteja oculta por padrão */
+            display: none !important;
             position: fixed;
             top: 0;
             left: 0;
@@ -95,7 +95,7 @@
             z-index: 2000;
         }
         .chatbot-vr-scene.active {
-            display: block !important; /* Exibir apenas quando ativada */
+            display: block !important;
         }
     </style>
 </head>
@@ -197,20 +197,8 @@
         <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
     </div>
 
-    <!-- Chatbot em VR -->
-    <a-scene embedded vr-mode-ui="enabled: false" class="chatbot-vr-scene" id="chatbot-vr-scene">
-        <a-assets>
-            <a-asset-item id="vr-chatbot-hologram" src="{% static 'models/vr-chatbot-hologram.glb' %}"></a-asset-item>
-            <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
-        </a-assets>
-        <a-sky src="#cosmic-skybox"></a-sky>
-        <a-entity gltf-model="#vr-chatbot-hologram" scale="0.1 0.1 0.1" position="0 1.6 -1">
-            <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-        </a-entity>
-        <a-entity camera look-controls position="0 1.6 0">
-            <a-entity cursor="fuse: true; fuseTimeout: 500" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" material="color: #00ffcc; shader: flat"></a-entity>
-        </a-entity>
-    </a-scene>
+    <!-- Container para o Chatbot em VR (será criado dinamicamente) -->
+    <div id="vr-scene-container"></div>
 
     <!-- Botões Flutuantes -->
     <div class="floating-buttons">
@@ -256,7 +244,6 @@
         const chatbotMessages = document.getElementById('chatbot-messages');
         const chatbotInput = document.getElementById('chatbot-input');
         const chatbotText = document.getElementById('chatbot-text');
-        const vrChatbotText = document.getElementById('vr-chatbot-text');
         let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
         let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
         let userEngagement = 0;
@@ -276,7 +263,7 @@
             processMessage(message);
         };
 
-        // Processar Mensagens
+        // Processar Mensagens (Fallback caso o Dialogflow falhe)
         function processMessage(message) {
             userEngagement += 1;
             userA121Coin += 1;
@@ -286,13 +273,15 @@
             chatbotMessages.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 
-            // Respostas do Chatbot
+            // Respostas do Chatbot (Fallback)
             let response = '';
-            if (message.includes('curso') || message.includes('cursos')) {
+            if (message.toLowerCase().includes('ola') || message.toLowerCase().includes('olá')) {
+                response = '{% trans "Olá! Bem-vindo à A121 Evolution! Como posso te ajudar hoje? Que tal explorar nossos cursos ou ganhar A121Coin?" %}';
+            } else if (message.toLowerCase().includes('curso') || message.toLowerCase().includes('cursos')) {
                 response = '{% trans "Recomendo o curso de Introdução à IA! Quer saber mais? Ou prefere o curso de Finanças Pessoais?" %}';
-            } else if (message.includes('a121coin') || message.includes('saldo')) {
+            } else if (message.toLowerCase().includes('a121coin') || message.toLowerCase().includes('saldo')) {
                 response = `{% trans "Seu saldo é" %} ${userA121Coin} A121Coin. {% trans "Continue interagindo para ganhar mais!" %}`;
-            } else if (message.includes('nft')) {
+            } else if (message.toLowerCase().includes('nft')) {
                 if (userA121Coin >= 5) {
                     const nftId = `A121-NFT-${Math.random().toString(36).substr(2, 9)}`;
                     userNFTs.push(nftId);
@@ -302,7 +291,7 @@
                     response = `{% trans "Você precisa de pelo menos 5 A121Coin para ganhar um NFT. Continue interagindo!" %}`;
                 }
             } else {
-                response = '{% trans "Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs?" %}';
+                response = '{% trans "Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs? Ou talvez queira explorar o modo VR?" %}';
             }
 
             // IA Emocional
@@ -318,7 +307,6 @@
 
             // Atualizar Holograma
             chatbotText.setAttribute('value', response);
-            vrChatbotText.setAttribute('value', response);
 
             // Adicionar resposta do Chatbot
             chatbotMessages.innerHTML += `<p>{% trans "A121Bot:" %} ${response}</p>`;
@@ -333,19 +321,48 @@
             }
         });
 
-        // Modo VR
+        // Modo VR (Criar dinamicamente ao clicar)
         document.getElementById('chatbot-vr').addEventListener('click', () => {
             console.log('Botão VR clicado');
-            const vrScene = document.getElementById('chatbot-vr-scene');
+            
+            // Remover qualquer cena VR existente
+            const vrSceneContainer = document.getElementById('vr-scene-container');
+            vrSceneContainer.innerHTML = '';
+
+            // Criar a cena VR dinamicamente
+            const vrScene = document.createElement('a-scene');
+            vrScene.setAttribute('embedded', '');
+            vrScene.setAttribute('vr-mode-ui', 'enabled: false');
+            vrScene.setAttribute('class', 'chatbot-vr-scene');
+            vrScene.setAttribute('id', 'chatbot-vr-scene');
+
+            vrScene.innerHTML = `
+                <a-assets>
+                    <a-asset-item id="vr-chatbot-hologram" src="{% static 'models/vr-chatbot-hologram.glb' %}"></a-asset-item>
+                    <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
+                </a-assets>
+                <a-sky src="#cosmic-skybox"></a-sky>
+                <a-entity gltf-model="#vr-chatbot-hologram" scale="0.1 0.1 0.1" position="0 1.6 -1">
+                    <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                </a-entity>
+                <a-entity camera look-controls position="0 1.6 0">
+                    <a-entity cursor="fuse: true; fuseTimeout: 500" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" material="color: #00ffcc; shader: flat"></a-entity>
+                </a-entity>
+            `;
+
+            // Adicionar a cena ao DOM
+            vrSceneContainer.appendChild(vrScene);
+
+            // Ativar o modo VR
             vrScene.classList.add('active');
-            vrScene.setAttribute('vr-mode-ui', 'enabled: true'); // Ativar o modo VR apenas quando clicado
+            vrScene.setAttribute('vr-mode-ui', 'enabled: true');
             vrScene.enterVR();
         });
 
         // Inicializar Chatbot e Verificar Estado Inicial
         document.addEventListener('DOMContentLoaded', () => {
-            const vrScene = document.getElementById('chatbot-vr-scene');
-            console.log('Estado inicial do VR Scene:', vrScene.style.display);
+            const vrSceneContainer = document.getElementById('vr-scene-container');
+            console.log('Estado inicial do VR Scene Container:', vrSceneContainer.innerHTML);
             chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
         });
     </script>
