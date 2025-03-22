@@ -140,3 +140,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Configuração do Google Cloud Dialogflow (se necessário)
 GOOGLE_CLOUD_PROJECT = 'seu-projeto-id'  # Substitua pelo ID do seu projeto no Google Cloud
 GOOGLE_APPLICATION_CREDENTIALS = os.path.join(BASE_DIR, 'credentials.json')  # Caminho para o arquivo de credenciais
+
+# Configurações de autenticação
+LOGIN_URL = 'core:login'  # URL para redirecionar usuários não autenticados
+LOGIN_REDIRECT_URL = 'core:dashboard'  # URL para redirecionar após login
+LOGOUT_REDIRECT_URL = 'core:index'  # URL para redirecionar após logout
+
+# Configurações de sessão
+SESSION_COOKIE_SECURE = False  # Defina como True em produção com HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600  # 2 semanas em segundos
+
+# Configuração de email (opcional, para recuperação de senha)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Para desenvolvimento
+# Para produção, use um serviço como SendGrid ou SMTP:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'seu-email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'sua-senha'
