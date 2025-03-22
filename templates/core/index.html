@@ -1,182 +1,152 @@
 {% extends 'core/base.html' %}
-{% load i18n static %}
+{% load static i18n %}
+
+{% block title %}{% trans "A121 Evolution - A Revolução do Futuro" %}{% endblock %}
+
+{% block extra_head %}
+    <style>
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            overflow: hidden;
+        }
+        .hero-section video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.5);
+        }
+        .hero-content {
+            z-index: 1;
+        }
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+        }
+        .hero-content p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        .hero-content .btn-glow {
+            padding: 15px 30px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .hero-content .btn-glow:hover {
+            background: #00ccff;
+            box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
+        }
+        .products-section, .mmn-section {
+            padding: 50px 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+        }
+        .products-section h2, .mmn-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #00ffcc;
+        }
+        .products-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffcc;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .product-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .product-card p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
-    <!-- Seção Hero com Mensagens Impactantes -->
-    <section class="hero" id="hero">
-        <video autoplay muted loop class="hero-video">
+    <!-- Seção Hero -->
+    <section class="hero-section">
+        <video autoplay muted loop>
             <source src="{% static 'videos/futuristic_background.mp4' %}" type="video/mp4">
-            Seu navegador não suporta vídeos.
+            {% trans "Seu navegador não suporta o elemento de vídeo." %}
         </video>
-        <div class="container">
-            <h1>{% trans "A121 Evolution" %}</h1>
-            <h2>{% trans "Faça Parte da Revolução Global do Futuro" %}</h2>
-            <p>{% trans "Transforme sua vida com tecnologia, inovação e oportunidades ilimitadas. O futuro começa com você!" %}</p>
-            <div class="hero-buttons">
-                <a href="{% url 'core:cursos' %}" class="btn btn-primary">{% trans "Explore Nossos Cursos" %}</a>
-                <a href="{% url 'core:index' %}#mmn" class="btn btn-secondary">{% trans "Descubra Nosso Negócio" %}</a>
-            </div>
+        <div class="hero-content">
+            <h1>{% trans "Bem-vindo à A121 Evolution" %}</h1>
+            <p>{% trans "A Revolução do Futuro Começa Aqui. Transforme Sua Vida com Tecnologia e Oportunidades Únicas!" %}</p>
+            <button class="btn-glow" onclick="window.location.href='{% url 'core:cursos' %}'">{% trans "Explore Nossos Cursos" %}</button>
         </div>
     </section>
 
-    <!-- Seção de Cursos -->
-    <section class="courses" id="cursos">
+    <!-- Seção de Produtos -->
+    <section id="produtos" class="products-section">
         <div class="container">
-            <h2>{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
-            <p class="section-subtitle">{% trans "Domine finanças, IA e leilões para transformar sua vida e seus negócios." %}</p>
-            <div class="course-grid">
-                <div class="course-card">
-                    <div class="course-image-wrapper">
-                        <img src="{% static 'images/A121.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image">
-                    </div>
-                    <h3>{% trans "Introdução à IA para Criadores" %}</h3>
-                    <p>{% trans "Aprenda como usar inteligência artificial para criar conteúdo inovador e automatizar processos." %}</p>
-                    <p>{% trans "Preço" %}: <span class="course-price" data-price="249.90">249.90 €</span></p>
-                    <p>{% trans "Duração" %}: 12 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
+            <h2>{% trans "Nossos Produtos" %}</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <h3>iPhone 15 Holográfico</h3>
+                    <p>{% trans "Experimente o futuro com o iPhone 15 Holográfico. Tecnologia de ponta com projeções em AR!" %}</p>
                 </div>
-                <div class="course-card">
-                    <div class="course-image-wrapper">
-                        <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image">
-                    </div>
-                    <h3>{% trans "Finanças para Criadores de Conteúdo" %}</h3>
-                    <p>{% trans "Domine suas finanças pessoais e aprenda a lucrar mais com seus conteúdos." %}</p>
-                    <p>{% trans "Preço" %}: <span class="course-price" data-price="199.90">199.90 €</span></p>
-                    <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
+                <div class="product-card">
+                    <h3>Certificados em Blockchain</h3>
+                    <p>{% trans "Ganhe certificados holográficos registrados na A121Chain ao completar nossos cursos!" %}</p>
                 </div>
-                <div class="course-card">
-                    <div class="course-image-wrapper">
-                        <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'Leilões Lucrativos' %}" class="course-image">
-                    </div>
-                    <h3>{% trans "Leilões Lucrativos" %}</h3>
-                    <p>{% trans "Descubra como ganhar dinheiro com leilões online e físicos, passo a passo." %}</p>
-                    <p>{% trans "Preço" %}: <span class="course-price" data-price="299.90">299.90 €</span></p>
-                    <p>{% trans "Duração" %}: 15 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
-                </div>
-            </div>
-            <!-- Depoimentos -->
-            <div class="testimonials">
-                <h3>{% trans "O que Nossos Alunos Dizem" %}</h3>
-                <div class="testimonial-grid">
-                    <div class="testimonial-card">
-                        <p>{% trans "“O curso de IA mudou minha forma de criar conteúdo. Hoje, automatizo tudo e ganho mais!”" %}</p>
-                        <h4>{% trans "João Silva, Criador de Conteúdo" %}</h4>
-                    </div>
-                    <div class="testimonial-card">
-                        <p>{% trans "“Aprendi a investir com o curso de finanças. Minha renda triplicou em 6 meses!”" %}</p>
-                        <h4>{% trans "Maria Oliveira, Empreendedora" %}</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção de Produtos (iPhones) com Realidade Aumentada -->
-    <section class="products" id="produtos">
-        <div class="container">
-            <h2>{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
-            <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro. Visualize em Realidade Aumentada!" %}</p>
-            <div class="product-grid">
-                <div class="product-card" data-product="iphone15">
-                    <div class="hologram-product hologram-iphone15"></div>
-                    <div class="product-image-wrapper">
-                        <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image">
-                        <!-- Realidade Aumentada -->
-                        <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
-                        <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-                            <a-assets>
-                                <a-asset-item id="iphone15-model" src="{% static 'models/iphone15.glb' %}"></a-asset-item>
-                            </a-assets>
-                            <a-entity gltf-model="#iphone15-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
-                            <a-marker-camera preset="hiro"></a-marker-camera>
-                        </a-scene>
-                    </div>
-                    <h3>{% trans "iPhone 15 Pro Max (512GB)" %}</h3>
-                    <p>{% trans "O mais avançado iPhone com câmera revolucionária e desempenho incomparável." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="1399.00">1399.00 €</span></p>
-                    <a href="#" class="btn btn-product view-product" data-product="iphone15">{% trans "Comprar Agora" %}</a>
-                </div>
-                <div class="product-card" data-product="iphone16">
-                    <div class="hologram-product hologram-iphone16"></div>
-                    <div class="product-image-wrapper">
-                        <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image">
-                        <!-- Realidade Aumentada -->
-                        <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
-                        <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-                            <a-assets>
-                                <a-asset-item id="iphone16-model" src="{% static 'models/iphone16.glb' %}"></a-asset-item>
-                            </a-assets>
-                            <a-entity gltf-model="#iphone16-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
-                            <a-marker-camera preset="hiro"></a-marker-camera>
-                        </a-scene>
-                    </div>
-                    <h3>{% trans "iPhone 16 Pro Max Titânio Deserto" %}</h3>
-                    <p>{% trans "Design futurista com tecnologia de ponta para o futuro." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="1499.00">1499.00 €</span></p>
-                    <a href="#" class="btn btn-product view-product" data-product="iphone16">{% trans "Comprar Agora" %}</a>
+                <div class="product-card">
+                    <h3>NFTs Exclusivos</h3>
+                    <p>{% trans "Colecione NFTs únicos ao interagir com a plataforma e ganhe recompensas incríveis!" %}</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Seção de Marketing Multinível -->
-    <section class="mmn" id="mmn">
+    <section id="mmn" class="mmn-section">
         <div class="container">
-            <h2>{% trans "Marketing Multinível A121 Evolution" %}</h2>
-            <p class="section-subtitle">{% trans "Transforme sua vida financeira com nosso plano de MMN revolucionário!" %}</p>
-            <div class="mmn-content">
-                <div class="mmn-info">
-                    <h3>{% trans "Por que Escolher Nosso MMN?" %}</h3>
-                    <ul>
-                        <li>{% trans "Comissões de até 50% por indicação direta." %}</li>
-                        <li>{% trans "Bônus por equipes de até 7 níveis." %}</li>
-                        <li>{% trans "Treinamento exclusivo para líderes." %}</li>
-                        <li>{% trans "Pagamentos semanais e transparentes." %}</li>
-                    </ul>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-mmn">{% trans "Junte-se Agora" %}</a>
-                </div>
-                <div class="mmn-testimonials">
-                    <h3>{% trans "Histórias de Sucesso" %}</h3>
-                    <div class="testimonial-card">
-                        <p>{% trans "“Em 3 meses, ganhei €10.000 com o MMN da A121. Minha vida mudou!”" %}</p>
-                        <h4>{% trans "Carlos Mendes, Líder de Equipe" %}</h4>
-                    </div>
-                    <div class="testimonial-card">
-                        <p>{% trans "“O treinamento da A121 me transformou em um líder. Hoje, minha equipe fatura milhões!”" %}</p>
-                        <h4>{% trans "Ana Costa, Empreendedora" %}</h4>
-                    </div>
-                </div>
-            </div>
+            <h2>{% trans "Junte-se ao Nosso Negócio" %}</h2>
+            <p>{% trans "Participe do nosso programa de marketing multinível e construa sua renda passiva com a A121 Evolution!" %}</p>
+            <button class="btn-glow" onclick="window.location.href='{% url 'core:cadastro' %}'">{% trans "Saiba Mais" %}</button>
         </div>
     </section>
+{% endblock %}
 
-    <!-- Seção de Cadastro Avançado -->
-    <section class="cadastro-section" id="cadastro">
-        <div class="cadastro-container">
-            <h2 class="title-glow">{% trans "Junte-se à Revolução A121" %}</h2>
-            <p class="subtitle">{% trans "Registre-se agora e desbloqueie um mundo de oportunidades!" %}</p>
-            <form class="cadastro-form" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn-glow">{% trans "Registrar-se" %}</button>
-            </form>
-            <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}" class="link-glow">{% trans "Faça Login" %}</a></p>
-        </div>
-    </section>
-
-    <!-- Seção de Login -->
-    <section class="login-section" id="login">
-        <div class="login-container">
-            <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
-            <p class="subtitle">{% trans "Faça login para acessar suas oportunidades!" %}</p>
-            <form class="cadastro-form" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn-glow">{% trans "Entrar" %}</button>
-            </form>
-            <p class="form-footer">{% trans "Não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Registre-se" %}</a></p>
-        </div>
-    </section>
+{% block extra_js %}
+    <script>
+        // Garantir que o modal de chat não abra automaticamente
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none'; // Esconde o modal ao carregar a página
+        });
+    </script>
 {% endblock %}
