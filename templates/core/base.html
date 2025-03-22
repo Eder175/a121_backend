@@ -19,9 +19,6 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     
-    <!-- Three.js para hologramas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    
     <!-- A-Frame e AR.js para Realidade Aumentada e VR -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-ar@0.9.0/dist/aframe-ar.min.js"></script>
@@ -29,8 +26,8 @@
     <!-- TensorFlow.js para IA -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     
-    <!-- LangDetect para detecção de idioma -->
-    <script src="https://cdn.jsdelivr.net/npm/langdetect@0.1.0/langdetect.min.js"></script>
+    <!-- Franc para detecção de idioma -->
+    <script src="https://cdn.jsdelivr.net/npm/franc@6.2.0/franc-min.js"></script>
     
     {% block extra_head %}
     {% endblock %}
@@ -386,12 +383,11 @@
     <div class="chatbot-container">
         <div class="chatbot-hologram">
             <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="chatbot-ar-scene">
-                <a-assets>
-                    <a-asset-item id="chatbot-hologram" src="{% static 'models/chatbot-hologram.glb' %}"></a-asset-item>
-                </a-assets>
-                <a-entity id="chatbot-hologram-entity" gltf-model="#chatbot-hologram" scale="0.1 0.1 0.1" position="0 0 -1">
+                <a-sphere id="chatbot-hologram-entity" color="#00ffcc" radius="0.3" position="0 0 -1" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
                     <a-text id="chatbot-text" value="Olá! Sou o A121Bot. Fale comigo!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-                </a-entity>
+                </a-sphere>
+                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
                 <a-marker-camera preset="hiro"></a-marker-camera>
             </a-scene>
         </div>
@@ -480,13 +476,14 @@
             scene.setAttribute('embedded', '');
             scene.innerHTML = `
                 <a-assets>
-                    <a-asset-item id="vr-chatbot-hologram" src="{% static 'models/vr-chatbot-hologram.glb' %}"></a-asset-item>
                     <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
                 </a-assets>
                 <a-sky src="#cosmic-skybox"></a-sky>
-                <a-entity id="vr-chatbot" gltf-model="#vr-chatbot-hologram" scale="0.5 0.5 0.5" position="0 1.6 -3">
+                <a-sphere id="vr-chatbot" color="#00ffcc" radius="0.5" position="0 1.6 -3" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
                     <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 1 0" color="#00ffcc"></a-text>
-                </a-entity>
+                </a-sphere>
+                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
                 <a-entity camera look-controls position="0 1.6 0"></a-entity>
             `;
             chatbotVrScene.appendChild(scene);
@@ -524,8 +521,15 @@
         // Detectar Idioma da Mensagem
         function detectLanguage(message) {
             try {
-                const lang = langdetect.detect(message)[0].lang;
-                return lang || 'pt-br';
+                const lang = franc(message);
+                const langMap = {
+                    'por': 'pt-br',
+                    'eng': 'en',
+                    'spa': 'es',
+                    'fra': 'fr',
+                    'deu': 'de'
+                };
+                return langMap[lang] || 'pt-br';
             } catch (e) {
                 return 'pt-br';
             }
@@ -533,7 +537,6 @@
 
         // Traduzir Mensagem (Simulação)
         function translateMessage(message, targetLang) {
-            // Simulação de tradução (em um ambiente real, usaríamos uma API como Google Translate)
             const translations = {
                 'pt-br': {
                     'en': {
@@ -653,7 +656,6 @@
                 };
                 response = `{% trans "A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês:" %} ${currentLesson.phrases[0].en}`;
             } else {
-                // Resposta genérica (simulação de IA avançada)
                 response = translateMessage('Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs?', detectedLanguage);
             }
 
