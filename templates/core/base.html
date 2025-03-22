@@ -22,7 +22,7 @@
     <!-- Three.js para hologramas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     
-    <!-- A-Frame e AR.js para Realidade Aumentada (mantido para o chatbot AR) -->
+    <!-- A-Frame e AR.js para Realidade Aumentada e VR -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-ar@0.9.0/dist/aframe-ar.min.js"></script>
     
@@ -240,7 +240,7 @@
             border-color: #00ccff;
             box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
         }
-        .chatbot-voice {
+        .chatbot-voice, .chatbot-vr {
             margin-top: 5px;
             padding: 5px 10px;
             background: #00ffcc;
@@ -251,8 +251,17 @@
             font-family: 'Orbitron', sans-serif;
             transition: background 0.3s ease;
         }
-        .chatbot-voice:hover {
+        .chatbot-voice:hover, .chatbot-vr:hover {
             background: #00ccff;
+        }
+        .chatbot-vr-scene {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3000;
         }
         .floating-buttons {
             position: fixed;
@@ -388,6 +397,8 @@
         </div>
         <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
         <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
+        <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
+        <div id="chatbot-vr-scene" class="chatbot-vr-scene"></div>
     </div>
 
     <!-- Botões Flutuantes -->
@@ -434,6 +445,7 @@
         const chatbotMessages = document.getElementById('chatbot-messages');
         const chatbotInput = document.getElementById('chatbot-input');
         const chatbotText = document.getElementById('chatbot-text');
+        const chatbotVrScene = document.getElementById('chatbot-vr-scene');
         let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
         let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
         let userEngagement = 0;
@@ -452,6 +464,39 @@
             chatbotInput.value = message;
             processMessage(message);
         };
+
+        // Modo VR
+        document.getElementById('chatbot-vr').addEventListener('click', () => {
+            // Criar a cena VR dinamicamente
+            const scene = document.createElement('a-scene');
+            scene.setAttribute('vr-mode-ui', 'enabled: true');
+            scene.setAttribute('embedded', '');
+            scene.innerHTML = `
+                <a-assets>
+                    <a-asset-item id="vr-chatbot-hologram" src="{% static 'models/vr-chatbot-hologram.glb' %}"></a-asset-item>
+                    <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
+                </a-assets>
+                <a-sky src="#cosmic-skybox"></a-sky>
+                <a-entity id="vr-chatbot" gltf-model="#vr-chatbot-hologram" scale="0.5 0.5 0.5" position="0 1.6 -3">
+                    <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 1 0" color="#00ffcc"></a-text>
+                </a-entity>
+                <a-entity camera look-controls position="0 1.6 0"></a-entity>
+            `;
+            chatbotVrScene.appendChild(scene);
+            chatbotVrScene.style.display = 'block';
+
+            // Atualizar texto do chatbot em VR
+            const vrChatbotText = document.getElementById('vr-chatbot-text');
+            vrChatbotText.setAttribute('value', 'Bem-vindo ao modo VR! Fale comigo!');
+        });
+
+        // Fechar o modo VR ao clicar fora da cena
+        chatbotVrScene.addEventListener('click', (e) => {
+            if (e.target === chatbotVrScene) {
+                chatbotVrScene.style.display = 'none';
+                chatbotVrScene.innerHTML = ''; // Limpar a cena
+            }
+        });
 
         // Processar Mensagens (Fallback temporário até implementarmos o novo chatbot)
         function processMessage(message) {
@@ -497,6 +542,12 @@
 
             // Atualizar Holograma
             chatbotText.setAttribute('value', response);
+
+            // Atualizar texto em VR, se ativo
+            const vrChatbotText = document.getElementById('vr-chatbot-text');
+            if (vrChatbotText) {
+                vrChatbotText.setAttribute('value', response);
+            }
 
             // Adicionar resposta do Chatbot
             chatbotMessages.innerHTML += `<p>{% trans "A121Bot:" %} ${response}</p>`;
