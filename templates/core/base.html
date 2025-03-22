@@ -22,7 +22,7 @@
     <!-- Three.js para hologramas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     
-    <!-- A-Frame e AR.js para Realidade Aumentada e VR -->
+    <!-- A-Frame e AR.js para Realidade Aumentada (mantido para o chatbot AR) -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-ar@0.9.0/dist/aframe-ar.min.js"></script>
     
@@ -71,7 +71,7 @@
             border-color: #00ccff;
             box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
         }
-        .chatbot-voice, .chatbot-vr {
+        .chatbot-voice {
             margin-top: 5px;
             padding: 5px 10px;
             background: #00ffcc;
@@ -82,20 +82,8 @@
             font-family: 'Orbitron', sans-serif;
             transition: background 0.3s ease;
         }
-        .chatbot-voice:hover, .chatbot-vr:hover {
+        .chatbot-voice:hover {
             background: #00ccff;
-        }
-        .chatbot-vr-scene {
-            display: none !important;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2000;
-        }
-        .chatbot-vr-scene.active {
-            display: block !important;
         }
     </style>
 </head>
@@ -194,11 +182,7 @@
         </div>
         <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
         <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
-        <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
     </div>
-
-    <!-- Container para o Chatbot em VR (será criado dinamicamente) -->
-    <div id="vr-scene-container"></div>
 
     <!-- Botões Flutuantes -->
     <div class="floating-buttons">
@@ -263,7 +247,7 @@
             processMessage(message);
         };
 
-        // Processar Mensagens (Fallback caso o Dialogflow falhe)
+        // Processar Mensagens (Fallback temporário até implementarmos o novo chatbot)
         function processMessage(message) {
             userEngagement += 1;
             userA121Coin += 1;
@@ -291,12 +275,12 @@
                     response = `{% trans "Você precisa de pelo menos 5 A121Coin para ganhar um NFT. Continue interagindo!" %}`;
                 }
             } else {
-                response = '{% trans "Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs? Ou talvez queira explorar o modo VR?" %}';
+                response = '{% trans "Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs?" %}';
             }
 
             // IA Emocional
             if (userEngagement > 5) {
-                response += ' {% trans "Você está muito engajado! Que tal uma experiência em VR?" %}';
+                response += ' {% trans "Você está muito engajado! Continue interagindo para ganhar mais A121Coin!" %}';
             } else if (userEngagement > 2) {
                 response += ' {% trans "Você parece interessado! Vamos explorar mais?" %}';
             }
@@ -321,48 +305,8 @@
             }
         });
 
-        // Modo VR (Criar dinamicamente ao clicar)
-        document.getElementById('chatbot-vr').addEventListener('click', () => {
-            console.log('Botão VR clicado');
-            
-            // Remover qualquer cena VR existente
-            const vrSceneContainer = document.getElementById('vr-scene-container');
-            vrSceneContainer.innerHTML = '';
-
-            // Criar a cena VR dinamicamente
-            const vrScene = document.createElement('a-scene');
-            vrScene.setAttribute('embedded', '');
-            vrScene.setAttribute('vr-mode-ui', 'enabled: false');
-            vrScene.setAttribute('class', 'chatbot-vr-scene');
-            vrScene.setAttribute('id', 'chatbot-vr-scene');
-
-            vrScene.innerHTML = `
-                <a-assets>
-                    <a-asset-item id="vr-chatbot-hologram" src="{% static 'models/vr-chatbot-hologram.glb' %}"></a-asset-item>
-                    <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
-                </a-assets>
-                <a-sky src="#cosmic-skybox"></a-sky>
-                <a-entity gltf-model="#vr-chatbot-hologram" scale="0.1 0.1 0.1" position="0 1.6 -1">
-                    <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-                </a-entity>
-                <a-entity camera look-controls position="0 1.6 0">
-                    <a-entity cursor="fuse: true; fuseTimeout: 500" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" material="color: #00ffcc; shader: flat"></a-entity>
-                </a-entity>
-            `;
-
-            // Adicionar a cena ao DOM
-            vrSceneContainer.appendChild(vrScene);
-
-            // Ativar o modo VR
-            vrScene.classList.add('active');
-            vrScene.setAttribute('vr-mode-ui', 'enabled: true');
-            vrScene.enterVR();
-        });
-
-        // Inicializar Chatbot e Verificar Estado Inicial
+        // Inicializar Chatbot
         document.addEventListener('DOMContentLoaded', () => {
-            const vrSceneContainer = document.getElementById('vr-scene-container');
-            console.log('Estado inicial do VR Scene Container:', vrSceneContainer.innerHTML);
             chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
         });
     </script>
