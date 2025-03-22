@@ -29,6 +29,9 @@
     <!-- TensorFlow.js para IA -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     
+    <!-- LangDetect para detecção de idioma -->
+    <script src="https://cdn.jsdelivr.net/npm/langdetect@0.1.0/langdetect.min.js"></script>
+    
     {% block extra_head %}
     {% endblock %}
 
@@ -240,7 +243,7 @@
             border-color: #00ccff;
             box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
         }
-        .chatbot-voice, .chatbot-vr {
+        .chatbot-voice, .chatbot-vr, .chatbot-language {
             margin-top: 5px;
             padding: 5px 10px;
             background: #00ffcc;
@@ -251,7 +254,7 @@
             font-family: 'Orbitron', sans-serif;
             transition: background 0.3s ease;
         }
-        .chatbot-voice:hover, .chatbot-vr:hover {
+        .chatbot-voice:hover, .chatbot-vr:hover, .chatbot-language:hover {
             background: #00ccff;
         }
         .chatbot-vr-scene {
@@ -398,6 +401,7 @@
         <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
         <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
         <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
+        <button id="chatbot-language" class="chatbot-language">{% trans "Aprender Idiomas" %}</button>
         <div id="chatbot-vr-scene" class="chatbot-vr-scene"></div>
     </div>
 
@@ -449,10 +453,14 @@
         let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
         let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
         let userEngagement = 0;
+        let userInterests = [];
+        let languageLessonActive = false;
+        let currentLesson = null;
+        let detectedLanguage = '{{ LANGUAGE_CODE|default:"pt-br" }}';
 
         // Reconhecimento de Voz
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+        recognition.lang = detectedLanguage;
         recognition.continuous = false;
 
         document.getElementById('chatbot-voice').addEventListener('click', () => {
@@ -460,14 +468,13 @@
         });
 
         recognition.onresult = (event) => {
-            const message = event.results[0][0].transcript.toLowerCase();
+            const message = event.results[0][0].transcript;
             chatbotInput.value = message;
             processMessage(message);
         };
 
         // Modo VR
         document.getElementById('chatbot-vr').addEventListener('click', () => {
-            // Criar a cena VR dinamicamente
             const scene = document.createElement('a-scene');
             scene.setAttribute('vr-mode-ui', 'enabled: true');
             scene.setAttribute('embedded', '');
@@ -485,21 +492,77 @@
             chatbotVrScene.appendChild(scene);
             chatbotVrScene.style.display = 'block';
 
-            // Atualizar texto do chatbot em VR
             const vrChatbotText = document.getElementById('vr-chatbot-text');
             vrChatbotText.setAttribute('value', 'Bem-vindo ao modo VR! Fale comigo!');
         });
 
-        // Fechar o modo VR ao clicar fora da cena
         chatbotVrScene.addEventListener('click', (e) => {
             if (e.target === chatbotVrScene) {
                 chatbotVrScene.style.display = 'none';
-                chatbotVrScene.innerHTML = ''; // Limpar a cena
+                chatbotVrScene.innerHTML = '';
             }
         });
 
-        // Processar Mensagens (Fallback temporário até implementarmos o novo chatbot)
-        function processMessage(message) {
+        // Modo de Aprendizado de Idiomas
+        document.getElementById('chatbot-language').addEventListener('click', () => {
+            languageLessonActive = true;
+            currentLesson = {
+                language: 'en', // Padrão: Inglês
+                topic: 'technology',
+                level: 'beginner',
+                step: 0,
+                phrases: [
+                    { en: "Hello! Let's talk about technology.", pt: "Olá! Vamos falar sobre tecnologia." },
+                    { en: "Do you like using computers?", pt: "Você gosta de usar computadores?" },
+                    { en: "Technology makes our lives easier.", pt: "A tecnologia facilita nossas vidas." }
+                ]
+            };
+            chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês:" %} ${currentLesson.phrases[0].en}</p>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        });
+
+        // Detectar Idioma da Mensagem
+        function detectLanguage(message) {
+            try {
+                const lang = langdetect.detect(message)[0].lang;
+                return lang || 'pt-br';
+            } catch (e) {
+                return 'pt-br';
+            }
+        }
+
+        // Traduzir Mensagem (Simulação)
+        function translateMessage(message, targetLang) {
+            // Simulação de tradução (em um ambiente real, usaríamos uma API como Google Translate)
+            const translations = {
+                'pt-br': {
+                    'en': {
+                        'Olá': 'Hello',
+                        'Como posso te ajudar hoje?': 'How can I help you today?',
+                        'Você gostaria de saber sobre cursos?': 'Would you like to know about courses?'
+                    },
+                    'es': {
+                        'Olá': 'Hola',
+                        'Como posso te ajudar hoje?': '¿Cómo puedo ayudarte hoy?',
+                        'Você gostaria de saber sobre cursos?': '¿Te gustaría saber sobre cursos?'
+                    }
+                },
+                'en': {
+                    'pt-br': {
+                        'Hello': 'Olá',
+                        'How can I help you today?': 'Como posso te ajudar hoje?',
+                        'Would you like to know about courses?': 'Você gostaria de saber sobre cursos?'
+                    }
+                }
+            };
+            if (translations[detectedLanguage] && translations[detectedLanguage][targetLang]) {
+                return translations[detectedLanguage][targetLang][message] || message;
+            }
+            return message;
+        }
+
+        // Processar Mensagens
+        async function processMessage(message) {
             userEngagement += 1;
             userA121Coin += 1;
             localStorage.setItem('userA121Coin', userA121Coin);
@@ -508,12 +571,62 @@
             chatbotMessages.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 
-            // Respostas do Chatbot (Fallback)
+            // Detectar idioma da mensagem
+            detectedLanguage = detectLanguage(message);
+            recognition.lang = detectedLanguage;
+
+            // Modo de Aprendizado de Idiomas
+            if (languageLessonActive) {
+                let response = '';
+                if (currentLesson.step < currentLesson.phrases.length) {
+                    const expectedPhrase = currentLesson.phrases[currentLesson.step].en;
+                    if (message.toLowerCase().trim() === expectedPhrase.toLowerCase().trim()) {
+                        response = `{% trans "A121Bot: Correto! A tradução em português é:" %} ${currentLesson.phrases[currentLesson.step].pt}`;
+                        currentLesson.step++;
+                        if (currentLesson.step < currentLesson.phrases.length) {
+                            response += ` {% trans "Próxima frase:" %} ${currentLesson.phrases[currentLesson.step].en}`;
+                        } else {
+                            response += ` {% trans "Parabéns! Você completou a lição. Ganhou 5 A121Coin!" %}`;
+                            userA121Coin += 5;
+                            localStorage.setItem('userA121Coin', userA121Coin);
+                            languageLessonActive = false;
+                            currentLesson = null;
+                        }
+                    } else {
+                        response = `{% trans "A121Bot: Quase! A frase correta é:" %} ${expectedPhrase}. {% trans "Tente novamente!" %}`;
+                    }
+                }
+                chatbotMessages.innerHTML += `<p>${response}</p>`;
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                chatbotText.setAttribute('value', response);
+
+                const vrChatbotText = document.getElementById('vr-chatbot-text');
+                if (vrChatbotText) {
+                    vrChatbotText.setAttribute('value', response);
+                }
+                return;
+            }
+
+            // Identificar Interesses do Usuário
+            if (message.toLowerCase().includes('tecnologia') || message.toLowerCase().includes('technology')) {
+                userInterests.push('technology');
+            } else if (message.toLowerCase().includes('finanças') || message.toLowerCase().includes('finance')) {
+                userInterests.push('finance');
+            } else if (message.toLowerCase().includes('leilões') || message.toLowerCase().includes('auctions')) {
+                userInterests.push('auctions');
+            }
+
+            // Respostas Inteligentes (Simulação)
             let response = '';
-            if (message.toLowerCase().includes('ola') || message.toLowerCase().includes('olá')) {
-                response = '{% trans "Olá! Bem-vindo à A121 Evolution! Como posso te ajudar hoje? Que tal explorar nossos cursos ou ganhar A121Coin?" %}';
-            } else if (message.toLowerCase().includes('curso') || message.toLowerCase().includes('cursos')) {
-                response = '{% trans "Recomendo o curso de Introdução à IA! Quer saber mais? Ou prefere o curso de Finanças Pessoais?" %}';
+            if (message.toLowerCase().includes('ola') || message.toLowerCase().includes('olá') || message.toLowerCase().includes('hello')) {
+                response = translateMessage('Olá! Bem-vindo à A121 Evolution! Como posso te ajudar hoje? Que tal explorar nossos cursos ou ganhar A121Coin?', detectedLanguage);
+            } else if (message.toLowerCase().includes('curso') || message.toLowerCase().includes('cursos') || message.toLowerCase().includes('course') || message.toLowerCase().includes('courses')) {
+                response = translateMessage('Recomendo o curso de Introdução à IA! Quer saber mais? Ou prefere o curso de Finanças Pessoais?', detectedLanguage);
+                if (userInterests.includes('technology')) {
+                    response += ` {% trans "Você parece interessado em tecnologia! Nosso curso de Introdução à IA é perfeito para você!" %}`;
+                } else if (userInterests.includes('finance')) {
+                    response += ` {% trans "Você parece interessado em finanças! Nosso curso de Finanças Pessoais pode te ajudar a lucrar mais!" %}`;
+                }
             } else if (message.toLowerCase().includes('a121coin') || message.toLowerCase().includes('saldo')) {
                 response = `{% trans "Seu saldo é" %} ${userA121Coin} A121Coin. {% trans "Continue interagindo para ganhar mais!" %}`;
             } else if (message.toLowerCase().includes('nft')) {
@@ -525,15 +638,30 @@
                 } else {
                     response = `{% trans "Você precisa de pelo menos 5 A121Coin para ganhar um NFT. Continue interagindo!" %}`;
                 }
+            } else if (message.toLowerCase().includes('ensine-me') || message.toLowerCase().includes('teach me')) {
+                languageLessonActive = true;
+                currentLesson = {
+                    language: 'en',
+                    topic: 'technology',
+                    level: 'beginner',
+                    step: 0,
+                    phrases: [
+                        { en: "Hello! Let's talk about technology.", pt: "Olá! Vamos falar sobre tecnologia." },
+                        { en: "Do you like using computers?", pt: "Você gosta de usar computadores?" },
+                        { en: "Technology makes our lives easier.", pt: "A tecnologia facilita nossas vidas." }
+                    ]
+                };
+                response = `{% trans "A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês:" %} ${currentLesson.phrases[0].en}`;
             } else {
-                response = '{% trans "Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs?" %}';
+                // Resposta genérica (simulação de IA avançada)
+                response = translateMessage('Desculpe, não entendi. Você gostaria de saber sobre cursos, A121Coin ou NFTs?', detectedLanguage);
             }
 
             // IA Emocional
             if (userEngagement > 5) {
-                response += ' {% trans "Você está muito engajado! Continue interagindo para ganhar mais A121Coin!" %}';
+                response += ` {% trans "Você está muito engajado! Continue interagindo para ganhar mais A121Coin!" %}`;
             } else if (userEngagement > 2) {
-                response += ' {% trans "Você parece interessado! Vamos explorar mais?" %}';
+                response += ` {% trans "Você parece interessado! Vamos explorar mais?" %}`;
             }
 
             // Registrar na Blockchain (Simulação)
@@ -574,6 +702,10 @@
             // Garantir que o modal não abra automaticamente
             modal.style.display = 'none';
 
+            // Remover qualquer evento automático que possa estar disparando o modal
+            chatButton.onclick = null;
+            chatButton.removeAttribute('onclick');
+
             // Abrir o modal ao clicar no botão "Bate-papo com IA"
             chatButton.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -598,11 +730,7 @@
                 if (message) {
                     chatBox.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
                     chatBox.scrollTop = chatBox.scrollHeight;
-
-                    // Resposta temporária até implementarmos o novo chatbot
-                    chatBox.innerHTML += `<p>{% trans "A121Bot:" %} Olá! Estou sendo atualizado para ser o chatbot mais inteligente do mundo! Volte em breve!</p>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-
+                    processMessage(message);
                     userInput.value = '';
                 }
             });
