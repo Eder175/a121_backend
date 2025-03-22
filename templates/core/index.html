@@ -163,7 +163,7 @@
             {% for field in form %}
                 <div class="form-field">
                     {{ field.label_tag }}
-                    {{ field|add_class:"input-glow"|attr:"id:cadastro-"|append:field.name }}
+                    {{ field|add_class:"input-glow" }}
                     {% if field.errors %}
                         <div class="error">{{ field.errors }}</div>
                     {% endif %}
@@ -185,7 +185,7 @@
             {% for field in form %}
                 <div class="form-field">
                     {{ field.label_tag }}
-                    {{ field|add_class:"input-glow"|attr:"id:login-"|append:field.name }}
+                    {{ field|add_class:"input-glow" }}
                     {% if field.errors %}
                         <div class="error">{{ field.errors }}</div>
                     {% endif %}
@@ -572,7 +572,7 @@
         margin-bottom: 5px;
         display: block;
     }
-    .cadastro-form input {
+    .input-glow {
         padding: 12px;
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid #00ffcc;
@@ -581,7 +581,7 @@
         font-family: 'Roboto', sans-serif;
         transition: all 0.3s ease;
     }
-    .cadastro-form input:focus {
+    .input-glow:focus {
         outline: none;
         border-color: #00ccff;
         box-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
