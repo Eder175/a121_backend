@@ -38,10 +38,14 @@
             bottom: 20px;
             right: 20px;
             z-index: 1000;
+            transition: all 0.3s ease;
         }
         .chatbot-hologram {
             width: 300px;
             height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
         }
         .chatbot-messages {
             background: rgba(0, 0, 0, 0.8);
@@ -51,6 +55,7 @@
             max-height: 200px;
             overflow-y: auto;
             margin-bottom: 10px;
+            font-family: 'Roboto', sans-serif;
         }
         .chatbot-input {
             width: 100%;
@@ -59,15 +64,38 @@
             border: 1px solid #00ffcc;
             color: #fff;
             border-radius: 5px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .chatbot-input:focus {
+            outline: none;
+            border-color: #00ccff;
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+        }
+        .chatbot-voice, .chatbot-vr {
+            margin-top: 5px;
+            padding: 5px 10px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            transition: background 0.3s ease;
+        }
+        .chatbot-voice:hover, .chatbot-vr:hover {
+            background: #00ccff;
         }
         .chatbot-vr-scene {
-            display: none;
+            display: none !important; /* Garantir que a cena VR esteja oculta por padrão */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 2000;
+        }
+        .chatbot-vr-scene.active {
+            display: block !important; /* Exibir apenas quando ativada */
         }
     </style>
 </head>
@@ -165,12 +193,12 @@
             <p>{% trans "A121Bot: Olá! Como posso te ajudar hoje?" %}</p>
         </div>
         <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
-        <button id="chatbot-voice">{% trans "Falar" %}</button>
-        <button id="chatbot-vr">{% trans "Interagir em VR" %}</button>
+        <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
+        <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
     </div>
 
     <!-- Chatbot em VR -->
-    <a-scene embedded vr-mode-ui="enabled: true" class="chatbot-vr-scene" id="chatbot-vr-scene">
+    <a-scene embedded vr-mode-ui="enabled: false" class="chatbot-vr-scene" id="chatbot-vr-scene">
         <a-assets>
             <a-asset-item id="vr-chatbot-hologram" src="{% static 'models/vr-chatbot-hologram.glb' %}"></a-asset-item>
             <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
@@ -307,13 +335,17 @@
 
         // Modo VR
         document.getElementById('chatbot-vr').addEventListener('click', () => {
+            console.log('Botão VR clicado');
             const vrScene = document.getElementById('chatbot-vr-scene');
-            vrScene.style.display = 'block';
+            vrScene.classList.add('active');
+            vrScene.setAttribute('vr-mode-ui', 'enabled: true'); // Ativar o modo VR apenas quando clicado
             vrScene.enterVR();
         });
 
-        // Inicializar Chatbot
+        // Inicializar Chatbot e Verificar Estado Inicial
         document.addEventListener('DOMContentLoaded', () => {
+            const vrScene = document.getElementById('chatbot-vr-scene');
+            console.log('Estado inicial do VR Scene:', vrScene.style.display);
             chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
         });
     </script>
