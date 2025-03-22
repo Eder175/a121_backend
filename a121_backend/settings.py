@@ -11,21 +11,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Função para obter variáveis de ambiente de forma segura
-def get_env_variable(var_name):
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        raise ImproperlyConfigured(f"Defina a variável de ambiente {var_name}")
-
 # Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY')
+SECRET_KEY = 'qYLDi7xImARDcLIAW7MNz2rD3Z9nvXEaN7qn2zbjkfIcjEWP7cMe6WFGgqiF3itZnr8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # Mantido como True para depuração
@@ -91,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'a121_backend',  # Nome do banco
         'USER': 'postgres',  # Usuário padrão do PostgreSQL
-        'PASSWORD': get_env_variable('DB_PASSWORD'),  # Senha movida para variável de ambiente
+        'PASSWORD': 'minhasenha123',  # Senha restaurada
         'HOST': 'localhost',
         'PORT': '5432',
     }
