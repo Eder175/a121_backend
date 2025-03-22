@@ -1,57 +1,40 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import login as auth_login, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from core.models import A121CoinSupply, A121Coin
+from django.core.exceptions import ValidationError
+import json
 
 def index(request):
-    return render(request, 'core/index.html', {'section': 'index'})
+    return render(request, 'core/index.html')
 
-def cursos(request):
-    return render(request, 'core/index.html', {'section': 'cursos'})
-
-def cadastro(request):
+def chat_interaction(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            auth_login(request, user)
-            return redirect('core:index')
-    else:
-        form = UserCreationForm()
-    return render(request, 'core/index.html', {'section': 'cadastro', 'form': form})
+        try:
+            data = json.loads(request.body)
+            message = data.get('message', '')
 
-def login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            auth_login(request, user)
-            return redirect('core:index')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'core/index.html', {'section': 'login', 'form': form})
+            # Lógica de resposta do A121Bot (simplificada por agora)
+            response_message = "Olá! Bem-vindo à A121 Evolution! Como posso te ajudar hoje?"
+            if 'curso' in message.lower():
+                response_message = "Recomendo o curso de Introdução à IA! Quer saber mais?"
+            elif 'olá' in message.lower() or 'oi' in message.lower():
+                response_message = "Oi! Como posso te ajudar hoje?"
 
-@csrf_exempt
-def change_currency(request):
-    if request.method == 'POST':
-        currency = request.POST.get('currency', 'EUR')
-        request.session['currency'] = currency
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+            # Distribuir 1 A121Coin por interação (sem usuário por agora)
+            supply = A121CoinSupply.objects.first()
+            if supply:
+                supply.distribute(
+                    amount=1.00,
+                    user=None,  # Não associar a um usuário por agora
+                    description="Interação com A121Bot"
+                )
 
-def get_exchange_rate(request):
-    # Simulação de taxas de câmbio
-    rates = {
-        'EUR': 1.0,
-        'USD': 1.1,
-        'BRL': 5.5
-    }
-    return JsonResponse({'success': True, 'rates': rates})
-
-@csrf_exempt
-def chat(request):
-    if request.method == 'POST':
-        # Temporariamente, retorna uma mensagem padrão até implementarmos o novo chatbot
-        return JsonResponse({'response': 'Olá! Estou sendo atualizado para ser o chatbot mais inteligente do mundo! Volte em breve!'})
-    return JsonResponse({'error': 'Método não permitido'}, status=405)
+            return JsonResponse({
+                'response': response_message,
+                'a121coin_balance': float(sum(t.amount for t in A121Coin.objects.all()))
+            })
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': 'Erro ao processar a interação.'}, status=500)
+    return JsonResponse({'error': 'Método não permitido.'}, status=405)
