@@ -9,21 +9,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Função para obter variáveis de ambiente de forma segura
+def get_env_variable(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        raise ImproperlyConfigured(f"Defina a variável de ambiente {var_name}")
+
 # Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'qYLDi7xImARDcLIAW7MNz2rD3Z9nvXEaN7qn2zbjkfIcjEWP7cMe6WFGgqiF3itZnr8'
+SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # Mantido como True para depuração
 
-# Lista inicial de hosts permitidos
+# Lista de hosts permitidos com suporte dinâmico para Ngrok
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+if 'NGROK_HOST' in os.environ:
+    ALLOWED_HOSTS.append(os.environ['NGROK_HOST'])
 
 # Application definition
 INSTALLED_APPS = [
@@ -35,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',  # App core
     'widget_tweaks',  # Adicionado para django-widget-tweaks
-    'channels',  # Adicionado para suporte a WebSockets (se necessário)
+    # 'channels',  # Comentado até configurar o backend de WebSockets
 ]
 
 MIDDLEWARE = [
@@ -73,7 +83,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'a121_backend.wsgi.application'
 
 # Configuração do ASGI para Channels (se necessário)
-ASGI_APPLICATION = 'a121_backend.asgi.application'
+# ASGI_APPLICATION = 'a121_backend.asgi.application'  # Comentado até configurar Channels
 
 # Database - Configurado para PostgreSQL
 DATABASES = {
@@ -81,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'a121_backend',  # Nome do banco
         'USER': 'postgres',  # Usuário padrão do PostgreSQL
-        'PASSWORD': 'minhasenha123',  # Sua senha
+        'PASSWORD': get_env_variable('DB_PASSWORD'),  # Senha movida para variável de ambiente
         'HOST': 'localhost',
         'PORT': '5432',
     }
