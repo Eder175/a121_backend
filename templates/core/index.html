@@ -5,15 +5,20 @@
 {% trans "A121 Evolution - A Revolução do Futuro" %}
 {% endblock %}
 
+{% block extra_head %}
+<!-- Pré-carregar o vídeo para melhorar a performance -->
+<link rel="preload" href="{% static 'videos/futuristic_background.mp4' %}" as="video" type="video/mp4">
+{% endblock %}
+
 {% block content %}
 <!-- Seção Hero -->
-<section class="hero" id="hero">
-    <video id="hero-video" autoplay muted loop preload="auto" class="hero-video">
+<section class="hero section-transition" id="hero" aria-labelledby="hero-title">
+    <video id="hero-video" autoplay muted loop playsinline preload="auto" class="hero-video">
         <source src="{% static 'videos/futuristic_background.mp4' %}" type="video/mp4">
         {% trans "Seu navegador não suporta vídeos." %}
     </video>
     <div class="container">
-        <h1>{% trans "A121 Evolution" %}</h1>
+        <h1 id="hero-title">{% trans "A121 Evolution" %}</h1>
         <h2>{% trans "Faça Parte da Revolução Global do Futuro" %}</h2>
         <p>{% trans "Transforme sua vida com tecnologia, inovação e oportunidades ilimitadas. O futuro começa com você!" %}</p>
         <div class="hero-buttons">
@@ -24,14 +29,14 @@
 </section>
 
 <!-- Seção de Cursos -->
-<section class="courses" id="cursos">
+<section class="courses section-transition" id="cursos" aria-labelledby="courses-title">
     <div class="container">
-        <h2>{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
+        <h2 id="courses-title">{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
         <p class="section-subtitle">{% trans "Domine finanças, IA e leilões para transformar sua vida e seus negócios." %}</p>
         <div class="course-grid">
             <div class="course-card">
                 <div class="course-image-wrapper">
-                    <img src="{% static 'images/A121.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image">
+                    <img src="{% static 'images/A121.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image" loading="lazy">
                 </div>
                 <h3>{% trans "Introdução à IA para Criadores" %}</h3>
                 <p>{% trans "Aprenda como usar inteligência artificial para criar conteúdo inovador e automatizar processos." %}</p>
@@ -41,7 +46,7 @@
             </div>
             <div class="course-card">
                 <div class="course-image-wrapper">
-                    <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image">
+                    <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image" loading="lazy">
                 </div>
                 <h3>{% trans "Finanças para Criadores de Conteúdo" %}</h3>
                 <p>{% trans "Domine suas finanças pessoais e aprenda a lucrar mais com seus conteúdos." %}</p>
@@ -51,7 +56,7 @@
             </div>
             <div class="course-card">
                 <div class="course-image-wrapper">
-                    <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'Leilões Lucrativos' %}" class="course-image">
+                    <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'Leilões Lucrativos' %}" class="course-image" loading="lazy">
                 </div>
                 <h3>{% trans "Leilões Lucrativos" %}</h3>
                 <p>{% trans "Descubra como ganhar dinheiro com leilões online e físicos, passo a passo." %}</p>
@@ -77,15 +82,15 @@
 </section>
 
 <!-- Seção de Produtos -->
-<section class="products" id="produtos">
+<section class="products section-transition" id="produtos" aria-labelledby="products-title">
     <div class="container">
-        <h2>{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
+        <h2 id="products-title">{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
         <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro. Visualize em Realidade Aumentada!" %}</p>
         <div class="product-grid">
             <div class="product-card" data-product="iphone15">
                 <div class="hologram-product hologram-iphone15"></div>
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image">
+                    <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image" loading="lazy">
                     <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
                     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
                         <a-assets>
@@ -103,7 +108,7 @@
             <div class="product-card" data-product="iphone16">
                 <div class="hologram-product hologram-iphone16"></div>
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image">
+                    <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image" loading="lazy">
                     <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
                     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
                         <a-assets>
@@ -123,9 +128,9 @@
 </section>
 
 <!-- Seção de Marketing Multinível -->
-<section class="mmn" id="mmn">
+<section class="mmn section-transition" id="mmn" aria-labelledby="mmn-title">
     <div class="container">
-        <h2>{% trans "Marketing Multinível A121 Evolution" %}</h2>
+        <h2 id="mmn-title">{% trans "Marketing Multinível A121 Evolution" %}</h2>
         <p class="section-subtitle">{% trans "Transforme sua vida financeira com nosso plano de MMN revolucionário!" %}</p>
         <div class="mmn-content">
             <div class="mmn-info">
@@ -154,9 +159,9 @@
 </section>
 
 <!-- Seção de Cadastro Avançado -->
-<section class="cadastro-section" id="cadastro">
+<section class="cadastro-section section-transition" id="cadastro" aria-labelledby="cadastro-title">
     <div class="cadastro-container">
-        <h2 class="title-glow">{% trans "Junte-se à Revolução A121" %}</h2>
+        <h2 id="cadastro-title" class="title-glow">{% trans "Junte-se à Revolução A121" %}</h2>
         <p class="subtitle">{% trans "Registre-se agora e desbloqueie um mundo de oportunidades!" %}</p>
         <form class="cadastro-form" method="post" id="cadastro-form">
             {% csrf_token %}
@@ -176,9 +181,9 @@
 </section>
 
 <!-- Seção de Login -->
-<section class="login-section" id="login">
+<section class="login-section section-transition" id="login" aria-labelledby="login-title">
     <div class="login-container">
-        <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
+        <h2 id="login-title" class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
         <p class="subtitle">{% trans "Faça login para acessar suas oportunidades!" %}</p>
         <form class="cadastro-form" method="post" id="login-form">
             {% csrf_token %}
@@ -687,6 +692,20 @@
             };
             animate();
         });
+
+        // Animações de Scroll
+        const sections = document.querySelectorAll('.section-transition');
+        const observerOptions = {
+            threshold: 0.1
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+        sections.forEach(section => observer.observe(section));
     });
 </script>
 {% endblock %}
