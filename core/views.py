@@ -3,14 +3,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from google.cloud import dialogflow_v2 as dialogflow
-import os
-
-# Configuração do Dialogflow
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(os.path.dirname(__file__), '../a121bot-credentials.json')
-DIALOGFLOW_PROJECT_ID = 'a121bot'  # Substitua pelo ID real do seu projeto Dialogflow
-DIALOGFLOW_LANGUAGE_CODE = 'pt-BR'
-SESSION_ID = 'a121-session'
 
 def index(request):
     return render(request, 'core/index.html', {'section': 'index'})
@@ -58,17 +50,8 @@ def get_exchange_rate(request):
     return JsonResponse({'success': True, 'rates': rates})
 
 @csrf_exempt
-def chat_with_dialogflow(request):
+def chat(request):
     if request.method == 'POST':
-        message = request.POST.get('message', '')
-        try:
-            session_client = dialogflow.SessionsClient()
-            session = session_client.session_path(DIALOGFLOW_PROJECT_ID, SESSION_ID)
-            text_input = dialogflow.TextInput(text=message, language_code=DIALOGFLOW_LANGUAGE_CODE)
-            query_input = dialogflow.QueryInput(text=text_input)
-            response = session_client.detect_intent(session=session, query_input=query_input)
-            return JsonResponse({'response': response.query_result.fulfillment_text})
-        except Exception as e:
-            print(f"Erro no Dialogflow: {e}")  # Log do erro para depuração
-            return JsonResponse({'response': 'Desculpe, houve um problema. Tente novamente ou me dê mais detalhes.'})
+        # Temporariamente, retorna uma mensagem padrão até implementarmos o novo chatbot
+        return JsonResponse({'response': 'Olá! Estou sendo atualizado para ser o chatbot mais inteligente do mundo! Volte em breve!'})
     return JsonResponse({'error': 'Método não permitido'}, status=405)
