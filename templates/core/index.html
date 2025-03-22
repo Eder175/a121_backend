@@ -1,12 +1,12 @@
 {% extends 'core/base.html' %}
-{% load static i18n %}
+{% load static i18n widget_tweaks %}
 
 {% block title %}
 {% trans "A121 Evolution - A Revolução do Futuro" %}
 {% endblock %}
 
 {% block content %}
-<!-- Seção Hero com Mensagens Impactantes -->
+<!-- Seção Hero -->
 <section class="hero" id="hero">
     <video id="hero-video" autoplay muted loop preload="auto" class="hero-video">
         <source src="{% static 'videos/futuristic_background.mp4' %}" type="video/mp4">
@@ -60,7 +60,6 @@
                 <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
             </div>
         </div>
-        <!-- Depoimentos -->
         <div class="testimonials">
             <h3>{% trans "O que Nossos Alunos Dizem" %}</h3>
             <div class="testimonial-grid">
@@ -77,7 +76,7 @@
     </div>
 </section>
 
-<!-- Seção de Produtos (iPhones) com Realidade Aumentada -->
+<!-- Seção de Produtos -->
 <section class="products" id="produtos">
     <div class="container">
         <h2>{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
@@ -87,7 +86,6 @@
                 <div class="hologram-product hologram-iphone15"></div>
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image">
-                    <!-- Realidade Aumentada -->
                     <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
                     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
                         <a-assets>
@@ -106,7 +104,6 @@
                 <div class="hologram-product hologram-iphone16"></div>
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image">
-                    <!-- Realidade Aumentada -->
                     <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
                     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
                         <a-assets>
@@ -161,9 +158,17 @@
     <div class="cadastro-container">
         <h2 class="title-glow">{% trans "Junte-se à Revolução A121" %}</h2>
         <p class="subtitle">{% trans "Registre-se agora e desbloqueie um mundo de oportunidades!" %}</p>
-        <form class="cadastro-form" method="post">
+        <form class="cadastro-form" method="post" id="cadastro-form">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field|add_class:"input-glow"|attr:"id:cadastro-"|append:field.name }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
             <button type="submit" class="btn-glow">{% trans "Registrar-se" %}</button>
         </form>
         <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}" class="link-glow">{% trans "Faça Login" %}</a></p>
@@ -175,9 +180,17 @@
     <div class="login-container">
         <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
         <p class="subtitle">{% trans "Faça login para acessar suas oportunidades!" %}</p>
-        <form class="cadastro-form" method="post">
+        <form class="cadastro-form" method="post" id="login-form">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field|add_class:"input-glow"|attr:"id:login-"|append:field.name }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
             <button type="submit" class="btn-glow">{% trans "Entrar" %}</button>
         </form>
         <p class="form-footer">{% trans "Não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Registre-se" %}</a></p>
@@ -185,7 +198,6 @@
 </section>
 
 <style>
-    /* Estilos para a seção Hero */
     .hero {
         position: relative;
         height: 100vh;
@@ -203,35 +215,36 @@
         height: 100%;
         object-fit: cover;
         z-index: -1;
+        filter: brightness(0.8);
     }
     .hero h1 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 4rem;
+        font-size: 4.5rem;
         color: #00ffcc;
-        text-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+        text-shadow: 0 0 25px rgba(0, 255, 204, 0.9);
         margin-bottom: 20px;
     }
     .hero h2 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         color: #fff;
-        text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+        text-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
         margin-bottom: 20px;
     }
     .hero p {
         font-family: 'Roboto', sans-serif;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         color: #fff;
-        text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
         margin-bottom: 30px;
     }
     .hero-buttons {
         display: flex;
-        gap: 20px;
+        gap: 25px;
         justify-content: center;
     }
     .btn {
-        padding: 15px 30px;
+        padding: 15px 35px;
         border-radius: 5px;
         text-decoration: none;
         font-family: 'Orbitron', sans-serif;
@@ -240,59 +253,58 @@
     .btn-primary {
         background: #00ffcc;
         color: #000;
-        box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
     }
     .btn-primary:hover {
         background: #00ccff;
-        box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
+        box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
     }
     .btn-secondary {
         background: transparent;
         border: 2px solid #00ffcc;
         color: #00ffcc;
-        box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
     }
     .btn-secondary:hover {
         background: #00ffcc;
         color: #000;
-        box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
+        box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
     }
-
-    /* Estilos para a seção de Cursos */
     .courses {
-        padding: 80px 0;
-        background: rgba(0, 0, 0, 0.9);
+        padding: 100px 0;
+        background: rgba(0, 0, 0, 0.95);
     }
     .courses h2 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         color: #00ffcc;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+        text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
     }
     .section-subtitle {
         font-family: 'Roboto', sans-serif;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         color: #fff;
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 50px;
     }
     .course-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 35px;
     }
     .course-card {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid #00ffcc;
-        border-radius: 10px;
-        padding: 20px;
+        border-radius: 15px;
+        padding: 25px;
         text-align: center;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .course-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+        transform: translateY(-15px);
+        box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
     }
     .course-image-wrapper {
         position: relative;
@@ -300,21 +312,25 @@
     }
     .course-image {
         width: 100%;
-        height: 200px;
+        height: 220px;
         object-fit: cover;
         border-radius: 10px;
+        transition: transform 0.3s ease;
+    }
+    .course-card:hover .course-image {
+        transform: scale(1.05);
     }
     .course-card h3 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         color: #00ffcc;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     .course-card p {
         font-family: 'Roboto', sans-serif;
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: #fff;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     .course-price {
         font-weight: bold;
@@ -323,7 +339,7 @@
     .btn-course {
         background: #00ffcc;
         color: #000;
-        padding: 10px 20px;
+        padding: 12px 25px;
         border-radius: 5px;
         text-decoration: none;
         font-family: 'Orbitron', sans-serif;
@@ -331,70 +347,72 @@
     }
     .btn-course:hover {
         background: #00ccff;
-        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+        box-shadow: 0 0 25px rgba(0, 204, 255, 0.8);
     }
     .testimonials {
-        margin-top: 60px;
+        margin-top: 70px;
     }
     .testimonials h3 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 2rem;
+        font-size: 2.2rem;
         color: #00ffcc;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
     }
     .testimonial-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 35px;
     }
     .testimonial-card {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid #00ffcc;
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-    }
-    .testimonial-card p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1rem;
-        color: #fff;
-        margin-bottom: 10px;
-    }
-    .testimonial-card h4 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.2rem;
-        color: #00ffcc;
-    }
-
-    /* Estilos para a seção de Produtos */
-    .products {
-        padding: 80px 0;
-        background: rgba(0, 0, 0, 0.9);
-    }
-    .products h2 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2.5rem;
-        color: #00ffcc;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-    }
-    .product-card {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid #00ffcc;
-        border-radius: 10px;
-        padding: 20px;
+        border-radius: 15px;
+        padding: 25px;
         text-align: center;
         transition: transform 0.3s ease;
     }
+    .testimonial-card:hover {
+        transform: scale(1.05);
+    }
+    .testimonial-card p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.1rem;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+    .testimonial-card h4 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.3rem;
+        color: #00ffcc;
+    }
+    .products {
+        padding: 100px 0;
+        background: rgba(0, 0, 0, 0.95);
+    }
+    .products h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.8rem;
+        color: #00ffcc;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 35px;
+    }
+    .product-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid #00ffcc;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
     .product-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+        transform: translateY(-15px);
+        box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
     }
     .product-image-wrapper {
         position: relative;
@@ -402,17 +420,17 @@
     }
     .product-image {
         width: 100%;
-        height: 200px;
+        height: 220px;
         object-fit: cover;
         border-radius: 10px;
     }
     .ar-button {
         position: absolute;
-        bottom: 10px;
-        right: 10px;
+        bottom: 15px;
+        right: 15px;
         background: #00ffcc;
         color: #000;
-        padding: 5px 10px;
+        padding: 8px 15px;
         border-radius: 5px;
         text-decoration: none;
         font-family: 'Orbitron', sans-serif;
@@ -420,19 +438,19 @@
     }
     .ar-button:hover {
         background: #00ccff;
-        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
     }
     .product-card h3 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         color: #00ffcc;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     .product-card p {
         font-family: 'Roboto', sans-serif;
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: #fff;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     .product-price {
         font-weight: bold;
@@ -441,7 +459,7 @@
     .btn-product {
         background: #00ffcc;
         color: #000;
-        padding: 10px 20px;
+        padding: 12px 25px;
         border-radius: 5px;
         text-decoration: none;
         font-family: 'Orbitron', sans-serif;
@@ -449,36 +467,34 @@
     }
     .btn-product:hover {
         background: #00ccff;
-        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+        box-shadow: 0 0 25px rgba(0, 204, 255, 0.8);
     }
-
-    /* Estilos para a seção de MMN */
     .mmn {
-        padding: 80px 0;
-        background: rgba(0, 0, 0, 0.9);
+        padding: 100px 0;
+        background: rgba(0, 0, 0, 0.95);
     }
     .mmn h2 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         color: #00ffcc;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     .mmn-content {
         display: flex;
-        gap: 40px;
+        gap: 50px;
         flex-wrap: wrap;
         justify-content: center;
     }
     .mmn-info {
         flex: 1;
-        min-width: 300px;
+        min-width: 320px;
     }
     .mmn-info h3 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 1.8rem;
+        font-size: 2rem;
         color: #00ffcc;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     .mmn-info ul {
         list-style: none;
@@ -486,11 +502,11 @@
     }
     .mmn-info li {
         font-family: 'Roboto', sans-serif;
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: #fff;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         position: relative;
-        padding-left: 20px;
+        padding-left: 25px;
     }
     .mmn-info li:before {
         content: '✔';
@@ -502,68 +518,73 @@
         display: inline-block;
         background: #00ffcc;
         color: #000;
-        padding: 15px 30px;
+        padding: 15px 35px;
         border-radius: 5px;
         text-decoration: none;
         font-family: 'Orbitron', sans-serif;
         transition: all 0.3s ease;
-        margin-top: 20px;
+        margin-top: 25px;
     }
     .btn-mmn:hover {
         background: #00ccff;
-        box-shadow: 0 0 30px rgba(0, 204, 255, 0.5);
+        box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
     }
     .mmn-testimonials {
         flex: 1;
-        min-width: 300px;
+        min-width: 320px;
     }
     .mmn-testimonials h3 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 1.8rem;
+        font-size: 2rem;
         color: #00ffcc;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
-
-    /* Estilos para as seções de Cadastro e Login */
     .cadastro-section, .login-section {
-        padding: 80px 0;
-        background: rgba(0, 0, 0, 0.9);
+        padding: 100px 0;
+        background: rgba(0, 0, 0, 0.95);
         text-align: center;
     }
     .cadastro-container, .login-container {
-        max-width: 500px;
+        max-width: 550px;
         margin: 0 auto;
     }
     .title-glow {
         font-family: 'Orbitron', sans-serif;
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         color: #00ffcc;
-        text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-        margin-bottom: 20px;
+        text-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
+        margin-bottom: 25px;
     }
     .subtitle {
         font-family: 'Roboto', sans-serif;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         color: #fff;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
     }
     .cadastro-form {
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
+    }
+    .form-field label {
+        font-family: 'Roboto', sans-serif;
+        color: #00ffcc;
+        margin-bottom: 5px;
+        display: block;
     }
     .cadastro-form input {
-        padding: 10px;
+        padding: 12px;
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid #00ffcc;
         border-radius: 5px;
         color: #fff;
         font-family: 'Roboto', sans-serif;
+        transition: all 0.3s ease;
     }
     .cadastro-form input:focus {
         outline: none;
         border-color: #00ccff;
-        box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+        box-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
     }
     .cadastro-form button {
         padding: 15px;
@@ -577,34 +598,35 @@
     }
     .cadastro-form button:hover {
         background: #00ccff;
-        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+        box-shadow: 0 0 25px rgba(0, 204, 255, 0.9);
     }
     .form-footer {
         font-family: 'Roboto', sans-serif;
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: #fff;
-        margin-top: 20px;
+        margin-top: 25px;
     }
     .link-glow {
         color: #00ffcc;
         text-decoration: none;
-        transition: color 0.3s ease;
+        transition: all 0.3s ease;
     }
     .link-glow:hover {
         color: #00ccff;
-        text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+        text-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
+    }
+    .error {
+        color: #ff6666;
+        font-size: 0.9rem;
+        margin-top: 5px;
     }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const video = document.getElementById('hero-video');
-        video.onerror = () => {
-            console.error('Erro ao carregar o vídeo:', video.error);
-        };
-        video.onloadeddata = () => {
-            console.log('Vídeo carregado com sucesso!');
-        };
+        video.onerror = () => console.error('Erro ao carregar o vídeo:', video.error);
+        video.onloadeddata = () => console.log('Vídeo carregado com sucesso!');
 
         // Conversão de Moedas
         const currencySelector = document.getElementById('currency-selector');
@@ -625,11 +647,9 @@
         }
 
         currencySelector.addEventListener('change', (e) => {
-            const selectedCurrency = e.target.value;
-            updatePrices(selectedCurrency);
+            updatePrices(e.target.value);
         });
 
-        // Inicializar preços com a moeda padrão
         updatePrices(currencySelector.value);
 
         // Realidade Aumentada
@@ -643,7 +663,7 @@
             });
         });
 
-        // Hologramas com Three.js
+        // Hologramas
         const hologramContainers = document.querySelectorAll('.hologram-product');
         hologramContainers.forEach(container => {
             const scene = new THREE.Scene();
