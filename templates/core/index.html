@@ -1,521 +1,672 @@
 {% extends 'core/base.html' %}
-{% load i18n static %}
+{% load static i18n %}
 
-{% block title %}{% trans "A121 Evolution - A Revolução do Futuro" %}{% endblock %}
-
-{% block extra_head %}
-    <style>
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #fff;
-            overflow: hidden;
-        }
-        .hero-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            filter: brightness(0.5);
-        }
-        .hero .container {
-            z-index: 1;
-        }
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
-        }
-        .hero h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #00ccff;
-        }
-        .hero p {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-        }
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn-primary {
-            background: #00ffcc;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-        }
-        .btn-primary:hover {
-            background: #00ccff;
-            box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
-        }
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid #00ffcc;
-            color: #00ffcc;
-        }
-        .btn-secondary:hover {
-            background: #00ffcc;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-        }
-        .courses, .products, .mmn, .cadastro-section, .login-section {
-            padding: 50px 0;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            text-align: center;
-        }
-        .courses h2, .products h2, .mmn h2, .cadastro-section h2, .login-section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #00ffcc;
-        }
-        .section-subtitle {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-        }
-        .course-grid, .product-grid, .testimonial-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        .course-card, .product-card, .testimonial-card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #00ffcc;
-            border-radius: 10px;
-            padding: 20px;
-            width: 300px;
-            transition: all 0.3s ease;
-        }
-        .course-card:hover, .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-        }
-        .course-card h3, .product-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .course-card p, .product-card p, .testimonial-card p {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-        }
-        .course-image-wrapper, .product-image-wrapper {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        .course-image, .product-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .course-price, .product-price {
-            font-weight: bold;
-            color: #00ccff;
-        }
-        .btn-course, .btn-product, .btn-mmn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background: #00ffcc;
-            color: #000;
-            border-radius: 5px;
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            transition: all 0.3s ease;
-        }
-        .btn-course:hover, .btn-product:hover, .btn-mmn:hover {
-            background: #00ccff;
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
-        }
-        .ar-button {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            background: #00ffcc;
-            color: #000;
-            border-radius: 5px;
-            text-decoration: none;
-            font-family: 'Roboto', sans-serif;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        .ar-button:hover {
-            background: #00ccff;
-        }
-        .testimonials {
-            margin-top: 40px;
-        }
-        .testimonials h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: #00ffcc;
-        }
-        .testimonial-card h4 {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            color: #00ccff;
-            margin-top: 10px;
-        }
-        .mmn-content {
-            display: flex;
-            justify-content: space-between;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-        .mmn-info, .mmn-testimonials {
-            flex: 1;
-            min-width: 300px;
-        }
-        .mmn-info h3, .mmn-testimonials h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: #00ffcc;
-        }
-        .mmn-info ul {
-            list-style: none;
-            padding: 0;
-            text-align: left;
-            margin-bottom: 20px;
-        }
-        .mmn-info ul li {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            position: relative;
-            padding-left: 20px;
-        }
-        .mmn-info ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            color: #00ffcc;
-        }
-        .cadastro-container, .login-container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .title-glow {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: #00ffcc;
-            text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-        }
-        .subtitle {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-        .cadastro-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .cadastro-form p {
-            margin: 0;
-        }
-        .cadastro-form input {
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #00ffcc;
-            border-radius: 5px;
-            color: #fff;
-            font-family: 'Roboto', sans-serif;
-        }
-        .cadastro-form input:focus {
-            outline: none;
-            border-color: #00ccff;
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
-        }
-        .cadastro-form .btn-glow {
-            padding: 10px;
-            background: #00ffcc;
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .cadastro-form .btn-glow:hover {
-            background: #00ccff;
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
-        }
-        .form-footer {
-            margin-top: 15px;
-            font-family: 'Roboto', sans-serif;
-        }
-        .link-glow {
-            color: #00ffcc;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        .link-glow:hover {
-            color: #00ccff;
-        }
-    </style>
+{% block title %}
+{% trans "A121 Evolution - A Revolução do Futuro" %}
 {% endblock %}
 
 {% block content %}
-    <!-- Seção Hero com Mensagens Impactantes -->
-    <section class="hero" id="hero">
-        <video autoplay muted loop class="hero-video">
-            <source src="{% static 'videos/futuristic_background.mp4' %}" type="video/mp4">
-            {% trans "Seu navegador não suporta vídeos." %}
-        </video>
-        <div class="container">
-            <h1>{% trans "A121 Evolution" %}</h1>
-            <h2>{% trans "Faça Parte da Revolução Global do Futuro" %}</h2>
-            <p>{% trans "Transforme sua vida com tecnologia, inovação e oportunidades ilimitadas. O futuro começa com você!" %}</p>
-            <div class="hero-buttons">
-                <a href="{% url 'core:cursos' %}" class="btn btn-primary">{% trans "Explore Nossos Cursos" %}</a>
-                <a href="{% url 'core:index' %}#mmn" class="btn btn-secondary">{% trans "Descubra Nosso Negócio" %}</a>
+<!-- Seção Hero com Mensagens Impactantes -->
+<section class="hero" id="hero">
+    <video id="hero-video" autoplay muted loop preload="auto" class="hero-video">
+        <source src="{% static 'videos/futuristic_background.mp4' %}" type="video/mp4">
+        {% trans "Seu navegador não suporta vídeos." %}
+    </video>
+    <div class="container">
+        <h1>{% trans "A121 Evolution" %}</h1>
+        <h2>{% trans "Faça Parte da Revolução Global do Futuro" %}</h2>
+        <p>{% trans "Transforme sua vida com tecnologia, inovação e oportunidades ilimitadas. O futuro começa com você!" %}</p>
+        <div class="hero-buttons">
+            <a href="{% url 'core:cursos' %}" class="btn btn-primary">{% trans "Explore Nossos Cursos" %}</a>
+            <a href="{% url 'core:index' %}#mmn" class="btn btn-secondary">{% trans "Descubra Nosso Negócio" %}</a>
+        </div>
+    </div>
+</section>
+
+<!-- Seção de Cursos -->
+<section class="courses" id="cursos">
+    <div class="container">
+        <h2>{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
+        <p class="section-subtitle">{% trans "Domine finanças, IA e leilões para transformar sua vida e seus negócios." %}</p>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="course-image-wrapper">
+                    <img src="{% static 'images/A121.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image">
+                </div>
+                <h3>{% trans "Introdução à IA para Criadores" %}</h3>
+                <p>{% trans "Aprenda como usar inteligência artificial para criar conteúdo inovador e automatizar processos." %}</p>
+                <p>{% trans "Preço" %}: <span class="course-price" data-price="249.90">249.90 €</span></p>
+                <p>{% trans "Duração" %}: 12 {% trans "horas" %}</p>
+                <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
+            </div>
+            <div class="course-card">
+                <div class="course-image-wrapper">
+                    <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image">
+                </div>
+                <h3>{% trans "Finanças para Criadores de Conteúdo" %}</h3>
+                <p>{% trans "Domine suas finanças pessoais e aprenda a lucrar mais com seus conteúdos." %}</p>
+                <p>{% trans "Preço" %}: <span class="course-price" data-price="199.90">199.90 €</span></p>
+                <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
+                <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
+            </div>
+            <div class="course-card">
+                <div class="course-image-wrapper">
+                    <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'Leilões Lucrativos' %}" class="course-image">
+                </div>
+                <h3>{% trans "Leilões Lucrativos" %}</h3>
+                <p>{% trans "Descubra como ganhar dinheiro com leilões online e físicos, passo a passo." %}</p>
+                <p>{% trans "Preço" %}: <span class="course-price" data-price="299.90">299.90 €</span></p>
+                <p>{% trans "Duração" %}: 15 {% trans "horas" %}</p>
+                <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
             </div>
         </div>
-    </section>
-
-    <!-- Seção de Cursos -->
-    <section class="courses" id="cursos">
-        <div class="container">
-            <h2>{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
-            <p class="section-subtitle">{% trans "Domine finanças, IA e leilões para transformar sua vida e seus negócios." %}</p>
-            <div class="course-grid">
-                <div class="course-card">
-                    <div class="course-image-wrapper">
-                        <img src="{% static 'images/A121.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image">
-                    </div>
-                    <h3>{% trans "Introdução à IA para Criadores" %}</h3>
-                    <p>{% trans "Aprenda como usar inteligência artificial para criar conteúdo inovador e automatizar processos." %}</p>
-                    <p>{% trans "Preço" %}: <span class="course-price" data-price="249.90">249.90 €</span></p>
-                    <p>{% trans "Duração" %}: 12 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
+        <!-- Depoimentos -->
+        <div class="testimonials">
+            <h3>{% trans "O que Nossos Alunos Dizem" %}</h3>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>{% trans "“O curso de IA mudou minha forma de criar conteúdo. Hoje, automatizo tudo e ganho mais!”" %}</p>
+                    <h4>{% trans "João Silva, Criador de Conteúdo" %}</h4>
                 </div>
-                <div class="course-card">
-                    <div class="course-image-wrapper">
-                        <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image">
-                    </div>
-                    <h3>{% trans "Finanças para Criadores de Conteúdo" %}</h3>
-                    <p>{% trans "Domine suas finanças pessoais e aprenda a lucrar mais com seus conteúdos." %}</p>
-                    <p>{% trans "Preço" %}: <span class="course-price" data-price="199.90">199.90 €</span></p>
-                    <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
-                </div>
-                <div class="course-card">
-                    <div class="course-image-wrapper">
-                        <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'Leilões Lucrativos' %}" class="course-image">
-                    </div>
-                    <h3>{% trans "Leilões Lucrativos" %}</h3>
-                    <p>{% trans "Descubra como ganhar dinheiro com leilões online e físicos, passo a passo." %}</p>
-                    <p>{% trans "Preço" %}: <span class="course-price" data-price="299.90">299.90 €</span></p>
-                    <p>{% trans "Duração" %}: 15 {% trans "horas" %}</p>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
-                </div>
-            </div>
-            <!-- Depoimentos -->
-            <div class="testimonials">
-                <h3>{% trans "O que Nossos Alunos Dizem" %}</h3>
-                <div class="testimonial-grid">
-                    <div class="testimonial-card">
-                        <p>{% trans "“O curso de IA mudou minha forma de criar conteúdo. Hoje, automatizo tudo e ganho mais!”" %}</p>
-                        <h4>{% trans "João Silva, Criador de Conteúdo" %}</h4>
-                    </div>
-                    <div class="testimonial-card">
-                        <p>{% trans "“Aprendi a investir com o curso de finanças. Minha renda triplicou em 6 meses!”" %}</p>
-                        <h4>{% trans "Maria Oliveira, Empreendedora" %}</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção de Produtos (iPhones) com Realidade Aumentada -->
-    <section class="products" id="produtos">
-        <div class="container">
-            <h2>{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
-            <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro. Visualize em Realidade Aumentada!" %}</p>
-            <div class="product-grid">
-                <div class="product-card" data-product="iphone15">
-                    <div class="hologram-product hologram-iphone15"></div>
-                    <div class="product-image-wrapper">
-                        <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image">
-                        <!-- Realidade Aumentada -->
-                        <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
-                        <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-                            <a-assets>
-                                <a-asset-item id="iphone15-model" src="{% static 'models/iphone15.glb' %}"></a-asset-item>
-                            </a-assets>
-                            <a-entity gltf-model="#iphone15-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
-                            <a-marker-camera preset="hiro"></a-marker-camera>
-                        </a-scene>
-                    </div>
-                    <h3>{% trans "iPhone 15 Pro Max (512GB)" %}</h3>
-                    <p>{% trans "O mais avançado iPhone com câmera revolucionária e desempenho incomparável." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="1399.00">1399.00 €</span></p>
-                    <a href="#" class="btn btn-product view-product" data-product="iphone15">{% trans "Comprar Agora" %}</a>
-                </div>
-                <div class="product-card" data-product="iphone16">
-                    <div class="hologram-product hologram-iphone16"></div>
-                    <div class="product-image-wrapper">
-                        <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image">
-                        <!-- Realidade Aumentada -->
-                        <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
-                        <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-                            <a-assets>
-                                <a-asset-item id="iphone16-model" src="{% static 'models/iphone16.glb' %}"></a-asset-item>
-                            </a-assets>
-                            <a-entity gltf-model="#iphone16-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
-                            <a-marker-camera preset="hiro"></a-marker-camera>
-                        </a-scene>
-                    </div>
-                    <h3>{% trans "iPhone 16 Pro Max Titânio Deserto" %}</h3>
-                    <p>{% trans "Design futurista com tecnologia de ponta para o futuro." %}</p>
-                    <p>{% trans "Preço" %}: <span class="product-price" data-price="1499.00">1499.00 €</span></p>
-                    <a href="#" class="btn btn-product view-product" data-product="iphone16">{% trans "Comprar Agora" %}</a>
+                <div class="testimonial-card">
+                    <p>{% trans "“Aprendi a investir com o curso de finanças. Minha renda triplicou em 6 meses!”" %}</p>
+                    <h4>{% trans "Maria Oliveira, Empreendedora" %}</h4>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Seção de Marketing Multinível -->
-    <section class="mmn" id="mmn">
-        <div class="container">
-            <h2>{% trans "Marketing Multinível A121 Evolution" %}</h2>
-            <p class="section-subtitle">{% trans "Transforme sua vida financeira com nosso plano de MMN revolucionário!" %}</p>
-            <div class="mmn-content">
-                <div class="mmn-info">
-                    <h3>{% trans "Por que Escolher Nosso MMN?" %}</h3>
-                    <ul>
-                        <li>{% trans "Comissões de até 50% por indicação direta." %}</li>
-                        <li>{% trans "Bônus por equipes de até 7 níveis." %}</li>
-                        <li>{% trans "Treinamento exclusivo para líderes." %}</li>
-                        <li>{% trans "Pagamentos semanais e transparentes." %}</li>
-                    </ul>
-                    <a href="{% url 'core:cadastro' %}" class="btn btn-mmn">{% trans "Junte-se Agora" %}</a>
+<!-- Seção de Produtos (iPhones) com Realidade Aumentada -->
+<section class="products" id="produtos">
+    <div class="container">
+        <h2>{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
+        <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro. Visualize em Realidade Aumentada!" %}</p>
+        <div class="product-grid">
+            <div class="product-card" data-product="iphone15">
+                <div class="hologram-product hologram-iphone15"></div>
+                <div class="product-image-wrapper">
+                    <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image">
+                    <!-- Realidade Aumentada -->
+                    <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
+                    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+                        <a-assets>
+                            <a-asset-item id="iphone15-model" src="{% static 'models/iphone15.glb' %}"></a-asset-item>
+                        </a-assets>
+                        <a-entity gltf-model="#iphone15-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
+                        <a-marker-camera preset="hiro"></a-marker-camera>
+                    </a-scene>
                 </div>
-                <div class="mmn-testimonials">
-                    <h3>{% trans "Histórias de Sucesso" %}</h3>
-                    <div class="testimonial-card">
-                        <p>{% trans "“Em 3 meses, ganhei €10.000 com o MMN da A121. Minha vida mudou!”" %}</p>
-                        <h4>{% trans "Carlos Mendes, Líder de Equipe" %}</h4>
-                    </div>
-                    <div class="testimonial-card">
-                        <p>{% trans "“O treinamento da A121 me transformou em um líder. Hoje, minha equipe fatura milhões!”" %}</p>
-                        <h4>{% trans "Ana Costa, Empreendedora" %}</h4>
-                    </div>
+                <h3>{% trans "iPhone 15 Pro Max (512GB)" %}</h3>
+                <p>{% trans "O mais avançado iPhone com câmera revolucionária e desempenho incomparável." %}</p>
+                <p>{% trans "Preço" %}: <span class="product-price" data-price="1399.00">1399.00 €</span></p>
+                <a href="#" class="btn btn-product view-product" data-product="iphone15">{% trans "Comprar Agora" %}</a>
+            </div>
+            <div class="product-card" data-product="iphone16">
+                <div class="hologram-product hologram-iphone16"></div>
+                <div class="product-image-wrapper">
+                    <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image">
+                    <!-- Realidade Aumentada -->
+                    <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
+                    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+                        <a-assets>
+                            <a-asset-item id="iphone16-model" src="{% static 'models/iphone16.glb' %}"></a-asset-item>
+                        </a-assets>
+                        <a-entity gltf-model="#iphone16-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
+                        <a-marker-camera preset="hiro"></a-marker-camera>
+                    </a-scene>
+                </div>
+                <h3>{% trans "iPhone 16 Pro Max Titânio Deserto" %}</h3>
+                <p>{% trans "Design futurista com tecnologia de ponta para o futuro." %}</p>
+                <p>{% trans "Preço" %}: <span class="product-price" data-price="1499.00">1499.00 €</span></p>
+                <a href="#" class="btn btn-product view-product" data-product="iphone16">{% trans "Comprar Agora" %}</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seção de Marketing Multinível -->
+<section class="mmn" id="mmn">
+    <div class="container">
+        <h2>{% trans "Marketing Multinível A121 Evolution" %}</h2>
+        <p class="section-subtitle">{% trans "Transforme sua vida financeira com nosso plano de MMN revolucionário!" %}</p>
+        <div class="mmn-content">
+            <div class="mmn-info">
+                <h3>{% trans "Por que Escolher Nosso MMN?" %}</h3>
+                <ul>
+                    <li>{% trans "Comissões de até 50% por indicação direta." %}</li>
+                    <li>{% trans "Bônus por equipes de até 7 níveis." %}</li>
+                    <li>{% trans "Treinamento exclusivo para líderes." %}</li>
+                    <li>{% trans "Pagamentos semanais e transparentes." %}</li>
+                </ul>
+                <a href="{% url 'core:cadastro' %}" class="btn btn-mmn">{% trans "Junte-se Agora" %}</a>
+            </div>
+            <div class="mmn-testimonials">
+                <h3>{% trans "Histórias de Sucesso" %}</h3>
+                <div class="testimonial-card">
+                    <p>{% trans "“Em 3 meses, ganhei €10.000 com o MMN da A121. Minha vida mudou!”" %}</p>
+                    <h4>{% trans "Carlos Mendes, Líder de Equipe" %}</h4>
+                </div>
+                <div class="testimonial-card">
+                    <p>{% trans "“O treinamento da A121 me transformou em um líder. Hoje, minha equipe fatura milhões!”" %}</p>
+                    <h4>{% trans "Ana Costa, Empreendedora" %}</h4>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Seção de Cadastro Avançado -->
-    <section class="cadastro-section" id="cadastro">
-        <div class="cadastro-container">
-            <h2 class="title-glow">{% trans "Junte-se à Revolução A121" %}</h2>
-            <p class="subtitle">{% trans "Registre-se agora e desbloqueie um mundo de oportunidades!" %}</p>
-            <form class="cadastro-form" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn-glow">{% trans "Registrar-se" %}</button>
-            </form>
-            <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}" class="link-glow">{% trans "Faça Login" %}</a></p>
-        </div>
-    </section>
+<!-- Seção de Cadastro Avançado -->
+<section class="cadastro-section" id="cadastro">
+    <div class="cadastro-container">
+        <h2 class="title-glow">{% trans "Junte-se à Revolução A121" %}</h2>
+        <p class="subtitle">{% trans "Registre-se agora e desbloqueie um mundo de oportunidades!" %}</p>
+        <form class="cadastro-form" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-glow">{% trans "Registrar-se" %}</button>
+        </form>
+        <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}" class="link-glow">{% trans "Faça Login" %}</a></p>
+    </div>
+</section>
 
-    <!-- Seção de Login -->
-    <section class="login-section" id="login">
-        <div class="login-container">
-            <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
-            <p class="subtitle">{% trans "Faça login para acessar suas oportunidades!" %}</p>
-            <form class="cadastro-form" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn-glow">{% trans "Entrar" %}</button>
-            </form>
-            <p class="form-footer">{% trans "Não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Registre-se" %}</a></p>
-        </div>
-    </section>
-{% endblock %}
+<!-- Seção de Login -->
+<section class="login-section" id="login">
+    <div class="login-container">
+        <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
+        <p class="subtitle">{% trans "Faça login para acessar suas oportunidades!" %}</p>
+        <form class="cadastro-form" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-glow">{% trans "Entrar" %}</button>
+        </form>
+        <p class="form-footer">{% trans "Não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Registre-se" %}</a></p>
+    </div>
+</section>
 
-{% block extra_js %}
-    <script>
-        // Garantir que o modal de chat não abra automaticamente
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('modal');
-            modal.style.display = 'none'; // Esconde o modal ao carregar a página
+<style>
+    /* Estilos para a seção Hero */
+    .hero {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+    }
+    .hero-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+    .hero h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 4rem;
+        color: #00ffcc;
+        text-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+        margin-bottom: 20px;
+    }
+    .hero h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        color: #fff;
+        text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+        margin-bottom: 20px;
+    }
+    .hero p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.5rem;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        margin-bottom: 30px;
+    }
+    .hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+    .btn {
+        padding: 15px 30px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        transition: all 0.3s ease;
+    }
+    .btn-primary {
+        background: #00ffcc;
+        color: #000;
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+    .btn-primary:hover {
+        background: #00ccff;
+        box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
+    }
+    .btn-secondary {
+        background: transparent;
+        border: 2px solid #00ffcc;
+        color: #00ffcc;
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+    .btn-secondary:hover {
+        background: #00ffcc;
+        color: #000;
+        box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
+    }
 
-            // Controlar a visualização em AR
-            const arButtons = document.querySelectorAll('.ar-button');
-            arButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const scene = button.nextElementSibling;
-                    const model = scene.querySelector('a-entity');
-                    model.setAttribute('visible', 'true');
+    /* Estilos para a seção de Cursos */
+    .courses {
+        padding: 80px 0;
+        background: rgba(0, 0, 0, 0.9);
+    }
+    .courses h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        color: #00ffcc;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .section-subtitle {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.2rem;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    .course-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #00ffcc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    .course-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+    }
+    .course-image-wrapper {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    .course-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    .course-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        color: #00ffcc;
+        margin-bottom: 10px;
+    }
+    .course-card p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+    .course-price {
+        font-weight: bold;
+        color: #00ffcc;
+    }
+    .btn-course {
+        background: #00ffcc;
+        color: #000;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        transition: all 0.3s ease;
+    }
+    .btn-course:hover {
+        background: #00ccff;
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+    }
+    .testimonials {
+        margin-top: 60px;
+    }
+    .testimonials h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        color: #00ffcc;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    .testimonial-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #00ffcc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+    }
+    .testimonial-card p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+    .testimonial-card h4 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #00ffcc;
+    }
+
+    /* Estilos para a seção de Produtos */
+    .products {
+        padding: 80px 0;
+        background: rgba(0, 0, 0, 0.9);
+    }
+    .products h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        color: #00ffcc;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    .product-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #00ffcc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+    }
+    .product-image-wrapper {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    .ar-button {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: #00ffcc;
+        color: #000;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        transition: all 0.3s ease;
+    }
+    .ar-button:hover {
+        background: #00ccff;
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+    }
+    .product-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        color: #00ffcc;
+        margin-bottom: 10px;
+    }
+    .product-card p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+    .product-price {
+        font-weight: bold;
+        color: #00ffcc;
+    }
+    .btn-product {
+        background: #00ffcc;
+        color: #000;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        transition: all 0.3s ease;
+    }
+    .btn-product:hover {
+        background: #00ccff;
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+    }
+
+    /* Estilos para a seção de MMN */
+    .mmn {
+        padding: 80px 0;
+        background: rgba(0, 0, 0, 0.9);
+    }
+    .mmn h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        color: #00ffcc;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .mmn-content {
+        display: flex;
+        gap: 40px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .mmn-info {
+        flex: 1;
+        min-width: 300px;
+    }
+    .mmn-info h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.8rem;
+        color: #00ffcc;
+        margin-bottom: 20px;
+    }
+    .mmn-info ul {
+        list-style: none;
+        padding: 0;
+    }
+    .mmn-info li {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: #fff;
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 20px;
+    }
+    .mmn-info li:before {
+        content: '✔';
+        position: absolute;
+        left: 0;
+        color: #00ffcc;
+    }
+    .btn-mmn {
+        display: inline-block;
+        background: #00ffcc;
+        color: #000;
+        padding: 15px 30px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+    }
+    .btn-mmn:hover {
+        background: #00ccff;
+        box-shadow: 0 0 30px rgba(0, 204, 255, 0.5);
+    }
+    .mmn-testimonials {
+        flex: 1;
+        min-width: 300px;
+    }
+    .mmn-testimonials h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.8rem;
+        color: #00ffcc;
+        margin-bottom: 20px;
+    }
+
+    /* Estilos para as seções de Cadastro e Login */
+    .cadastro-section, .login-section {
+        padding: 80px 0;
+        background: rgba(0, 0, 0, 0.9);
+        text-align: center;
+    }
+    .cadastro-container, .login-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .title-glow {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        color: #00ffcc;
+        text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        margin-bottom: 20px;
+    }
+    .subtitle {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.2rem;
+        color: #fff;
+        margin-bottom: 30px;
+    }
+    .cadastro-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .cadastro-form input {
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #00ffcc;
+        border-radius: 5px;
+        color: #fff;
+        font-family: 'Roboto', sans-serif;
+    }
+    .cadastro-form input:focus {
+        outline: none;
+        border-color: #00ccff;
+        box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+    }
+    .cadastro-form button {
+        padding: 15px;
+        background: #00ffcc;
+        color: #000;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Orbitron', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .cadastro-form button:hover {
+        background: #00ccff;
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+    }
+    .form-footer {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: #fff;
+        margin-top: 20px;
+    }
+    .link-glow {
+        color: #00ffcc;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    .link-glow:hover {
+        color: #00ccff;
+        text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('hero-video');
+        video.onerror = () => {
+            console.error('Erro ao carregar o vídeo:', video.error);
+        };
+        video.onloadeddata = () => {
+            console.log('Vídeo carregado com sucesso!');
+        };
+
+        // Conversão de Moedas
+        const currencySelector = document.getElementById('currency-selector');
+        const prices = document.querySelectorAll('.course-price, .product-price');
+
+        async function updatePrices(currency) {
+            try {
+                const response = await fetch(`/get_exchange_rate/?base=${currency}`);
+                const rates = await response.json();
+                prices.forEach(price => {
+                    const basePrice = parseFloat(price.getAttribute('data-price'));
+                    const convertedPrice = (basePrice * rates[currency]).toFixed(2);
+                    price.textContent = `${convertedPrice} ${currency}`;
                 });
-            });
-
-            // Atualizar preços com base na moeda selecionada
-            const currencySelector = document.getElementById('currency-selector');
-            currencySelector.addEventListener('change', (e) => {
-                const currency = e.target.value;
-                fetch('/change_currency/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: `currency=${currency}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        updatePrices(currency);
-                    }
-                });
-            });
-
-            function updatePrices(currency) {
-                fetch('/get_exchange_rate/?base=EUR')
-                    .then(response => response.json())
-                    .then(data => {
-                        const rates = data.rates;
-                        const prices = document.querySelectorAll('.course-price, .product-price');
-                        prices.forEach(price => {
-                            const basePrice = parseFloat(price.getAttribute('data-price'));
-                            const newPrice = (basePrice * rates[currency]).toFixed(2);
-                            price.textContent = `${newPrice} ${currency}`;
-                        });
-                    });
+            } catch (error) {
+                console.error('Erro ao atualizar preços:', error);
             }
+        }
 
-            // Inicializar preços na moeda padrão
-            updatePrices(currencySelector.value);
+        currencySelector.addEventListener('change', (e) => {
+            const selectedCurrency = e.target.value;
+            updatePrices(selectedCurrency);
         });
-    </script>
+
+        // Inicializar preços com a moeda padrão
+        updatePrices(currencySelector.value);
+
+        // Realidade Aumentada
+        const arButtons = document.querySelectorAll('.ar-button');
+        arButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const scene = button.nextElementSibling;
+                const model = scene.querySelector('a-entity');
+                model.setAttribute('visible', 'true');
+            });
+        });
+
+        // Hologramas com Three.js
+        const hologramContainers = document.querySelectorAll('.hologram-product');
+        hologramContainers.forEach(container => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            const geometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
+            const torusKnot = new THREE.Mesh(geometry, material);
+            scene.add(torusKnot);
+
+            camera.position.z = 2;
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                torusKnot.rotation.x += 0.01;
+                torusKnot.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            };
+            animate();
+        });
+    });
+</script>
 {% endblock %}

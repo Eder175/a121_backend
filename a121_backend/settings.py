@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'a121_backend.middleware.NgrokHostMiddleware',  # Middleware personalizado
+    'a121_backend.middleware.RangeFileMiddleware',  # Novo middleware para suportar Range
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
