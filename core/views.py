@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+import json
 from django.http import JsonResponse
-from core.models import A121CoinSupply, A121Coin
-from django.core.exceptions import ValidationError
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-import json
+from core.models import A121CoinSupply, A121Coin, A121CoinTransaction
 
 def index(request):
     return render(request, 'core/index.html')
@@ -40,7 +41,12 @@ def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('senha')
-        user = authenticate(request, username=email, password=password)
+        # Autenticar usando email como username
+        try:
+            user = User.objects.get(email=email)
+            user = authenticate(request, username=user.username, password=password)
+        except User.DoesNotExist:
+            user = None
         if user is not None:
             auth_login(request, user)
             messages.success(request, 'Login realizado com sucesso!')
@@ -114,40 +120,66 @@ def get_exchange_rate(request):
     }
     return JsonResponse({'rates': rates.get(base, rates['EUR'])})
 
+@csrf_exempt
+@login_required
 def chat_interaction(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             data = json.loads(request.body)
-            message = data.get('message', '')
+            user_message = data.get("message", "").lower().strip()
 
-            # Lógica de resposta do A121Bot
-            response_message = "Olá! Bem-vindo à A121 Evolution! Como posso te ajudar hoje?"
-            if 'curso' in message.lower():
-                response_message = "Recomendo o curso de Introdução à IA! Quer saber mais?"
-            elif 'olá' in message.lower() or 'oi' in message.lower():
-                response_message = "Oi! Como posso te ajudar hoje?"
-            elif 'lesson_completed' in message.lower():
-                response_message = "Parabéns por completar a lição de idioma! Você ganhou 5 A121Coin!"
+            if not user_message:
+                return JsonResponse({"error": "Mensagem não fornecida"}, status=400)
 
-            # Distribuir A121Coin por interação
-            supply = A121CoinSupply.objects.first()
-            if supply:
-                amount = 5.00 if 'lesson_completed' in message.lower() else 1.00
-                supply.distribute(
-                    amount=amount,
-                    user=None,  # Não associar a um usuário por agora
-                    description="Interação com A121Bot" if amount == 1.00 else "Lição de idioma completada"
-                )
+            # Simulação de respostas do Grok (substitui o Dialogflow)
+            response_message = simulate_grok_response(user_message, request.user)
+
+            # Adicionar A121Coin por interação (gamificação)
+            if "lesson_completed" in user_message:
+                # Recompensa por completar uma lição
+                amount = 5
+            else:
+                # Recompensa por interação normal
+                amount = 1
+
+            # Registrar a transação de A121Coin
+            transaction = A121CoinTransaction.objects.create(
+                user=request.user,
+                amount=amount,
+                description=f"Interação com o chat: {user_message[:50]}"
+            )
+
+            # Calcular o saldo total de A121Coin do usuário
+            total_balance = sum(t.amount for t in A121CoinTransaction.objects.filter(user=request.user))
 
             return JsonResponse({
-                'response': response_message,
-                'a121coin_balance': float(sum(t.amount for t in A121Coin.objects.all()))
-            })
-        except ValidationError as e:
-            return JsonResponse({'error': str(e)}, status=400)
+                "response": response_message,
+                "a121coin_balance": total_balance
+            }, status=200)
+
         except Exception as e:
-            return JsonResponse({'error': 'Erro ao processar a interação.'}, status=500)
-    return JsonResponse({'error': 'Método não permitido.'}, status=405)
+            return JsonResponse({"error": f"Erro interno: {str(e)}"}, status=500)
+
+    return JsonResponse({"error": "Método não permitido"}, status=405)
+
+def simulate_grok_response(message, user):
+    """
+    Simula respostas do Grok com base na mensagem do usuário.
+    Em um ambiente real, isso seria uma chamada à API da xAI.
+    """
+    # Respostas baseadas em padrões
+    if "curso" in message:
+        return "Olá! Vejo que você está interessado em cursos. Na A121 Evolution, temos cursos incríveis como 'Introdução à IA para Criadores' e 'Finanças para Criadores de Conteúdo'. Qual você gostaria de explorar?"
+    elif "inglês" in message or "idioma" in message:
+        return "Você quer aprender inglês? Posso te ajudar com isso! Vamos começar com uma frase simples: 'Hello! How are you?' Tente repetir ou me peça mais exemplos!"
+    elif "iphone" in message or "produto" in message:
+        return "Você está interessado nos nossos iPhones exclusivos! Temos o iPhone 15 Pro Max e o iPhone 16 Pro Max Titânio Deserto. Qual você gostaria de saber mais? Ou prefere visualizar em realidade aumentada?"
+    elif "mmn" in message or "negócio" in message:
+        return "Nosso programa de Marketing Multinível é revolucionário! Você pode ganhar comissões de até 50% por indicação direta e bônus por equipes de até 7 níveis. Quer se juntar agora?"
+    elif "lesson_completed" in message:
+        return "Parabéns por completar a lição! Você ganhou 5 A121Coin como recompensa. Continue interagindo para ganhar mais!"
+    else:
+        return "Olá! Sou o Grok, criado pela xAI. Como posso te ajudar hoje? Você pode me perguntar sobre cursos, iPhones, nosso programa de MMN ou até aprender idiomas comigo!"
 
 def logout(request):
     auth_logout(request)
