@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
+from core import views
 
-app_name = 'core'  # Define o namespace da aplicação
+app_name = 'core'
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('change_currency/', views.change_currency, name='change_currency'),
     path('get_exchange_rate/', views.get_exchange_rate, name='get_exchange_rate'),
-    path('chat/', views.chat_with_dialogflow, name='chat_with_dialogflow'),
+    path('chat/', views.chat, name='chat'),  # Alterado de 'chat_with_dialogflow' para 'chat'
 ]
