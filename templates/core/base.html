@@ -445,13 +445,9 @@
         const chatbotInput = document.getElementById('chatbot-input');
         const chatbotText = document.getElementById('chatbot-text');
         const chatbotVrScene = document.getElementById('chatbot-vr-scene');
-        let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
-        let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
-        let userEngagement = 0;
-        let userInterests = [];
+        let detectedLanguage = '{{ LANGUAGE_CODE|default:"pt-br" }}';
         let languageLessonActive = false;
         let currentLesson = null;
-        let detectedLanguage = '{{ LANGUAGE_CODE|default:"pt-br" }}';
 
         // Reconhecimento de Voz
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -517,7 +513,7 @@
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         });
 
-        // Detectar Idioma da Mensagem (Robusto, sem franc)
+        // Detectar Idioma da Mensagem
         function detectLanguage(message) {
             const lowerMessage = message.toLowerCase();
             const languageKeywords = {
@@ -536,51 +532,25 @@
             return 'pt-br'; // Padrão: Português
         }
 
-        // Traduzir Mensagem (Simulação)
-        function translateMessage(message, targetLang) {
-            const translations = {
-                'pt-br': {
-                    'en': {
-                        'Olá': 'Hello',
-                        'Como posso te ajudar hoje?': 'How can I help you today?',
-                        'Você gostaria de saber sobre cursos?': 'Would you like to know about courses?'
-                    },
-                    'es': {
-                        'Olá': 'Hola',
-                        'Como posso te ajudar hoje?': '¿Cómo puedo ayudarte hoy?',
-                        'Você gostaria de saber sobre cursos?': '¿Te gustaría saber sobre cursos?'
-                    },
-                    'fr': {
-                        'Olá': 'Bonjour',
-                        'Como posso te ajudar hoje?': 'Comment puis-je vous aider aujourd’hui ?',
-                        'Você gostaria de saber sobre cursos?': 'Voulez-vous en savoir plus sur les cours ?'
-                    },
-                    'de': {
-                        'Olá': 'Hallo',
-                        'Como posso te ajudar hoje?': 'Wie kann ich dir heute helfen?',
-                        'Você gostaria de saber sobre cursos?': 'Möchtest du mehr über Kurse erfahren?'
-                    }
-                },
-                'en': {
-                    'pt-br': {
-                        'Hello': 'Olá',
-                        'How can I help you today?': 'Como posso te ajudar hoje?',
-                        'Would you like to know about courses?': 'Você gostaria de saber sobre cursos?'
+        // Função para obter o CSRF Token
+        function getCsrfToken() {
+            const name = 'csrftoken';
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
                     }
                 }
-            };
-            if (translations[detectedLanguage] && translations[detectedLanguage][targetLang]) {
-                return translations[detectedLanguage][targetLang][message] || message;
             }
-            return message;
+            return cookieValue;
         }
 
         // Processar Mensagens
         async function processMessage(message, targetElement = chatbotMessages) {
-            userEngagement += 1;
-            userA121Coin += 1;
-            localStorage.setItem('userA121Coin', userA121Coin);
-
             // Adicionar mensagem do usuário
             targetElement.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
             targetElement.scrollTop = targetElement.scrollHeight;
@@ -601,10 +571,28 @@
                             lessonResponse += ` {% trans "Próxima frase:" %} ${currentLesson.phrases[currentLesson.step].en}`;
                         } else {
                             lessonResponse += ` {% trans "Parabéns! Você completou a lição. Ganhou 5 A121Coin!" %}`;
-                            userA121Coin += 5;
-                            localStorage.setItem('userA121Coin', userA121Coin);
                             languageLessonActive = false;
                             currentLesson = null;
+
+                            // Enviar solicitação ao backend para adicionar 5 A121Coin
+                            try {
+                                const response = await fetch("{% url 'core:chat_interaction' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': getCsrfToken(),
+                                    },
+                                    body: JSON.stringify({ message: 'lesson_completed' }),
+                                });
+
+                                const data = await response.json();
+                                if (response.ok) {
+                                    const a121coinBalance = data.a121coin_balance;
+                                    targetElement.innerHTML += `<p>{% trans "Saldo total de A121Coin:" %} ${a121coinBalance}</p>`;
+                                }
+                            } catch (error) {
+                                console.error('Erro ao registrar A121Coin:', error);
+                            }
                         }
                     } else {
                         lessonResponse = `{% trans "A121Bot: Quase! A frase correta é:" %} ${expectedPhrase}. {% trans "Tente novamente!" %}`;
@@ -621,77 +609,43 @@
                 return;
             }
 
-            // Identificar Interesses do Usuário
-            if (message.toLowerCase().includes('tecnologia') || message.toLowerCase().includes('technology')) {
-                userInterests.push('technology');
-            } else if (message.toLowerCase().includes('finanças') || message.toLowerCase().includes('finance')) {
-                userInterests.push('finance');
-            } else if (message.toLowerCase().includes('leilões') || message.toLowerCase().includes('auctions')) {
-                userInterests.push('auctions');
-            }
+            // Enviar mensagem ao backend
+            try {
+                const response = await fetch("{% url 'core:chat_interaction' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                    body: JSON.stringify({ message: message }),
+                });
 
-            // Respostas Inteligentes
-            let responseMessage;
-            if (message.toLowerCase().includes('ola') || message.toLowerCase().includes('olá') || message.toLowerCase().includes('hello')) {
-                responseMessage = translateMessage('Olá! Bem-vindo à A121 Evolution! Como posso te ajudar hoje? Que tal explorar nossos cursos ou ganhar A121Coin?', detectedLanguage);
-            } else if (message.toLowerCase().includes('curso') || message.toLowerCase().includes('cursos') || message.toLowerCase().includes('course') || message.toLowerCase().includes('courses')) {
-                responseMessage = translateMessage('Recomendo o curso de Introdução à IA! Quer saber mais? Ou prefere o curso de Finanças Pessoais?', detectedLanguage);
-                if (userInterests.includes('technology')) {
-                    responseMessage += ` {% trans "Você parece interessado em tecnologia! Nosso curso de Introdução à IA é perfeito para você!" %}`;
-                } else if (userInterests.includes('finance')) {
-                    responseMessage += ` {% trans "Você parece interessado em finanças! Nosso curso de Finanças Pessoais pode te ajudar a lucrar mais!" %}`;
-                }
-            } else if (message.toLowerCase().includes('a121coin') || message.toLowerCase().includes('saldo')) {
-                responseMessage = `{% trans "Seu saldo é" %} ${userA121Coin} A121Coin. {% trans "Continue interagindo para ganhar mais!" %}`;
-            } else if (message.toLowerCase().includes('nft')) {
-                if (userA121Coin >= 5) {
-                    const nftId = `A121-NFT-${Math.random().toString(36).substr(2, 9)}`;
-                    userNFTs.push(nftId);
-                    localStorage.setItem('userNFTs', JSON.stringify(userNFTs));
-                    responseMessage = `{% trans "Parabéns! Você ganhou um NFT Holográfico Único! ID:" %} ${nftId}`;
+                const data = await response.json();
+
+                if (response.ok) {
+                    const responseMessage = data.response;
+                    const a121coinBalance = data.a121coin_balance;
+
+                    // Atualizar Holograma
+                    chatbotText.setAttribute('value', responseMessage);
+
+                    // Atualizar texto em VR, se ativo
+                    const vrChatbotText = document.getElementById('vr-chatbot-text');
+                    if (vrChatbotText) {
+                        vrChatbotText.setAttribute('value', responseMessage);
+                    }
+
+                    // Adicionar resposta do Chatbot
+                    targetElement.innerHTML += `<p>{% trans "A121Bot:" %} ${responseMessage}</p>`;
+                    targetElement.innerHTML += `<p>{% trans "Saldo total de A121Coin:" %} ${a121coinBalance}</p>`;
                 } else {
-                    responseMessage = `{% trans "Você precisa de pelo menos 5 A121Coin para ganhar um NFT. Continue interagindo!" %}`;
+                    targetElement.innerHTML += `<p>{% trans "A121Bot: Erro ao processar sua mensagem. Tente novamente!" %}</p>`;
+                    console.error('Erro:', data.error);
                 }
-            } else if (message.toLowerCase().includes('ensine-me') || message.toLowerCase().includes('teach me')) {
-                languageLessonActive = true;
-                currentLesson = {
-                    language: 'en',
-                    topic: 'technology',
-                    level: 'beginner',
-                    step: 0,
-                    phrases: [
-                        { en: "Hello! Let's talk about technology.", pt: "Olá! Vamos falar sobre tecnologia." },
-                        { en: "Do you like using computers?", pt: "Você gosta de usar computadores?" },
-                        { en: "Technology makes our lives easier.", pt: "A tecnologia facilita nossas vidas." }
-                    ]
-                };
-                responseMessage = `{% trans "A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês:" %} ${currentLesson.phrases[0].en}`;
-            } else {
-                responseMessage = translateMessage('Desculpe, não entendi. Tente novamente!', detectedLanguage);
+            } catch (error) {
+                targetElement.innerHTML += `<p>{% trans "A121Bot: Erro de conexão. Tente novamente!" %}</p>`;
+                console.error('Erro de conexão:', error);
             }
-
-            // IA Emocional
-            if (userEngagement > 5) {
-                responseMessage += ` {% trans "Você está muito engajado! Continue interagindo para ganhar mais A121Coin!" %}`;
-            } else if (userEngagement > 2) {
-                responseMessage += ` {% trans "Você parece interessado! Vamos explorar mais?" %}`;
-            }
-
-            // Registrar na Blockchain (Simulação)
-            const transactionHash = `0x${Math.random().toString(16).substr(2, 40)}`;
-            responseMessage += ` {% trans "Interação registrada na A121Chain. Hash:" %} ${transactionHash}`;
-
-            // Atualizar Holograma
-            chatbotText.setAttribute('value', responseMessage);
-
-            // Atualizar texto em VR, se ativo
-            const vrChatbotText = document.getElementById('vr-chatbot-text');
-            if (vrChatbotText) {
-                vrChatbotText.setAttribute('value', responseMessage);
-            }
-
-            // Adicionar resposta do Chatbot
-            targetElement.innerHTML += `<p>{% trans "A121Bot:" %} ${responseMessage}</p>`;
             targetElement.scrollTop = targetElement.scrollHeight;
         }
 
