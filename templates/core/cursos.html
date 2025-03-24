@@ -156,9 +156,8 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% url 'javascript-catalog' %}"></script>
 <script>
-// Inicializar Partículas
+// Inicializar Partículas (já está no base.html, mas mantemos aqui para consistência)
 particlesJS('particles-js', {
     particles: {
         number: { value: 100, density: { enable: true, value_area: 800 } },

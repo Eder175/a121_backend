@@ -209,6 +209,7 @@ main {
 
 /* Chatbot */
 .chatbot-container {
+    display: none; /* Esconde o chat por padrão */
     position: fixed;
     bottom: 20px;
     right: 20px;
