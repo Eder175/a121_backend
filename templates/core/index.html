@@ -8,6 +8,9 @@
 {% block extra_head %}
 <!-- Pré-carregar o vídeo para melhorar a performance -->
 <link rel="preload" href="{% static 'videos/futuristic_background.mp4' %}" as="video" type="video/mp4">
+<!-- Carregar Three.js e A-Frame para hologramas e AR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -643,7 +646,7 @@
                 const rates = await response.json();
                 prices.forEach(price => {
                     const basePrice = parseFloat(price.getAttribute('data-price'));
-                    const convertedPrice = (basePrice * rates[currency]).toFixed(2);
+                    const convertedPrice = (basePrice * rates.rates[currency]).toFixed(2);
                     price.textContent = `${convertedPrice} ${currency}`;
                 });
             } catch (error) {
@@ -651,11 +654,12 @@
             }
         }
 
-        currencySelector.addEventListener('change', (e) => {
-            updatePrices(e.target.value);
-        });
-
-        updatePrices(currencySelector.value);
+        if (currencySelector) {
+            currencySelector.addEventListener('change', (e) => {
+                updatePrices(e.target.value);
+            });
+            updatePrices(currencySelector.value);
+        }
 
         // Realidade Aumentada
         const arButtons = document.querySelectorAll('.ar-button');
