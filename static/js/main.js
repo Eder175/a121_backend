@@ -19,26 +19,28 @@ particlesJS('particles-js', {
 
 // Holograma com Three.js
 const hologramContainer = document.getElementById('hologram-container');
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, hologramContainer.clientWidth / hologramContainer.clientHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(hologramContainer.clientWidth, hologramContainer.clientHeight);
-hologramContainer.appendChild(renderer.domElement);
+if (hologramContainer) {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, hologramContainer.clientWidth / hologramContainer.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(hologramContainer.clientWidth, hologramContainer.clientHeight);
+    hologramContainer.appendChild(renderer.domElement);
 
-const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
-const torusKnot = new THREE.Mesh(geometry, material);
-scene.add(torusKnot);
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
+    const torusKnot = new THREE.Mesh(geometry, material);
+    scene.add(torusKnot);
 
-camera.position.z = 5;
+    camera.position.z = 5;
 
-function animate() {
-    requestAnimationFrame(animate);
-    torusKnot.rotation.x += 0.01;
-    torusKnot.rotation.y += 0.01;
-    renderer.render(scene, camera);
+    function animate() {
+        requestAnimationFrame(animate);
+        torusKnot.rotation.x += 0.01;
+        torusKnot.rotation.y += 0.01;
+        renderer.render(scene, camera);
+    }
+    animate();
 }
-animate();
 
 // Modal de Chat com IA Avançada
 const modal = document.getElementById('modal');
@@ -50,18 +52,24 @@ const sendMessage = document.getElementById('sendMessage');
 
 // Abrir o modal automaticamente ao carregar a página
 window.onload = function() {
-    modal.style.display = 'block';
-    // Mensagem de boas-vindas
-    addIAMessage('Olá! Eu sou a IA A121. Como posso te ajudar hoje? 🚀');
+    if (modal) {
+        modal.style.display = 'block';
+        // Mensagem de boas-vindas
+        addIAMessage('Olá! Eu sou a IA A121. Como posso te ajudar hoje? 🚀');
+    }
 };
 
-openModal.onclick = function() {
-    modal.style.display = 'block';
-};
+if (openModal) {
+    openModal.onclick = function() {
+        modal.style.display = 'block';
+    };
+}
 
-closeModal.onclick = function() {
-    modal.style.display = 'none';
-};
+if (closeModal) {
+    closeModal.onclick = function() {
+        modal.style.display = 'none';
+    };
+}
 
 window.onclick = function(event) {
     if (event.target == modal) {
@@ -70,28 +78,32 @@ window.onclick = function(event) {
 };
 
 // Enviar mensagem com o botão ou pressionando Enter
-sendMessage.onclick = function() {
-    sendUserMessage();
-};
-
-userInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
+if (sendMessage) {
+    sendMessage.onclick = function() {
         sendUserMessage();
-    }
-});
+    };
+}
+
+if (userInput) {
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendUserMessage();
+        }
+    });
+}
 
 function sendUserMessage() {
     const message = userInput.value.trim();
     if (message) {
         addUserMessage(message);
-        // Enviar mensagem para o Dialogflow
-        fetch('/chat/', {
+        // Enviar mensagem para o servidor
+        fetch('/core/chat/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
                 'X-CSRFToken': getCsrfToken()
             },
-            body: 'message=' + encodeURIComponent(message)
+            body: JSON.stringify({ message: message })
         })
         .then(response => response.json())
         .then(data => {
@@ -102,7 +114,7 @@ function sendUserMessage() {
             }
         })
         .catch(error => {
-            console.error('Erro ao se comunicar com o Dialogflow:', error);
+            console.error('Erro ao se comunicar com o servidor:', error);
             addIAMessage('Desculpe, houve um problema. Tente novamente ou me dê mais detalhes.');
         });
         userInput.value = '';
@@ -126,25 +138,29 @@ function addIAMessage(message) {
 }
 
 function getCsrfToken() {
-    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const token = document.querySelector('[name=csrfmiddlewaretoken]');
+    return token ? token.value : '';
 }
 
 // Mudança de Moeda com Taxa de Câmbio
-document.getElementById('currency-selector').addEventListener('change', function() {
-    var selectedCurrency = this.value;
-    fetch('/change_currency/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': getCsrfToken()
-        },
-        body: 'currency=' + selectedCurrency
-    }).then(response => response.json()).then(data => {
-        if (data.success) {
-            location.reload();
-        }
+const currencySelector = document.getElementById('currency-selector');
+if (currencySelector) {
+    currencySelector.addEventListener('change', function() {
+        var selectedCurrency = this.value;
+        fetch('/core/change_currency/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: 'currency=' + selectedCurrency
+        }).then(response => response.json()).then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
     });
-});
+}
 
 // Atualizar Preços com Taxa de Câmbio
 function updatePrices(currency, rate) {
@@ -156,11 +172,11 @@ function updatePrices(currency, rate) {
 }
 
 // Carregar Taxa de Câmbio
-fetch('/get_exchange_rate/?base=EUR')
+fetch('/core/get_exchange_rate/?base=EUR')
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
-            var currency = document.getElementById('currency-selector').value || 'EUR';
+        if (data.rates) {
+            var currency = document.getElementById('currency-selector')?.value || 'EUR';
             var rate = data.rates[currency] || 1;
             updatePrices(currency, rate);
         }
@@ -268,26 +284,28 @@ function loadProductDetails(productId) {
 // Hologramas nos Produtos
 function createProductHologram(containerClass, color) {
     const container = document.querySelector(`.${containerClass}`);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
+    if (container) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
 
-    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: color, wireframe: true });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
+        const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const material = new THREE.MeshBasicMaterial({ color: color, wireframe: true });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
 
-    camera.position.z = 2;
+        camera.position.z = 2;
 
-    function animate() {
-        requestAnimationFrame(animate);
-        sphere.rotation.x += 0.02;
-        sphere.rotation.y += 0.02;
-        renderer.render(scene, camera);
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.x += 0.02;
+            sphere.rotation.y += 0.02;
+            renderer.render(scene, camera);
+        }
+        animate();
     }
-    animate();
 }
 
 createProductHologram('hologram-iphone15', 0x00ffcc);
