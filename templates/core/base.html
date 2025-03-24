@@ -8,8 +8,8 @@
     <meta name="keywords" content="A121, tecnologia, iPhones, cursos, marketing multinível, realidade aumentada, futuro">
     <meta name="author" content="A121 Evolution Team">
     <meta name="robots" content="index, follow">
-    <!-- Ajustar Content Security Policy para permitir scripts inline, conexões blob: e fontes externas -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://aframe.io https://unpkg.com https://cdn.jsdelivr.net https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.aframe.io; connect-src 'self' http://127.0.0.1:8000 https://cdn.aframe.io blob:; img-src 'self' data: https://cdn.aframe.io; media-src 'self';">
+    <!-- Ajustar Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://aframe.io https://unpkg.com https://cdn.jsdelivr.net https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.aframe.io; connect-src 'self' http://127.0.0.1:8000 https://cdn.aframe.io blob:; img-src 'self' data: https://cdn.aframe.io; media-src 'self' blob:; object-src 'none';">
     <title>{% block title %}{% trans "A121 Evolution - A Revolução do Futuro" %}{% endblock %}</title>
     
     <!-- Favicon -->
@@ -112,7 +112,7 @@
     </div>
 
     <!-- Chatbot Revolucionário -->
-    <div class="chatbot-container">
+    <div class="chatbot-container" id="chatbot-container">
         <div class="chatbot-hologram">
             <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="chatbot-ar-scene">
                 <a-sphere id="chatbot-hologram-entity" color="#00ffcc" radius="0.3" position="0 0 -1" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
@@ -122,14 +122,20 @@
                 <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
                 <a-marker-camera preset="hiro"></a-marker-camera>
             </a-scene>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <p>{% trans "A121Bot: Olá! Como posso te ajudar hoje?" %}</p>
+            </div>
+            <video controls class="chatbot-video" style="width: 100%; margin-bottom: 10px;">
+                <source src="{% static 'videos/Robo A121.mp4' %}" type="video/mp4">
+                {% trans "Seu navegador não suporta o elemento de vídeo." %}
+            </video>
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
+            <div>
+                <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
+                <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
+                <button id="chatbot-language" class="chatbot-language">{% trans "Aprender Idiomas" %}</button>
+            </div>
         </div>
-        <div class="chatbot-messages" id="chatbot-messages">
-            <p>{% trans "A121Bot: Olá! Como posso te ajudar hoje?" %}</p>
-        </div>
-        <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
-        <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
-        <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
-        <button id="chatbot-language" class="chatbot-language">{% trans "Aprender Idiomas" %}</button>
         <div id="chatbot-vr-scene" class="chatbot-vr-scene"></div>
     </div>
 
@@ -205,10 +211,7 @@
             scene.setAttribute('vr-mode-ui', 'enabled: true');
             scene.setAttribute('embedded', '');
             scene.innerHTML = `
-                <a-assets>
-                    <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
-                </a-assets>
-                <a-sky src="#cosmic-skybox"></a-sky>
+                <a-sky color="#000"></a-sky>
                 <a-sphere id="vr-chatbot" color="#00ffcc" radius="0.5" position="0 1.6 -3" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
                     <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 1 0" color="#00ffcc"></a-text>
                 </a-sphere>
@@ -400,29 +403,30 @@
             const sendMessageButton = document.getElementById('sendMessage');
             const userInput = document.getElementById('userInput');
             const chatBox = document.getElementById('chatBox');
+            const chatbotContainer = document.getElementById('chatbot-container');
 
-            // Garantir que o modal não abra automaticamente
-            modal.style.display = 'none';
-
-            // Remover qualquer evento automático que possa estar disparando o modal
-            chatButton.onclick = null;
-            chatButton.removeAttribute('onclick');
+            // Mostrar o chat automaticamente ao carregar a página
+            chatbotContainer.style.display = 'block';
+            modal.style.display = 'flex';
 
             // Abrir o modal ao clicar no botão "Bate-papo com IA"
             chatButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 modal.style.display = 'flex';
+                chatbotContainer.style.display = 'block';
             });
 
             // Fechar o modal ao clicar no botão de fechar
             closeModal.addEventListener('click', () => {
                 modal.style.display = 'none';
+                chatbotContainer.style.display = 'none';
             });
 
             // Fechar o modal ao clicar fora dele
             window.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.style.display = 'none';
+                    chatbotContainer.style.display = 'none';
                 }
             });
 
@@ -444,6 +448,15 @@
             // Mensagem inicial do chatbot
             chatbotMessages.innerHTML = `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
             chatBox.innerHTML = `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
+        });
+
+        // Definir a moeda padrão como EUR
+        document.addEventListener('DOMContentLoaded', () => {
+            const currencySelector = document.getElementById('currency-selector');
+            if (!currencySelector.value) {
+                currencySelector.value = 'EUR';
+                currencySelector.dispatchEvent(new Event('change'));
+            }
         });
     </script>
     

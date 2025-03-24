@@ -209,7 +209,6 @@ main {
 
 /* Chatbot */
 .chatbot-container {
-    display: none; /* Esconde o chat por padrão */
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -278,6 +277,11 @@ main {
     z-index: 3000;
 }
 
+.chatbot-video {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
 /* Botões Flutuantes */
 .floating-buttons {
     position: fixed;
@@ -344,4 +348,55 @@ main {
     font-family: 'Roboto', sans-serif;
     color: #00ffcc;
     margin: 0;
+}
+
+/* Estilos para a página inicial (index.html) */
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5rem;
+    color: #00ffcc;
+    text-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+    margin-bottom: 20px;
+}
+
+.hero h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 30px;
+    max-width: 800px;
+}
+
+.hero .btn {
+    padding: 15px 30px;
+    background: #00ffcc;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+}
+
+.hero .btn:hover {
+    background: #00ccff;
+    box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
 }
