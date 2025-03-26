@@ -41,8 +41,10 @@
         <div class="product-grid">
             <div class="product-card" data-course="ia">
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/ia-course.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
-                    <!-- Prévia Holográfica em AR com Interação por Voz -->
+                    <!-- Substituímos a imagem por um placeholder público -->
+                    <img src="https://via.placeholder.com/300x200?text=Introdução+à+IA" alt="{% trans 'Introdução à IA' %}" class="product-image">
+                    <!-- Comentar a prévia holográfica até que os modelos 3D estejam disponíveis -->
+                    <!--
                     <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
                     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="ar-scene">
                         <a-assets>
@@ -53,6 +55,7 @@
                         </a-entity>
                         <a-marker-camera preset="hiro"></a-marker-camera>
                     </a-scene>
+                    -->
                 </div>
                 <h3>{% trans "Introdução à IA" %}</h3>
                 <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
@@ -81,7 +84,8 @@
                 <!-- Prévia Gerada por IA em Tempo Real -->
                 <button class="btn btn-ai-preview" data-course="ia">{% trans "Gerar Prévia com IA Neural" %}</button>
                 <div class="ai-preview-content" id="ai-preview-ia"></div>
-                <!-- Certificado Holográfico em Blockchain -->
+                <!-- Comentar o certificado holográfico até que os modelos 3D estejam disponíveis -->
+                <!--
                 <button class="btn btn-blockchain-cert" data-course="ia">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
                 <a-scene embedded class="blockchain-cert-scene" style="display: none;">
                     <a-assets>
@@ -90,11 +94,14 @@
                     <a-entity gltf-model="#cert-ia-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
                     <a-marker-camera preset="hiro"></a-marker-camera>
                 </a-scene>
+                -->
             </div>
             <div class="product-card" data-course="finance">
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/finance-course.jpg' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
-                    <!-- Prévia Holográfica em AR com Interação por Voz -->
+                    <!-- Substituímos a imagem por um placeholder público -->
+                    <img src="https://via.placeholder.com/300x200?text=Finanças+Pessoais" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                    <!-- Comentar a prévia holográfica até que os modelos 3D estejam disponíveis -->
+                    <!--
                     <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
                     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="ar-scene">
                         <a-assets>
@@ -105,6 +112,7 @@
                         </a-entity>
                         <a-marker-camera preset="hiro"></a-marker-camera>
                     </a-scene>
+                    -->
                 </div>
                 <h3>{% trans "Finanças Pessoais" %}</h3>
                 <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
@@ -133,7 +141,8 @@
                 <!-- Prévia Gerada por IA em Tempo Real -->
                 <button class="btn btn-ai-preview" data-course="finance">{% trans "Gerar Prévia com IA Neural" %}</button>
                 <div class="ai-preview-content" id="ai-preview-finance"></div>
-                <!-- Certificado Holográfico em Blockchain -->
+                <!-- Comentar o certificado holográfico até que os modelos 3D estejam disponíveis -->
+                <!--
                 <button class="btn btn-blockchain-cert" data-course="finance">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
                 <a-scene embedded class="blockchain-cert-scene" style="display: none;">
                     <a-assets>
@@ -142,6 +151,7 @@
                     <a-entity gltf-model="#cert-finance-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
                     <a-marker-camera preset="hiro"></a-marker-camera>
                 </a-scene>
+                -->
             </div>
         </div>
 
@@ -149,6 +159,7 @@
         <section class="gamification">
             <h3>{% trans "Ganhe A121Coin e NFTs Únicos!" %}</h3>
             <p id="gamification-tokens">{% trans "Você tem 0 A121Coin. Interaja para ganhar mais!" %}</p>
+            <!-- Comentar a recompensa holográfica até que os modelos 3D estejam disponíveis -->
             <div id="holographic-reward"></div>
         </section>
     </div>
@@ -197,6 +208,8 @@ document.getElementById('currency-selector').addEventListener('change', function
         if (data.success) {
             location.reload();
         }
+    }).catch(error => {
+        console.error('Erro ao mudar moeda:', error);
     });
 });
 
@@ -211,11 +224,22 @@ function updatePrices(currency, rate) {
 
 // Carregar Taxa de Câmbio
 fetch('{% url "core:get_exchange_rate" %}?base=EUR')
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao carregar taxas de câmbio');
+        }
+        return response.json();
+    })
     .then(data => {
         var currency = document.getElementById('currency-selector').value;
         var rate = data.rates[currency] || 1;
         updatePrices(currency, rate);
+    })
+    .catch(error => {
+        console.error('Erro ao obter taxas de câmbio:', error);
+        // Usa uma taxa padrão (1:1) em caso de erro
+        var currency = document.getElementById('currency-selector').value;
+        updatePrices(currency, 1);
     });
 
 // IA Emocional (Simulação)
@@ -245,8 +269,8 @@ async function loadAIRecommendations() {
     const prediction = model.predict(userData).dataSync()[0];
 
     const suggestions = [
-        { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "{% static 'images/ia-course.jpg' %}" },
-        { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "{% static 'images/finance-course.jpg' %}" }
+        { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "https://via.placeholder.com/300x200?text=Introdução+à+IA" },
+        { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "https://via.placeholder.com/300x200?text=Finanças+Pessoais" }
     ];
 
     const recommendedCourse = prediction > 0.5 ? suggestions[0] : suggestions[1];
@@ -264,7 +288,8 @@ async function loadAIRecommendations() {
     suggestionsContainer.appendChild(card);
 }
 
-// Prévia Holográfica com Interação por Voz
+// Prévia Holográfica com Interação por Voz (Comentado até que os modelos 3D estejam disponíveis)
+/*
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
 recognition.continuous = false;
@@ -286,6 +311,7 @@ document.querySelectorAll('.voice-interaction').forEach(button => {
         };
     });
 });
+*/
 
 // Prévia Gerada por IA em Tempo Real (Simulação)
 document.querySelectorAll('.btn-ai-preview').forEach(button => {
@@ -318,24 +344,10 @@ function updateGamification() {
         rewardContainer.innerHTML = `
             <p>{% trans "Parabéns! Você ganhou um NFT Holográfico Único!" %}</p>
             <p>{% trans "ID do NFT:" %} ${nftId}</p>
-            <a-scene embedded>
-                <a-assets>
-                    <a-asset-item id="reward-hologram-${nftId}" src="{% static 'models/reward-hologram-${nftId}.glb' %}"></a-asset-item>
-                </a-assets>
-                <a-entity gltf-model="#reward-hologram-${nftId}" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
-                <a-marker-camera preset="hiro"></a-marker-camera>
-            </a-scene>
         `;
         nftGallery.innerHTML += `
             <div class="nft-item">
                 <p>{% trans "NFT ID:" %} ${nftId}</p>
-                <a-scene embedded>
-                    <a-assets>
-                        <a-asset-item id="reward-hologram-${nftId}" src="{% static 'models/reward-hologram-${nftId}.glb' %}"></a-asset-item>
-                    </a-assets>
-                    <a-entity gltf-model="#reward-hologram-${nftId}" scale="0.05 0.05 0.05" position="0 0 -1"></a-entity>
-                    <a-marker-camera preset="hiro"></a-marker-camera>
-                </a-scene>
             </div>
         `;
     }
@@ -348,7 +360,8 @@ document.querySelectorAll('.btn').forEach(button => {
     });
 });
 
-// Certificado Holográfico em Blockchain com A121Coin (Simulação)
+// Certificado Holográfico em Blockchain com A121Coin (Simulação) - Comentado até que os modelos 3D estejam disponíveis
+/*
 document.querySelectorAll('.btn-blockchain-cert').forEach(button => {
     button.addEventListener('click', () => {
         if (userA121Coin >= 2) {
@@ -366,6 +379,7 @@ document.querySelectorAll('.btn-blockchain-cert').forEach(button => {
         }
     });
 });
+*/
 
 // Tradução Automática de Cursos
 document.querySelectorAll('.course-language-selector').forEach(selector => {
@@ -375,22 +389,30 @@ document.querySelectorAll('.course-language-selector').forEach(selector => {
 
         // URLs fictícias para simulação
         const videoUrl = course === 'ia' ? 'https://example.com/ia-video.mp4' : 'https://example.com/finance-video.mp4';
-        const pdfUrl = course === 'ia' ? 'https://example.com/ia-material.pdf' : 'https://example.com/finance-material.pdf';
 
-        // Traduzir Vídeo
-        const videoResponse = await fetch('{% url "core:translate_video" %}', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ video_url: videoUrl, target_language: targetLanguage })
-        });
-        const videoData = await videoResponse.json();
-        const audioElement = document.getElementById(`translated-audio-${course}`);
-        const textElement = document.getElementById(`translated-text-${course}`);
-        audioElement.src = videoData.translated_audio_url || '';
-        audioElement.style.display = 'block';
-        textElement.textContent = videoData.translated_text || 'Texto traduzido (simulação).';
+        try {
+            // Traduzir Vídeo
+            const videoResponse = await fetch('{% url "core:translate_video" %}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ video_url: videoUrl, target_language: targetLanguage })
+            });
 
-        // Traduzir PDF (A ser implementado futuramente na Tarefa 15)
+            if (!videoResponse.ok) {
+                throw new Error('Erro ao traduzir vídeo');
+            }
+
+            const videoData = await videoResponse.json();
+            const audioElement = document.getElementById(`translated-audio-${course}`);
+            const textElement = document.getElementById(`translated-text-${course}`);
+            audioElement.src = videoData.translated_audio_url || '';
+            audioElement.style.display = 'block';
+            textElement.textContent = videoData.translated_text || `Vídeo traduzido para ${targetLanguage} (simulação).`;
+        } catch (error) {
+            console.error('Erro ao traduzir vídeo:', error);
+            const textElement = document.getElementById(`translated-text-${course}`);
+            textElement.textContent = `Erro ao traduzir vídeo para ${targetLanguage}. Funcionalidade em desenvolvimento.`;
+        }
     });
 });
 
