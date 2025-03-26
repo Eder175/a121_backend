@@ -390,18 +390,7 @@ document.querySelectorAll('.course-language-selector').forEach(selector => {
         audioElement.style.display = 'block';
         textElement.textContent = videoData.translated_text || 'Texto traduzido (simulação).';
 
-        // Traduzir PDF (Comentado até implementar a URL translate_pdf)
-        /*
-        const pdfResponse = await fetch('{% url "translation:translate_pdf" %}', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pdf_url: pdfUrl, target_language: targetLanguage })
-        });
-        const pdfData = await pdfResponse.json();
-        const pdfLink = document.getElementById(`translated-pdf-${course}`);
-        pdfLink.href = pdfData.translated_pdf_url || '#';
-        pdfLink.style.display = 'block';
-        */
+        // Traduzir PDF (A ser implementado futuramente na Tarefa 15)
     });
 });
 
