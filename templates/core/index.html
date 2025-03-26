@@ -7,7 +7,7 @@
 
 {% block extra_head %}
 <!-- Pré-carregar o vídeo para melhorar a performance -->
-<link rel="preload" href="{% static 'videos/futuristic_background.mp4' %}" as="video" type="video/mp4">
+<link rel="preload" href="{% static 'videos/videofuturisticteste.mp4' %}" as="video" type="video/mp4">
 <!-- Carregar Three.js e A-Frame para hologramas e AR -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -17,7 +17,7 @@
 <!-- Seção Hero -->
 <section class="hero section-transition" id="hero" aria-labelledby="hero-title">
     <video id="hero-video" autoplay muted loop playsinline preload="auto" class="hero-video">
-        <source src="{% static 'videos/futuristic_background.mp4' %}" type="video/mp4">
+        <source src="{% static 'videos/videofuturisticteste.mp4' %}" type="video/mp4">
         {% trans "Seu navegador não suporta vídeos." %}
     </video>
     <div class="container">

@@ -378,7 +378,7 @@ document.querySelectorAll('.course-language-selector').forEach(selector => {
         const pdfUrl = course === 'ia' ? 'https://example.com/ia-material.pdf' : 'https://example.com/finance-material.pdf';
 
         // Traduzir Vídeo
-        const videoResponse = await fetch('{% url "translation:translate_video" %}', {
+        const videoResponse = await fetch('{% url "core:translate_video" %}', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ video_url: videoUrl, target_language: targetLanguage })
@@ -390,7 +390,8 @@ document.querySelectorAll('.course-language-selector').forEach(selector => {
         audioElement.style.display = 'block';
         textElement.textContent = videoData.translated_text || 'Texto traduzido (simulação).';
 
-        // Traduzir PDF
+        // Traduzir PDF (Comentado até implementar a URL translate_pdf)
+        /*
         const pdfResponse = await fetch('{% url "translation:translate_pdf" %}', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -400,6 +401,7 @@ document.querySelectorAll('.course-language-selector').forEach(selector => {
         const pdfLink = document.getElementById(`translated-pdf-${course}`);
         pdfLink.href = pdfData.translated_pdf_url || '#';
         pdfLink.style.display = 'block';
+        */
     });
 });
 
