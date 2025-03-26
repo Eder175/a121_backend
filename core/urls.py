@@ -1,5 +1,5 @@
 # core/urls.py
-from django.urls import path, include
+from django.urls import path
 from core import views
 
 app_name = 'core'
@@ -22,8 +22,6 @@ urlpatterns = [
     path('get_exchange_rate/', views.get_exchange_rate, name='get_exchange_rate'),
     path('chat/', views.chat_interaction, name='chat_interaction'),
 
-    # Namespace para tradução
-    path('translation/', include([
-        path('translate_video/', views.translate_video, name='translate_video'),
-    ], namespace='translation')),
+    # URLs de tradução (usando o mesmo app_name 'core')
+    path('translation/translate_video/', views.translate_video, name='translate_video'),
 ]
