@@ -9,6 +9,9 @@
 <!-- Transição Quântica -->
 <div class="quantum-transition" id="quantum-transition">
     <div id="quantum-particles" class="quantum-particles"></div>
+    <div class="quantum-loader">
+        <span>{% trans "Processando autenticação..." %}</span>
+    </div>
 </div>
 
 <section class="auth-section">
@@ -38,21 +41,6 @@
             <p id="emotional-feedback">{% trans "Você parece pronto para se conectar ao futuro!" %}</p>
         </div>
 
-        <!-- Assistente Holográfico (Comentado até que os modelos 3D estejam disponíveis) -->
-        <!--
-        <div class="assistant-hologram">
-            <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="assistant-ar-scene">
-                <a-assets>
-                    <a-asset-item id="assistant-hologram" src="{% static 'models/assistant-hologram.glb' %}"></a-asset-item>
-                </a-assets>
-                <a-entity id="assistant-hologram-entity" gltf-model="#assistant-hologram" scale="0.1 0.1 0.1" position="0 0 -1">
-                    <a-text id="assistant-text" value="Bem-vindo à A121 Evolution! Fale 'login' para começar." align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-                </a-entity>
-                <a-marker-camera preset="hiro"></a-marker-camera>
-            </a-scene>
-        </div>
-        -->
-
         <!-- Formulário de Login -->
         <form method="post" class="auth-form" id="login-form">
             {% csrf_token %}
@@ -69,33 +57,6 @@
         <!-- Opção de Login por Pensamento -->
         <button class="btn btn-mind-login btn-glow" id="mind-login">{% trans "Login com Pensamento (Interface Cérebro-Máquina)" %}</button>
         <p id="mind-login-instruction" style="display: none;">{% trans "Foco no botão 'ENTRAR' por 5 segundos para logar!" %}</p>
-
-        <!-- Opção de Login em VR (Comentado até que os modelos 3D estejam disponíveis) -->
-        <!--
-        <button class="btn btn-vr btn-glow" id="vr-login">{% trans "Login em Realidade Virtual Cósmica" %}</button>
-        <a-scene embedded vr-mode-ui="enabled: true" class="vr-login-scene" style="display: none;">
-            <a-assets>
-                <a-asset-item id="vr-login-hologram" src="{% static 'models/vr-login-hologram.glb' %}"></a-asset-item>
-                <a-asset-item id="cosmic-skybox" src="{% static 'models/cosmic-skybox.glb' %}"></a-asset-item>
-            </a-assets>
-            <a-sky src="#cosmic-skybox"></a-sky>
-            <a-entity gltf-model="#vr-login-hologram" scale="0.1 0.1 0.1" position="0 1.6 -1">
-                <a-text value="A121 Evolution VR Login" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-            </a-entity>
-            <a-entity id="vr-form" position="0 1.6 -1">
-                <a-text value="E-mail:" position="-0.5 0.2 0" color="#00ffcc"></a-text>
-                <a-box id="vr-email-input" color="#00ffcc" width="1" height="0.1" depth="0.01" position="0.5 0.2 0"></a-box>
-                <a-text value="Senha:" position="-0.5 0 0" color="#00ffcc"></a-text>
-                <a-box id="vr-password-input" color="#00ffcc" width="1" height="0.1" depth="0.01" position="0.5 0 0"></a-box>
-                <a-box id="vr-submit-button" color="#ff00cc" width="0.5" height="0.1" depth="0.01" position="0 -0.2 0">
-                    <a-text value="ENTRAR" align="center" position="0 0 0.01" color="#ffffff"></a-text>
-                </a-box>
-            </a-entity>
-            <a-entity camera look-controls position="0 1.6 0">
-                <a-entity cursor="fuse: true; fuseTimeout: 500" raycaster="objects: #vr-submit-button" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" material="color: #00ffcc; shader: flat"></a-entity>
-            </a-entity>
-        </a-scene>
-        -->
 
         <div class="auth-links">
             <p>{% trans "Não tem uma conta?" %} <a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></p>
@@ -158,6 +119,10 @@ document.getElementById('biometric-login').addEventListener('click', () => {
             alert('Comando não reconhecido. Tente dizer "login" ou "entrar".');
         }
     };
+    recognition.onerror = (event) => {
+        console.error('Erro no reconhecimento de voz:', event.error);
+        alert('Erro no reconhecimento de voz. Tente novamente.');
+    };
 });
 
 // Login com Pensamento (Simulação de Interface Cérebro-Máquina)
@@ -179,24 +144,12 @@ document.getElementById('mind-login').addEventListener('click', () => {
     }, 1000);
 });
 
-// Login em Realidade Virtual Cósmica (Comentado até que os modelos 3D estejam disponíveis)
-/*
-document.getElementById('vr-login').addEventListener('click', () => {
-    const vrScene = document.querySelector('.vr-login-scene');
-    vrScene.style.display = 'block';
-    vrScene.enterVR();
-    const vrSubmitButton = document.getElementById('vr-submit-button');
-    vrSubmitButton.addEventListener('click', () => {
-        document.getElementById('login-form').submit();
-    });
-});
-*/
-
 // Transição Quântica ao Fazer Login
 document.getElementById('login-form').addEventListener('submit', (e) => {
     e.preventDefault();
+    console.log("Formulário enviado! Iniciando transição quântica...");
     const quantumTransition = document.getElementById('quantum-transition');
-    quantumTransition.style.display = 'block';
+    quantumTransition.style.display = 'flex';
     particlesJS('quantum-particles', {
         particles: {
             number: { value: 500, density: { enable: true, value_area: 800 } },

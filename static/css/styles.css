@@ -1,13 +1,19 @@
-/* Estilos gerais */
-body {
+/* Reset e Estilos Gerais */
+* {
     margin: 0;
     padding: 0;
-    background: #000;
-    color: #fff;
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron para consistência com o tema futurista */
-    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
+body {
+    background: #000;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Partículas de Fundo */
 .particles-background {
     position: fixed;
     top: 0;
@@ -17,14 +23,17 @@ body {
     z-index: -1;
 }
 
+/* Cabeçalho */
 .header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 10px 0;
+    box-shadow: 0 2px 15px rgba(0, 255, 204, 0.3);
 }
 
 .header .container {
@@ -38,12 +47,17 @@ body {
 
 .header .logo {
     height: 50px;
+    transition: transform 0.3s ease;
+}
+
+.header .logo:hover {
+    transform: scale(1.1);
 }
 
 .nav ul {
     list-style: none;
     display: flex;
-    gap: 20px;
+    gap: 25px;
     margin: 0;
     padding: 0;
 }
@@ -51,12 +65,20 @@ body {
 .nav-link {
     color: #00ffcc;
     text-decoration: none;
-    font-family: 'Orbitron', sans-serif;
-    transition: color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .nav-link:hover {
     color: #00ccff;
+    text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
+}
+
+.nav-link:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
+    text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
 }
 
 .nav-icons {
@@ -67,32 +89,55 @@ body {
 .nav-icons a {
     color: #00ffcc;
     font-size: 1.2rem;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-icons a:hover {
     color: #00ccff;
+    transform: scale(1.2);
+}
+
+.nav-icons a:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
 }
 
 .language-selector, .currency-selector {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #00ffcc;
     color: #fff;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 5px;
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron */
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.language-selector:hover, .currency-selector:hover {
+    border-color: #00ccff;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+}
+
+.language-selector:focus, .currency-selector:focus {
+    outline: none;
+    border-color: #00ccff;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+}
+
+/* Conteúdo Principal */
 main {
     margin-top: 70px; /* Espaço para o header fixo */
 }
 
+/* Mensagens */
 .messages {
     position: fixed;
     top: 80px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
+    width: 90%;
+    max-width: 500px;
 }
 
 .alert {
@@ -101,7 +146,27 @@ main {
     padding: 10px 20px;
     border-radius: 5px;
     margin-bottom: 10px;
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron */
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.alert-success {
+    background: rgba(0, 255, 204, 0.3);
+    border-color: #00ffcc;
+    color: #00ffcc;
+}
+
+.alert-error {
+    background: rgba(255, 0, 102, 0.3);
+    border-color: #ff0066;
+    color: #ff0066;
+}
+
+/* Animação de Fade-In */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Modal de Chat */
@@ -123,17 +188,20 @@ main {
     border: 2px solid #00ffcc;
     border-radius: 15px;
     padding: 20px;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
     box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 .modal-content h2 {
     font-family: 'Orbitron', sans-serif;
     color: #00ffcc;
     margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
 }
 
 .modal-content .close {
@@ -143,6 +211,16 @@ main {
     color: #00ffcc;
     font-size: 1.5rem;
     cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-content .close:hover {
+    color: #00ccff;
+}
+
+.modal-content .close:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
 }
 
 .chat-header {
@@ -151,11 +229,14 @@ main {
     background-color: #1a1a1a;
     padding: 10px;
     border-bottom: 1px solid #00ffcc;
+    border-radius: 5px 5px 0 0;
 }
 
 .chatbot-icon {
     border-radius: 50%;
     margin-right: 10px;
+    width: 40px;
+    height: 40px;
 }
 
 .chat-box {
@@ -167,7 +248,25 @@ main {
     overflow-y: auto;
     margin-bottom: 20px;
     color: #fff;
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron */
+    font-family: 'Orbitron', sans-serif;
+}
+
+.user-message {
+    background: rgba(0, 204, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 5px 0;
+    text-align: right;
+    color: #00ccff;
+}
+
+.ia-message {
+    background: rgba(0, 255, 204, 0.2);
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 5px 0;
+    text-align: left;
+    color: #00ffcc;
 }
 
 .chat-input-container {
@@ -182,7 +281,8 @@ main {
     border: 1px solid #00ffcc;
     color: #fff;
     border-radius: 5px;
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron */
+    font-family: 'Orbitron', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input-glow:focus {
@@ -198,6 +298,7 @@ main {
     border: none;
     border-radius: 5px;
     font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -205,6 +306,12 @@ main {
 .btn-glow:hover {
     background: #00ccff;
     box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-glow:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
 }
 
 /* Chatbot */
@@ -232,7 +339,7 @@ main {
     max-height: 200px;
     overflow-y: auto;
     margin-bottom: 10px;
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron */
+    font-family: 'Orbitron', sans-serif;
 }
 
 .chatbot-input {
@@ -242,7 +349,8 @@ main {
     border: 1px solid #00ffcc;
     color: #fff;
     border-radius: 5px;
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron */
+    font-family: 'Orbitron', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .chatbot-input:focus {
@@ -260,11 +368,17 @@ main {
     border-radius: 5px;
     cursor: pointer;
     font-family: 'Orbitron', sans-serif;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .chatbot-voice:hover, .chatbot-vr:hover, .chatbot-language:hover {
     background: #00ccff;
+    transform: translateY(-2px);
+}
+
+.chatbot-voice:focus, .chatbot-vr:focus, .chatbot-language:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
 }
 
 .chatbot-vr-scene {
@@ -300,6 +414,7 @@ main {
     text-decoration: none;
     border-radius: 5px;
     font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
     transition: all 0.3s ease;
     box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
 }
@@ -307,6 +422,12 @@ main {
 .chat-button:hover {
     background: #00ccff;
     box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+.chat-button:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
 }
 
 .whatsapp-button {
@@ -326,6 +447,11 @@ main {
     box-shadow: 0 0 25px #00ffcc;
 }
 
+.whatsapp-button:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
+}
+
 .whatsapp-gif {
     width: 40px;
     height: 40px;
@@ -337,20 +463,27 @@ main {
     background: rgba(0, 0, 0, 0.8);
     padding: 20px 0;
     text-align: center;
+    border-top: 1px solid #00ffcc;
 }
 
 .footer-logo {
     height: 40px;
     margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.footer-logo:hover {
+    transform: scale(1.1);
 }
 
 .footer p {
-    font-family: 'Orbitron', sans-serif; /* Alterado para Orbitron */
+    font-family: 'Orbitron', sans-serif;
     color: #00ffcc;
     margin: 0;
+    font-size: 0.9rem;
 }
 
-/* Estilos para a seção de cursos (adicionados) */
+/* Seção de Cursos */
 .products {
     padding: 40px 0;
 }
@@ -364,6 +497,7 @@ main {
 h2, h3 {
     text-align: center;
     color: #00ffcc;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
 }
 
 .product-grid {
@@ -379,11 +513,12 @@ h2, h3 {
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
 }
 
 .product-image-wrapper {
@@ -398,6 +533,11 @@ h2, h3 {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-image:hover {
+    transform: scale(1.1);
 }
 
 .ar-button, .btn {
@@ -408,12 +548,19 @@ h2, h3 {
     margin: 10px 0;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .ar-button:hover, .btn:hover {
-    background: #00ccaa;
+    background: #00ccff;
+    transform: translateY(-2px);
+}
+
+.ar-button:focus, .btn:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
 }
 
 .ar-scene {
@@ -433,14 +580,22 @@ h2, h3 {
     background: #333;
     color: #fff;
     border: 1px solid #00ffcc;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.course-language-selector:focus {
+    outline: none;
+    border-color: #00ccff;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
 }
 
 .translated-content {
     margin-top: 10px;
     text-align: left;
+    color: #00ccff;
 }
 
-/* Estilos para a carteira A121Coin */
+/* Carteira A121Coin */
 .a121coin-wallet {
     background: #1a1a1a;
     border: 2px solid #00ffcc;
@@ -448,6 +603,7 @@ h2, h3 {
     padding: 20px;
     margin-bottom: 20px;
     text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 .nft-gallery {
@@ -462,9 +618,14 @@ h2, h3 {
     padding: 10px;
     border-radius: 5px;
     text-align: center;
+    transition: transform 0.3s ease;
 }
 
-/* Estilos para a IA emocional */
+.nft-item:hover {
+    transform: scale(1.05);
+}
+
+/* IA Emocional */
 .ai-emotional-experience {
     background: #1a1a1a;
     border: 2px solid #00ffcc;
@@ -472,26 +633,285 @@ h2, h3 {
     padding: 20px;
     margin-bottom: 20px;
     text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Estilos para recomendações de IA */
+/* Recomendações de IA */
 .ai-recommendations {
     background: #1a1a1a;
     border: 2px solid #00ffcc;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Estilos para gamificação */
+/* Gamificação */
 .gamification {
     background: #1a1a1a;
     border: 2px solid #00ffcc;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 .holographic-reward {
     margin-top: 20px;
+}
+
+/* Páginas de Cadastro e Login */
+.auth-section {
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 70px); /* Ajusta para o header fixo */
+}
+
+.auth-container {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border: 2px solid #00ffcc;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.auth-container h2 {
+    color: #00ffcc;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
+.auth-container .subtitle {
+    color: #00ccff;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form label {
+    text-align: left;
+    color: #00ffcc;
+    font-size: 0.9rem;
+}
+
+.auth-form input {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #00ffcc;
+    border-radius: 5px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #00ccff;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+}
+
+.auth-form button {
+    background: #00ffcc;
+    color: #000;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.auth-form button:hover {
+    background: #00ccff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+}
+
+.auth-form button:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
+}
+
+.auth-links {
+    margin-top: 15px;
+}
+
+.auth-links a {
+    color: #00ffcc;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: #00ccff;
+    text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+}
+
+.auth-links a:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
+}
+
+/* Botões de Login Avançado */
+.btn-biometric, .btn-mind-login {
+    background: #ff00cc;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.btn-biometric:hover, .btn-mind-login:hover {
+    background: #cc00ff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(204, 0, 255, 0.5);
+}
+
+.btn-biometric:focus, .btn-mind-login:focus {
+    outline: 2px solid #00ccff;
+    outline-offset: 2px;
+}
+
+/* Transição Quântica */
+.quantum-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.quantum-particles {
+    width: 100%;
+    height: 100%;
+}
+
+.quantum-loader {
+    color: #00ffcc;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Assistente Holográfico */
+.assistant-hologram {
+    margin: 20px 0;
+}
+
+.assistant-ar-scene {
+    width: 100%;
+    height: 200px;
+}
+
+/* Login em VR */
+.vr-login-scene {
+    width: 100%;
+    height: 400px;
+}
+
+/* Autenticação Blockchain */
+.blockchain-auth {
+    margin-top: 20px;
+    padding: 10px;
+    background: rgba(0, 255, 204, 0.2);
+    border: 1px solid #00ffcc;
+    border-radius: 5px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.blockchain-auth p {
+    margin: 5px 0;
+    color: #00ffcc;
+    font-size: 0.9rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav ul {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .nav-icons {
+        justify-content: center;
+    }
+
+    .auth-container {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .chatbot-hologram {
+        width: 100%;
+        max-width: 300px;
+        height: 350px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .header .logo {
+        height: 40px;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+    }
+
+    .nav-icons a {
+        font-size: 1rem;
+    }
+
+    .auth-form input, .auth-form button {
+        padding: 8px;
+    }
+
+    .btn-glow {
+        padding: 8px 15px;
+    }
 }
