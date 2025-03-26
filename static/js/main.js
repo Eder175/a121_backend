@@ -17,7 +17,7 @@ particlesJS('particles-js', {
     retina_detect: true
 });
 
-// Holograma com Three.js
+// Holograma com Three.js (para o container geral, se existir)
 const hologramContainer = document.getElementById('hologram-container');
 if (hologramContainer) {
     const scene = new THREE.Scene();
@@ -41,6 +41,36 @@ if (hologramContainer) {
     }
     animate();
 }
+
+// Hologramas nos Produtos (do index.html)
+function createProductHologram(containerClass, color) {
+    const container = document.querySelector(`.${containerClass}`);
+    if (container) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const material = new THREE.MeshBasicMaterial({ color: color, wireframe: true });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        camera.position.z = 2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.x += 0.02;
+            sphere.rotation.y += 0.02;
+            renderer.render(scene, camera);
+        }
+        animate();
+    }
+}
+
+createProductHologram('hologram-iphone15', 0x00ffcc);
+createProductHologram('hologram-iphone16', 0x00ccff);
 
 // Modal de Chat com IA Avançada
 const modal = document.getElementById('modal');
@@ -142,7 +172,7 @@ function getCsrfToken() {
     return token ? token.value : '';
 }
 
-// Mudança de Moeda com Taxa de Câmbio
+// Mudança de Moeda com Taxa de Câmbio (do index.html e main.js)
 const currencySelector = document.getElementById('currency-selector');
 if (currencySelector) {
     currencySelector.addEventListener('change', function() {
@@ -162,7 +192,7 @@ if (currencySelector) {
     });
 }
 
-// Atualizar Preços com Taxa de Câmbio
+// Atualizar Preços com Taxa de Câmbio (do index.html e main.js)
 function updatePrices(currency, rate) {
     document.querySelectorAll('.product-price, .course-price').forEach(priceElement => {
         var basePrice = parseFloat(priceElement.getAttribute('data-price'));
@@ -171,7 +201,7 @@ function updatePrices(currency, rate) {
     });
 }
 
-// Carregar Taxa de Câmbio
+// Carregar Taxa de Câmbio (do index.html e main.js)
 fetch('/core/get_exchange_rate/?base=EUR')
     .then(response => response.json())
     .then(data => {
@@ -182,7 +212,7 @@ fetch('/core/get_exchange_rate/?base=EUR')
         }
     });
 
-// Realidade Aumentada
+// Realidade Aumentada (do index.html e main.js)
 document.querySelectorAll('.ar-button').forEach(button => {
     button.addEventListener('click', function(e) {
         e.preventDefault();
@@ -193,7 +223,7 @@ document.querySelectorAll('.ar-button').forEach(button => {
     });
 });
 
-// Navegação Dinâmica com Transições Suaves
+// Navegação Dinâmica com Transições Suaves (do main.js)
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -213,7 +243,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// Carregar Detalhes do Produto Dinamicamente
+// Carregar Detalhes do Produto Dinamicamente (do main.js)
 document.querySelectorAll('.view-product').forEach(button => {
     button.addEventListener('click', function(e) {
         e.preventDefault();
@@ -281,32 +311,22 @@ function loadProductDetails(productId) {
     }
 }
 
-// Hologramas nos Produtos
-function createProductHologram(containerClass, color) {
-    const container = document.querySelector(`.${containerClass}`);
-    if (container) {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
+// Animações de Scroll (do index.html)
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('hero-video');
+    video.onerror = () => console.error('Erro ao carregar o vídeo:', video.error);
+    video.onloadeddata = () => console.log('Vídeo carregado com sucesso!');
 
-        const geometry = new THREE.SphereGeometry(0.5, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ color: color, wireframe: true });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-
-        camera.position.z = 2;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            sphere.rotation.x += 0.02;
-            sphere.rotation.y += 0.02;
-            renderer.render(scene, camera);
-        }
-        animate();
-    }
-}
-
-createProductHologram('hologram-iphone15', 0x00ffcc);
-createProductHologram('hologram-iphone16', 0x00ccff);
+    const sections = document.querySelectorAll('.section-transition');
+    const observerOptions = {
+        threshold: 0.1
+    };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+    sections.forEach(section => observer.observe(section));
+});
