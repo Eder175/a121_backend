@@ -97,7 +97,7 @@ function trackUserEngagement() {
         userEngagement += 1;
         if (userEngagement > 5) {
             feedbackElement.textContent = "{% trans 'Você está muito animado! Vamos tornar sua experiência ainda mais incrível!' %}";
-            document.querySelector('.auth-section').style.background = 'linear-gradient(135deg, #00ffcc, #ff00cc)';
+            document.querySelector('.auth-section').classList.add('excited');
         } else if (userEngagement > 2) {
             feedbackElement.textContent = "{% trans 'Você parece focado! Vamos te ajudar a se conectar rapidamente!' %}";
         }

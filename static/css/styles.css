@@ -669,6 +669,11 @@ h2, h3 {
     min-height: calc(100vh - 70px); /* Ajusta para o header fixo */
 }
 
+.auth-section.excited {
+    background: linear-gradient(135deg, #00ffcc, #ff00cc);
+    transition: background 0.5s ease;
+}
+
 .auth-container {
     background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
     border: 2px solid #00ffcc;

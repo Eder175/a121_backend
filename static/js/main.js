@@ -17,43 +17,54 @@ particlesJS('particles-js', {
     retina_detect: true
 });
 
-// Holograma com Three.js (para o container geral, se existir)
-function createHologram(containerId, geometryType = 'TorusKnot', color = 0x00ffcc) {
-    const container = document.getElementById(containerId);
-    if (container) {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
+// Garantir que o Three.js seja inicializado apenas uma vez
+let threeInitialized = false;
+function initializeThree() {
+    if (!threeInitialized) {
+        threeInitialized = true;
+        // Holograma com Three.js (para o container geral, se existir)
+        function createHologram(containerId, geometryType = 'TorusKnot', color = 0x00ffcc) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
 
-        let geometry;
-        if (geometryType === 'TorusKnot') {
-            geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-        } else if (geometryType === 'Sphere') {
-            geometry = new THREE.SphereGeometry(0.5, 32, 32);
+                let geometry;
+                if (geometryType === 'TorusKnot') {
+                    geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+                } else if (geometryType === 'Sphere') {
+                    geometry = new THREE.SphereGeometry(0.5, 32, 32);
+                }
+
+                const material = new THREE.MeshBasicMaterial({ color: color, wireframe: true });
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
+
+                // Adicionar luz ambiente para compatibilidade com Three.js r155+
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+
+                camera.position.z = geometryType === 'TorusKnot' ? 5 : 2;
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    mesh.rotation.x += 0.01;
+                    mesh.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                animate();
+            }
         }
 
-        const material = new THREE.MeshBasicMaterial({ color: color, wireframe: true });
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-
-        camera.position.z = geometryType === 'TorusKnot' ? 5 : 2;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            mesh.rotation.x += 0.01;
-            mesh.rotation.y += 0.01;
-            renderer.render(scene, camera);
-        }
-        animate();
+        // Inicializar Hologramas
+        createHologram('hologram-container', 'TorusKnot', 0x00ffcc);
+        createHologram('hologram-iphone15', 'Sphere', 0x00ffcc);
+        createHologram('hologram-iphone16', 'Sphere', 0x00ccff);
     }
 }
-
-// Inicializar Hologramas
-createHologram('hologram-container', 'TorusKnot', 0x00ffcc);
-createHologram('hologram-iphone15', 'Sphere', 0x00ffcc);
-createHologram('hologram-iphone16', 'Sphere', 0x00ccff);
 
 // Modal de Chat com IA Avançada
 const modal = document.getElementById('modal');
@@ -69,6 +80,7 @@ window.onload = function() {
         modal.style.display = 'block';
         addIAMessage('Olá! Eu sou a IA A121. Como posso te ajudar hoje? 🚀');
     }
+    initializeThree();
 };
 
 if (openModal) {
@@ -108,7 +120,8 @@ function sendUserMessage() {
     const message = userInput.value.trim();
     if (message) {
         addUserMessage(message);
-        fetch('/core/chat/', {
+        // Ajustar a URL para a rota correta (a ser implementada no Django)
+        fetch('/chat/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -116,7 +129,12 @@ function sendUserMessage() {
             },
             body: JSON.stringify({ message: message })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Rota /chat/ não encontrada');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.response) {
                 addIAMessage(data.response);
@@ -126,7 +144,7 @@ function sendUserMessage() {
         })
         .catch(error => {
             console.error('Erro ao se comunicar com o servidor:', error);
-            addIAMessage('Desculpe, houve um problema. Tente novamente ou me dê mais detalhes.');
+            addIAMessage('Desculpe, a funcionalidade de chat ainda não está disponível. Estamos trabalhando nisso!');
         });
         userInput.value = '';
     }
@@ -158,7 +176,7 @@ const currencySelector = document.getElementById('currency-selector');
 if (currencySelector) {
     currencySelector.addEventListener('change', function() {
         const selectedCurrency = this.value;
-        fetch('/core/change_currency/', {
+        fetch('/change_currency/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -185,19 +203,17 @@ function updatePrices(currency, rate) {
     });
 }
 
-// Carregar Taxa de Câmbio (Comentado até corrigir a rota na Tarefa 3)
-/*
-fetch('/core/get_exchange_rate/?base=EUR')
+// Carregar Taxa de Câmbio
+fetch('/get_exchange_rate/?base=USD')
     .then(response => response.json())
     .then(data => {
         if (data.rates) {
-            const currency = document.getElementById('currency-selector')?.value || 'EUR';
+            const currency = document.getElementById('currency-selector')?.value || 'USD';
             const rate = data.rates[currency] || 1;
             updatePrices(currency, rate);
         }
     })
     .catch(error => console.error('Erro ao carregar taxa de câmbio:', error));
-*/
 
 // Realidade Aumentada
 document.querySelectorAll('.ar-button').forEach(button => {
