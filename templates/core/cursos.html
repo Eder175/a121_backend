@@ -5,35 +5,61 @@
 
 {% block extra_head %}
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    .course-language-selector { margin-top: 10px; padding: 5px; background: #1a1a1a; border: 1px solid #00ffcc; color: #00ffcc; }
+    .course-preview { margin-top: 10px; color: #00ffcc; }
+    .nft-reward { margin-top: 10px; color: #ff00ff; font-weight: bold; }
+</style>
 {% endblock %}
 
 {% block content %}
 <section class="products" id="cursos">
     <div class="container">
-        <h2>{% trans "Cursos do Futuro - Powered by A121" %}</h2>
+        <h2>{% trans "Cursos do Futuro - Powered by A121 Neural AI & A121Coin" %}</h2>
         <div class="product-grid">
             <div class="product-card" data-course="ia">
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/IA.png' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
                 </div>
                 <h3>{% trans "Introdução à IA" %}</h3>
-                <p>{% trans "Aprenda os fundamentos da inteligência artificial." %}</p>
+                <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="199.90">199.90 €</span></p>
                 <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
+                <select class="course-language-selector" data-course="ia">
+                    <option value="en">English</option>
+                    <option value="pt-br" selected>Português</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                </select>
+                <p class="course-preview">{% trans "Prévia do Vídeo Traduzido:" %}</p>
+                <p class="course-preview">{% trans "Material em PDF Traduzido:" %}</p>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+                <p class="nft-reward">{% trans "Recompensa: Ganhe 1 NFT ao completar!" %}</p>
             </div>
             <div class="product-card" data-course="finance">
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/financaspessoais.webp' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
                 </div>
                 <h3>{% trans "Finanças Pessoais" %}</h3>
-                <p>{% trans "Domine suas finanças e planeje seu futuro." %}</p>
+                <p>{% trans "Domine suas finanças e planeje seu futuro com este curso." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="149.90">149.90 €</span></p>
                 <p>{% trans "Duração" %}: 8 {% trans "horas" %}</p>
+                <select class="course-language-selector" data-course="finance">
+                    <option value="en">English</option>
+                    <option value="pt-br" selected>Português</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                </select>
+                <p class="course-preview">{% trans "Prévia do Vídeo Traduzido:" %}</p>
+                <p class="course-preview">{% trans "Material em PDF Traduzido:" %}</p>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+                <p class="nft-reward">{% trans "Recompensa: Ganhe 1 NFT ao completar!" %}</p>
             </div>
         </div>
         <section class="gamification">
+            <h3>{% trans "Sua Carteira A121Coin" %}</h3>
+            <p>{% trans "Saldo:" %} <span id="a121coin-balance">0</span> A121Coin</p>
+            <p>{% trans "Seus NFTs:" %} <span id="nft-balance">0</span></p>
             <h3>{% trans "Ganhe A121Coin!" %}</h3>
             <p id="gamification-tokens">{% trans "Você tem 0 A121Coin. Interaja para ganhar mais!" %}</p>
         </section>
@@ -59,14 +85,27 @@ fetch('{% url "core:get_exchange_rate" %}?base=EUR')
     .catch(error => console.error('Erro ao obter taxas de câmbio:', error));
 
 let userA121Coin = 0;
+let userNFTs = 0;
 function updateGamification() {
+    document.getElementById('a121coin-balance').textContent = userA121Coin;
+    document.getElementById('nft-balance').textContent = userNFTs;
     document.getElementById('gamification-tokens').textContent = `{% trans "Você tem" %} ${userA121Coin} A121Coin. {% trans "Interaja para ganhar mais!" %}`;
 }
 
 document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', () => {
-        userA121Coin += 1;
+        userA121Coin += 5;
+        userNFTs += 1;
         updateGamification();
+    });
+});
+
+document.querySelectorAll('.course-language-selector').forEach(selector => {
+    selector.addEventListener('change', (e) => {
+        const course = e.target.getAttribute('data-course');
+        const language = e.target.value;
+        console.log(`Curso ${course} selecionado no idioma ${language}`);
+        // Aqui você pode adicionar lógica para traduzir o curso dinamicamente
     });
 });
 

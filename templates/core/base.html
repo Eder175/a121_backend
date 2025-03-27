@@ -15,6 +15,7 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="{% static 'js/three.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -42,6 +43,7 @@
                     <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
                     <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
                     <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
                 </select>
                 <select id="currency-selector" class="currency-selector">
                     <option value="EUR" {% if request.session.currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
@@ -61,10 +63,17 @@
     <main>{% block content %}{% endblock %}</main>
     <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <div class="chat-header">
                 <h2>{% trans "Chat com IA A121" %}</h2>
             </div>
+            <a-scene embedded class="chat-hologram">
+                <a-entity position="0 1.5 -2" scale="0.5 0.5 0.5">
+                    <a-sphere radius="0.5" color="#00ffcc" material="shader: standard; metalness: 0.8; roughness: 0.2" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-sphere>
+                    <a-text value="{% trans 'A121Bot: Bem-vindo! Como posso ajudar?' %}" color="#ffffff" position="-1 1 0" scale="2 2 2"></a-text>
+                </a-entity>
+                <a-camera position="0 1.6 0"></a-camera>
+            </a-scene>
             <div id="chatBox" class="chat-box"></div>
             <div class="chat-input-container">
                 <input type="text" id="userInput" placeholder="{% trans 'Digite sua mensagem...' %}" class="input-glow">
@@ -106,6 +115,11 @@
                     chatBox.innerHTML += `<p>{% trans "Você:" %} ${msg}</p>`;
                     chatBox.scrollTop = chatBox.scrollHeight;
                     userInput.value = '';
+                    // Simulação de resposta da IA com análise emocional
+                    setTimeout(() => {
+                        chatBox.innerHTML += `<p>{% trans "A121Bot: Estou analisando suas emoções... Você parece animado! Como posso te ajudar mais?" %}</p>`;
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }, 1000);
                 }
             });
             userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage.click(); });
