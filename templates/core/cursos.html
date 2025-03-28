@@ -1,114 +1,461 @@
 {% extends 'core/base.html' %}
 {% load i18n static %}
 
-{% block title %}{% trans "Cursos A121 Revolution" %}{% endblock %}
+{% block title %}
+{% trans "Cursos A121 Revolution - Experiência do Futuro com A121Coin" %}
+{% endblock %}
 
 {% block extra_head %}
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-<style>
-    .course-language-selector { margin-top: 10px; padding: 5px; background: #1a1a1a; border: 1px solid #00ffcc; color: #00ffcc; }
-    .course-preview { margin-top: 10px; color: #00ffcc; }
-    .nft-reward { margin-top: 10px; color: #ff00ff; font-weight: bold; }
-</style>
+<!-- GSAP para animações -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 {% endblock %}
 
 {% block content %}
+<!-- Seção de Cursos -->
 <section class="products" id="cursos">
     <div class="container">
         <h2>{% trans "Cursos do Futuro - Powered by A121 Neural AI & A121Coin" %}</h2>
+
+        <!-- Carteira Virtual A121Coin -->
+        <section class="a121coin-wallet">
+            <h3>{% trans "Sua Carteira A121Coin" %}</h3>
+            <p id="a121coin-balance">{% trans "Saldo:" %} 0 A121Coin</p>
+            <p id="a121coin-nfts">{% trans "Seus NFTs:" %} 0</p>
+            <div id="nft-gallery" class="nft-gallery"></div>
+        </section>
+
+        <!-- Experiência Imersiva com IA Emocional -->
+        <section class="ai-emotional-experience">
+            <h3>{% trans "A IA está analisando suas emoções..." %}</h3>
+            <p id="emotional-feedback">{% trans "Você parece interessado! Vamos sugerir algo interativo!" %}</p>
+        </section>
+
+        <!-- Recomendações de Cursos com IA Neural -->
+        <section class="ai-recommendations">
+            <h3>{% trans "Cursos Personalizados para Você (A121 Neural AI)" %}</h3>
+            <div id="ai-course-suggestions" class="product-grid"></div>
+        </section>
+
+        <!-- Lista de Cursos -->
         <div class="product-grid">
             <div class="product-card" data-course="ia">
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/IA.png' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
+                    <img src="https://via.placeholder.com/300x200?text=Introdução+à+IA" alt="{% trans 'Introdução à IA' %}" class="product-image">
+                    <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
+                    <a-scene embedded renderer="colorManagement: true" class="ar-scene">
+                        <a-assets>
+                            <a-asset-item id="course-ia-hologram" src="{% static 'models/course-ia-hologram.glb' %}"></a-asset-item>
+                        </a-assets>
+                        <a-entity id="hologram-ia" gltf-model="#course-ia-hologram" scale="0.1 0.1 0.1" position="0 0 -1" visible="false">
+                            <a-text id="hologram-text-ia" value="Aula 1: O que é IA?" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                        </a-entity>
+                        <a-camera position="0 1.6 0"></a-camera>
+                    </a-scene>
                 </div>
                 <h3>{% trans "Introdução à IA" %}</h3>
                 <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="199.90">199.90 €</span></p>
                 <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
-                <select class="course-language-selector" data-course="ia">
-                    <option value="en">English</option>
-                    <option value="pt-br" selected>Português</option>
-                    <option value="es">Español</option>
-                    <option value="fr">Français</option>
-                </select>
-                <p class="course-preview">{% trans "Prévia do Vídeo Traduzido:" %}</p>
-                <p class="course-preview">{% trans "Material em PDF Traduzido:" %}</p>
+                <!-- Seletor de Idioma -->
+                <div class="language-selector-course">
+                    <label for="language-ia">{% trans "Idioma do Curso:" %}</label>
+                    <select id="language-ia" class="course-language-selector" data-course="ia">
+                        <option value="en">English</option>
+                        <option value="pt-br">Português</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+                <!-- Conteúdo Traduzido -->
+                <div class="translated-content" id="translated-content-ia">
+                    <p>{% trans "Prévia do Vídeo Traduzido:" %}</p>
+                    <audio id="translated-audio-ia" controls style="display: none;"></audio>
+                    <p id="translated-text-ia"></p>
+                    <p>{% trans "Material em PDF Traduzido:" %}</p>
+                    <a id="translated-pdf-ia" href="#" style="display: none;">{% trans "Baixar PDF Traduzido" %}</a>
+                </div>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
-                <p class="nft-reward">{% trans "Recompensa: Ganhe 1 NFT ao completar!" %}</p>
+                <!-- Prévia Gerada por IA em Tempo Real -->
+                <button class="btn btn-ai-preview" data-course="ia">{% trans "Gerar Prévia com IA Neural" %}</button>
+                <div class="ai-preview-content" id="ai-preview-ia"></div>
+                <button class="btn btn-blockchain-cert" data-course="ia">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
+                <a-scene embedded renderer="colorManagement: true" class="blockchain-cert-scene" style="display: none;">
+                    <a-assets>
+                        <a-asset-item id="cert-ia-hologram" src="{% static 'models/cert-ia-hologram.glb' %}"></a-asset-item>
+                    </a-assets>
+                    <a-entity gltf-model="#cert-ia-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
+                    <a-camera position="0 1.6 0"></a-camera>
+                </a-scene>
             </div>
             <div class="product-card" data-course="finance">
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/financaspessoais.webp' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                    <img src="https://via.placeholder.com/300x200?text=Finanças+Pessoais" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                    <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
+                    <a-scene embedded renderer="colorManagement: true" class="ar-scene">
+                        <a-assets>
+                            <a-asset-item id="course-finance-hologram" src="{% static 'models/course-finance-hologram.glb' %}"></a-asset-item>
+                        </a-assets>
+                        <a-entity id="hologram-finance" gltf-model="#course-finance-hologram" scale="0.1 0.1 0.1" position="0 0 -1" visible="false">
+                            <a-text id="hologram-text-finance" value="Aula 1: Criando um Orçamento" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                        </a-entity>
+                        <a-camera position="0 1.6 0"></a-camera>
+                    </a-scene>
                 </div>
                 <h3>{% trans "Finanças Pessoais" %}</h3>
-                <p>{% trans "Domine suas finanças e planeje seu futuro com este curso." %}</p>
+                <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="149.90">149.90 €</span></p>
                 <p>{% trans "Duração" %}: 8 {% trans "horas" %}</p>
-                <select class="course-language-selector" data-course="finance">
-                    <option value="en">English</option>
-                    <option value="pt-br" selected>Português</option>
-                    <option value="es">Español</option>
-                    <option value="fr">Français</option>
-                </select>
-                <p class="course-preview">{% trans "Prévia do Vídeo Traduzido:" %}</p>
-                <p class="course-preview">{% trans "Material em PDF Traduzido:" %}</p>
+                <!-- Seletor de Idioma -->
+                <div class="language-selector-course">
+                    <label for="language-finance">{% trans "Idioma do Curso:" %}</label>
+                    <select id="language-finance" class="course-language-selector" data-course="finance">
+                        <option value="en">English</option>
+                        <option value="pt-br">Português</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+                <!-- Conteúdo Traduzido -->
+                <div class="translated-content" id="translated-content-finance">
+                    <p>{% trans "Prévia do Vídeo Traduzido:" %}</p>
+                    <audio id="translated-audio-finance" controls style="display: none;"></audio>
+                    <p id="translated-text-finance"></p>
+                    <p>{% trans "Material em PDF Traduzido:" %}</p>
+                    <a id="translated-pdf-finance" href="#" style="display: none;">{% trans "Baixar PDF Traduzido" %}</a>
+                </div>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
-                <p class="nft-reward">{% trans "Recompensa: Ganhe 1 NFT ao completar!" %}</p>
+                <!-- Prévia Gerada por IA em Tempo Real -->
+                <button class="btn btn-ai-preview" data-course="finance">{% trans "Gerar Prévia com IA Neural" %}</button>
+                <div class="ai-preview-content" id="ai-preview-finance"></div>
+                <button class="btn btn-blockchain-cert" data-course="finance">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
+                <a-scene embedded renderer="colorManagement: true" class="blockchain-cert-scene" style="display: none;">
+                    <a-assets>
+                        <a-asset-item id="cert-finance-hologram" src="{% static 'models/cert-finance-hologram.glb' %}"></a-asset-item>
+                    </a-assets>
+                    <a-entity gltf-model="#cert-finance-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
+                    <a-camera position="0 1.6 0"></a-camera>
+                </a-scene>
             </div>
         </div>
+
+        <!-- Sistema de Gamificação com A121Coin e NFTs -->
         <section class="gamification">
-            <h3>{% trans "Sua Carteira A121Coin" %}</h3>
-            <p>{% trans "Saldo:" %} <span id="a121coin-balance">0</span> A121Coin</p>
-            <p>{% trans "Seus NFTs:" %} <span id="nft-balance">0</span></p>
-            <h3>{% trans "Ganhe A121Coin!" %}</h3>
+            <h3>{% trans "Ganhe A121Coin e NFTs Únicos!" %}</h3>
             <p id="gamification-tokens">{% trans "Você tem 0 A121Coin. Interaja para ganhar mais!" %}</p>
+            <div id="holographic-reward"></div>
         </section>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_js %}
+<style>
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .product-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #00ffcc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+    .product-image {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+    .ar-button, .btn, .btn-ai-preview, .btn-blockchain-cert {
+        background: #00ffcc;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin: 5px 0;
+        cursor: pointer;
+        font-family: 'Orbitron', sans-serif;
+        transition: background 0.3s ease;
+    }
+    .ar-button:hover, .btn:hover, .btn-ai-preview:hover, .btn-blockchain-cert:hover {
+        background: #00ccff;
+    }
+    .ar-scene, .blockchain-cert-scene {
+        width: 100%;
+        height: 200px;
+        display: none;
+    }
+    .nft-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .nft-item {
+        background: rgba(0, 255, 204, 0.2);
+        border: 1px solid #00ffcc;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
 <script>
-function updatePrices(currency, rate) {
-    document.querySelectorAll('.product-price').forEach(priceElement => {
-        const basePrice = parseFloat(priceElement.getAttribute('data-price'));
-        priceElement.textContent = (basePrice * rate).toFixed(2) + ' ' + currency;
+    // Evitar múltiplas inicializações do A-Frame
+    if (!window.aframeInitialized) {
+        console.error("A-Frame não foi inicializado no base.html. Verifique o carregamento.");
+    }
+
+    // Animações com GSAP
+    document.querySelectorAll('.product-card').forEach(card => {
+        gsap.from(card, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: card,
+                start: "top 80%"
+            }
+        });
     });
-}
 
-fetch('{% url "core:get_exchange_rate" %}?base=EUR')
-    .then(response => response.json())
-    .then(data => {
-        const currency = document.getElementById('currency-selector').value;
-        updatePrices(currency, data.rates[currency] || 1);
-    })
-    .catch(error => console.error('Erro ao obter taxas de câmbio:', error));
+    // Mudança de Idioma
+    document.getElementById('language-selector').addEventListener('change', function() {
+        var selectedLanguage = this.value;
+        var url = window.location.pathname;
+        window.location.href = url + '?language=' + selectedLanguage;
+    });
 
-let userA121Coin = 0;
-let userNFTs = 0;
-function updateGamification() {
-    document.getElementById('a121coin-balance').textContent = userA121Coin;
-    document.getElementById('nft-balance').textContent = userNFTs;
-    document.getElementById('gamification-tokens').textContent = `{% trans "Você tem" %} ${userA121Coin} A121Coin. {% trans "Interaja para ganhar mais!" %}`;
-}
+    // Mudança de Moeda com Taxa de Câmbio
+    document.getElementById('currency-selector').addEventListener('change', function() {
+        var selectedCurrency = this.value;
+        fetch('{% url "core:change_currency" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: 'currency=' + selectedCurrency
+        }).then(response => response.json()).then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        }).catch(error => {
+            console.error('Erro ao mudar moeda:', error);
+        });
+    });
 
-document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', () => {
-        userA121Coin += 5;
-        userNFTs += 1;
+    // Atualizar Preços com Taxa de Câmbio
+    function updatePrices(currency, rate) {
+        document.querySelectorAll('.product-price').forEach(priceElement => {
+            var basePrice = parseFloat(priceElement.getAttribute('data-price'));
+            var convertedPrice = basePrice * rate;
+            priceElement.textContent = convertedPrice.toFixed(2) + ' ' + currency;
+        });
+    }
+
+    // Carregar Taxa de Câmbio
+    fetch('{% url "core:get_exchange_rate" %}?base=EUR')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar taxas de câmbio');
+            }
+            return response.json();
+        })
+        .then(data => {
+            var currency = document.getElementById('currency-selector').value;
+            var rate = data.rates[currency] || 1;
+            updatePrices(currency, rate);
+        })
+        .catch(error => {
+            console.error('Erro ao obter taxas de câmbio:', error);
+            var currency = document.getElementById('currency-selector').value;
+            updatePrices(currency, 1);
+        });
+
+    // IA Emocional (Simulação)
+    let userEngagement = 0;
+    function trackUserEngagement() {
+        const feedbackElement = document.getElementById('emotional-feedback');
+        document.addEventListener('click', () => {
+            userEngagement += 1;
+            if (userEngagement > 5) {
+                feedbackElement.textContent = "{% trans 'Você está muito engajado! Vamos sugerir uma experiência interativa!' %}";
+            } else if (userEngagement > 2) {
+                feedbackElement.textContent = "{% trans 'Você parece interessado! Que tal uma prévia holográfica?' %}";
+            }
+        });
+    }
+
+    // Recomendações de Cursos com IA Neural (Simulação com TensorFlow.js)
+    async function loadAIRecommendations() {
+        const suggestionsContainer = document.getElementById('ai-course-suggestions');
+        const model = tf.sequential();
+        model.add(tf.layers.dense({ units: 10, inputShape: [2], activation: 'relu' }));
+        model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+        model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy' });
+
+        const userData = tf.tensor2d([[userEngagement, Math.random() * 10]], [1, 2]);
+        const prediction = model.predict(userData).dataSync()[0];
+
+        const suggestions = [
+            { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "https://via.placeholder.com/300x200?text=Introdução+à+IA" },
+            { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "https://via.placeholder.com/300x200?text=Finanças+Pessoais" }
+        ];
+
+        const recommendedCourse = prediction > 0.5 ? suggestions[0] : suggestions[1];
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <div class="product-image-wrapper">
+                <img src="${recommendedCourse.image}" alt="${recommendedCourse.title}" class="product-image">
+            </div>
+            <h3>${recommendedCourse.title}</h3>
+            <p>${recommendedCourse.description}</p>
+            <p>{% trans "Preço" %}: ${recommendedCourse.price}</p>
+            <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
+        `;
+        suggestionsContainer.appendChild(card);
+    }
+
+    // Prévia Holográfica com Interação por Voz
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+    recognition.continuous = false;
+
+    document.querySelectorAll('.voice-interaction').forEach(button => {
+        button.addEventListener('click', () => {
+            const hologram = button.parentElement.querySelector('a-entity');
+            const hologramText = button.parentElement.querySelector('a-text');
+            const arScene = button.parentElement.querySelector('.ar-scene');
+            arScene.style.display = 'block';
+            hologram.setAttribute('visible', 'true');
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const command = event.results[0][0].transcript.toLowerCase();
+                if (command.includes('aula 1')) {
+                    hologramText.setAttribute('value', 'Aula 1: Iniciando sua Jornada');
+                } else if (command.includes('aula 2')) {
+                    hologramText.setAttribute('value', 'Aula 2: Conceitos Avançados');
+                }
+            };
+        });
+    });
+
+    // Prévia Gerada por IA em Tempo Real (Simulação)
+    document.querySelectorAll('.btn-ai-preview').forEach(button => {
+        button.addEventListener('click', function() {
+            const course = this.getAttribute('data-course');
+            const previewContainer = document.getElementById(`ai-preview-${course}`);
+            const previews = {
+                ia: `Nesta aula, você aprenderá como a IA pode transformar sua vida. Vamos explorar os conceitos básicos e criar um projeto prático usando IA generativa.`,
+                finance: `Descubra como criar um orçamento eficiente e investir de forma inteligente. Nesta aula, você aprenderá a usar ferramentas financeiras modernas.`
+            };
+            previewContainer.innerHTML = `<p><strong>{% trans "Prévia Gerada por IA Neural:" %}</strong> ${previews[course]}</p>`;
+        });
+    });
+
+    // Sistema de Gamificação com A121Coin e NFTs
+    let userA121Coin = 0;
+    let userNFTs = [];
+    function updateGamification() {
+        const tokensElement = document.getElementById('gamification-tokens');
+        const balanceElement = document.getElementById('a121coin-balance');
+        const nftsElement = document.getElementById('a121coin-nfts');
+        const nftGallery = document.getElementById('nft-gallery');
+        tokensElement.textContent = `{% trans "Você tem" %} ${userA121Coin} A121Coin. {% trans "Interaja para ganhar mais!" %}`;
+        balanceElement.textContent = `{% trans "Saldo:" %} ${userA121Coin} A121Coin`;
+        nftsElement.textContent = `{% trans "Seus NFTs:" %} ${userNFTs.length}`;
+        const rewardContainer = document.getElementById('holographic-reward');
+        if (userA121Coin >= 5) {
+            const nftId = `A121-NFT-${Math.random().toString(36).substr(2, 9)}`;
+            userNFTs.push(nftId);
+            rewardContainer.innerHTML = `
+                <p>{% trans "Parabéns! Você ganhou um NFT Holográfico Único!" %}</p>
+                <p>{% trans "ID do NFT:" %} ${nftId}</p>
+            `;
+            nftGallery.innerHTML += `
+                <div class="nft-item">
+                    <p>{% trans "NFT ID:" %} ${nftId}</p>
+                </div>
+            `;
+        }
+    }
+
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', () => {
+            userA121Coin += 1;
+            updateGamification();
+        });
+    });
+
+    // Certificado Holográfico em Blockchain com A121Coin (Simulação)
+    document.querySelectorAll('.btn-blockchain-cert').forEach(button => {
+        button.addEventListener('click', () => {
+            if (userA121Coin >= 2) {
+                userA121Coin -= 2;
+                const course = button.getAttribute('data-course');
+                const certScene = button.parentElement.querySelector('.blockchain-cert-scene');
+                const transactionHash = `0x${Math.random().toString(16).substr(2, 40)}`;
+                certScene.style.display = 'block';
+                certScene.innerHTML += `
+                    <a-text value="Certificado Emitido na A121Chain\nHash: ${transactionHash}" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                `;
+                updateGamification();
+            } else {
+                alert("{% trans 'Você precisa de pelo menos 2 A121Coin para emitir um certificado!' %}");
+            }
+        });
+    });
+
+    // Tradução Automática de Cursos
+    document.querySelectorAll('.course-language-selector').forEach(selector => {
+        selector.addEventListener('change', async (event) => {
+            const course = event.target.getAttribute('data-course');
+            const targetLanguage = event.target.value;
+
+            const videoUrl = course === 'ia' ? 'https://example.com/ia-video.mp4' : 'https://example.com/finance-video.mp4';
+
+            try {
+                const videoResponse = await fetch('{% url "core:translate_video" %}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ video_url: videoUrl, target_language: targetLanguage })
+                });
+
+                if (!videoResponse.ok) {
+                    throw new Error('Erro ao traduzir vídeo');
+                }
+
+                const videoData = await videoResponse.json();
+                const audioElement = document.getElementById(`translated-audio-${course}`);
+                const textElement = document.getElementById(`translated-text-${course}`);
+                audioElement.src = videoData.translated_audio_url || '';
+                audioElement.style.display = 'block';
+                textElement.textContent = videoData.translated_text || `Vídeo traduzido para ${targetLanguage} (simulação).`;
+            } catch (error) {
+                console.error('Erro ao traduzir vídeo:', error);
+                const textElement = document.getElementById(`translated-text-${course}`);
+                textElement.textContent = `Erro ao traduzir vídeo para ${targetLanguage}. Funcionalidade em desenvolvimento.`;
+            }
+        });
+    });
+
+    // Inicializar Funcionalidades
+    document.addEventListener('DOMContentLoaded', () => {
+        trackUserEngagement();
+        loadAIRecommendations();
         updateGamification();
     });
-});
-
-document.querySelectorAll('.course-language-selector').forEach(selector => {
-    selector.addEventListener('change', (e) => {
-        const course = e.target.getAttribute('data-course');
-        const language = e.target.value;
-        console.log(`Curso ${course} selecionado no idioma ${language}`);
-        // Aqui você pode adicionar lógica para traduzir o curso dinamicamente
-    });
-});
-
-document.addEventListener('DOMContentLoaded', updateGamification);
 </script>
 {% endblock %}
