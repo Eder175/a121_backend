@@ -41,17 +41,9 @@
         <div class="product-grid">
             <div class="product-card" data-course="ia">
                 <div class="product-image-wrapper">
-                    <img src="https://via.placeholder.com/300x200?text=Introdução+à+IA" alt="{% trans 'Introdução à IA' %}" class="product-image">
-                    <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
-                    <a-scene embedded renderer="colorManagement: true" class="ar-scene">
-                        <a-assets>
-                            <a-asset-item id="course-ia-hologram" src="{% static 'models/course-ia-hologram.glb' %}"></a-asset-item>
-                        </a-assets>
-                        <a-entity id="hologram-ia" gltf-model="#course-ia-hologram" scale="0.1 0.1 0.1" position="0 0 -1" visible="false">
-                            <a-text id="hologram-text-ia" value="Aula 1: O que é IA?" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-                        </a-entity>
-                        <a-camera position="0 1.6 0"></a-camera>
-                    </a-scene>
+                    <img src="{% static 'images/course-ia-placeholder.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
+                    <button class="ar-button voice-interaction" data-course="ia">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
+                    <div class="ar-scene-container" data-course="ia"></div>
                 </div>
                 <h3>{% trans "Introdução à IA" %}</h3>
                 <p>{% trans "Aprenda os fundamentos da inteligência artificial e aplique-a em seu dia a dia." %}</p>
@@ -81,27 +73,13 @@
                 <button class="btn btn-ai-preview" data-course="ia">{% trans "Gerar Prévia com IA Neural" %}</button>
                 <div class="ai-preview-content" id="ai-preview-ia"></div>
                 <button class="btn btn-blockchain-cert" data-course="ia">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
-                <a-scene embedded renderer="colorManagement: true" class="blockchain-cert-scene" style="display: none;">
-                    <a-assets>
-                        <a-asset-item id="cert-ia-hologram" src="{% static 'models/cert-ia-hologram.glb' %}"></a-asset-item>
-                    </a-assets>
-                    <a-entity gltf-model="#cert-ia-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
-                    <a-camera position="0 1.6 0"></a-camera>
-                </a-scene>
+                <div class="blockchain-cert-container" data-course="ia"></div>
             </div>
             <div class="product-card" data-course="finance">
                 <div class="product-image-wrapper">
-                    <img src="https://via.placeholder.com/300x200?text=Finanças+Pessoais" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
-                    <button class="ar-button voice-interaction">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
-                    <a-scene embedded renderer="colorManagement: true" class="ar-scene">
-                        <a-assets>
-                            <a-asset-item id="course-finance-hologram" src="{% static 'models/course-finance-hologram.glb' %}"></a-asset-item>
-                        </a-assets>
-                        <a-entity id="hologram-finance" gltf-model="#course-finance-hologram" scale="0.1 0.1 0.1" position="0 0 -1" visible="false">
-                            <a-text id="hologram-text-finance" value="Aula 1: Criando um Orçamento" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-                        </a-entity>
-                        <a-camera position="0 1.6 0"></a-camera>
-                    </a-scene>
+                    <img src="{% static 'images/course-finance-placeholder.jpg' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                    <button class="ar-button voice-interaction" data-course="finance">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
+                    <div class="ar-scene-container" data-course="finance"></div>
                 </div>
                 <h3>{% trans "Finanças Pessoais" %}</h3>
                 <p>{% trans "Domine suas finanças e planeje seu futuro com este curso prático." %}</p>
@@ -131,13 +109,7 @@
                 <button class="btn btn-ai-preview" data-course="finance">{% trans "Gerar Prévia com IA Neural" %}</button>
                 <div class="ai-preview-content" id="ai-preview-finance"></div>
                 <button class="btn btn-blockchain-cert" data-course="finance">{% trans "Emitir Certificado Holográfico (A121Coin)" %}</button>
-                <a-scene embedded renderer="colorManagement: true" class="blockchain-cert-scene" style="display: none;">
-                    <a-assets>
-                        <a-asset-item id="cert-finance-hologram" src="{% static 'models/cert-finance-hologram.glb' %}"></a-asset-item>
-                    </a-assets>
-                    <a-entity gltf-model="#cert-finance-hologram" scale="0.1 0.1 0.1" position="0 0 -1"></a-entity>
-                    <a-camera position="0 1.6 0"></a-camera>
-                </a-scene>
+                <div class="blockchain-cert-container" data-course="finance"></div>
             </div>
         </div>
 
@@ -190,7 +162,7 @@
     .ar-button:hover, .btn:hover, .btn-ai-preview:hover, .btn-blockchain-cert:hover {
         background: #00ccff;
     }
-    .ar-scene, .blockchain-cert-scene {
+    .ar-scene-container, .blockchain-cert-container {
         width: 100%;
         height: 200px;
         display: none;
@@ -212,6 +184,59 @@
     // Evitar múltiplas inicializações do A-Frame
     if (!window.aframeInitialized) {
         console.error("A-Frame não foi inicializado no base.html. Verifique o carregamento.");
+    }
+
+    // Gerenciar cenas A-Frame ativas
+    const activeScenes = new Map();
+
+    function createARScene(course) {
+        const scene = document.createElement('a-scene');
+        scene.setAttribute('embedded', '');
+        scene.setAttribute('renderer', 'colorManagement: true');
+        scene.classList.add('ar-scene');
+        scene.innerHTML = `
+            <a-assets>
+                <!-- Modelo comentado até que esteja disponível -->
+                <!-- <a-asset-item id="course-${course}-hologram" src="{% static 'models/course-${course}-hologram.glb' %}"></a-asset-item> -->
+            </a-assets>
+            <a-entity id="hologram-${course}" position="0 0 -1" visible="false">
+                <a-sphere color="#00ffcc" radius="0.3" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-sphere>
+                <a-text id="hologram-text-${course}" value="Aula 1: ${course === 'ia' ? 'O que é IA?' : 'Criando um Orçamento'}" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+            </a-entity>
+            <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+            <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+            <a-camera position="0 1.6 0"></a-camera>
+        `;
+        return scene;
+    }
+
+    function createCertScene(course) {
+        const scene = document.createElement('a-scene');
+        scene.setAttribute('embedded', '');
+        scene.setAttribute('renderer', 'colorManagement: true');
+        scene.classList.add('blockchain-cert-scene');
+        scene.innerHTML = `
+            <a-assets>
+                <!-- Modelo comentado até que esteja disponível -->
+                <!-- <a-asset-item id="cert-${course}-hologram" src="{% static 'models/cert-${course}-hologram.glb' %}"></a-asset-item> -->
+            </a-assets>
+            <a-entity position="0 0 -1">
+                <a-box color="#00ffcc" depth="0.1" height="0.5" width="0.7" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-box>
+            </a-entity>
+            <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+            <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+            <a-camera position="0 1.6 0"></a-camera>
+        `;
+        return scene;
+    }
+
+    function destroyScene(course, type) {
+        const key = `${course}-${type}`;
+        const scene = activeScenes.get(key);
+        if (scene) {
+            scene.parentElement.removeChild(scene);
+            activeScenes.delete(key);
+        }
     }
 
     // Animações com GSAP
@@ -308,8 +333,8 @@
         const prediction = model.predict(userData).dataSync()[0];
 
         const suggestions = [
-            { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "https://via.placeholder.com/300x200?text=Introdução+à+IA" },
-            { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "https://via.placeholder.com/300x200?text=Finanças+Pessoais" }
+            { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "{% static 'images/course-ia-placeholder.jpg' %}" },
+            { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "{% static 'images/course-finance-placeholder.jpg' %}" }
         ];
 
         const recommendedCourse = prediction > 0.5 ? suggestions[0] : suggestions[1];
@@ -334,10 +359,26 @@
 
     document.querySelectorAll('.voice-interaction').forEach(button => {
         button.addEventListener('click', () => {
-            const hologram = button.parentElement.querySelector('a-entity');
-            const hologramText = button.parentElement.querySelector('a-text');
-            const arScene = button.parentElement.querySelector('.ar-scene');
-            arScene.style.display = 'block';
+            const course = button.getAttribute('data-course');
+            const container = button.parentElement.querySelector('.ar-scene-container');
+            
+            // Destruir outras cenas ativas
+            activeScenes.forEach((_, key) => {
+                if (key !== `${course}-ar`) {
+                    destroyScene(key.split('-')[0], key.split('-')[1]);
+                }
+            });
+
+            // Criar nova cena se não existir
+            if (!activeScenes.has(`${course}-ar`)) {
+                const scene = createARScene(course);
+                container.appendChild(scene);
+                activeScenes.set(`${course}-ar`, scene);
+            }
+
+            container.style.display = 'block';
+            const hologram = container.querySelector(`#hologram-${course}`);
+            const hologramText = container.querySelector(`#hologram-text-${course}`);
             hologram.setAttribute('visible', 'true');
             recognition.start();
 
@@ -405,12 +446,30 @@
             if (userA121Coin >= 2) {
                 userA121Coin -= 2;
                 const course = button.getAttribute('data-course');
-                const certScene = button.parentElement.querySelector('.blockchain-cert-scene');
+                const container = button.parentElement.querySelector('.blockchain-cert-container');
+
+                // Destruir outras cenas ativas
+                activeScenes.forEach((_, key) => {
+                    if (key !== `${course}-cert`) {
+                        destroyScene(key.split('-')[0], key.split('-')[1]);
+                    }
+                });
+
+                // Criar nova cena se não existir
+                if (!activeScenes.has(`${course}-cert`)) {
+                    const scene = createCertScene(course);
+                    container.appendChild(scene);
+                    activeScenes.set(`${course}-cert`, scene);
+                }
+
+                container.style.display = 'block';
                 const transactionHash = `0x${Math.random().toString(16).substr(2, 40)}`;
-                certScene.style.display = 'block';
-                certScene.innerHTML += `
-                    <a-text value="Certificado Emitido na A121Chain\nHash: ${transactionHash}" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-                `;
+                const certText = document.createElement('a-text');
+                certText.setAttribute('value', `Certificado Emitido na A121Chain\nHash: ${transactionHash}`);
+                certText.setAttribute('align', 'center');
+                certText.setAttribute('position', '0 0.5 0');
+                certText.setAttribute('color', '#00ffcc');
+                container.querySelector('a-scene').appendChild(certText);
                 updateGamification();
             } else {
                 alert("{% trans 'Você precisa de pelo menos 2 A121Coin para emitir um certificado!' %}");
