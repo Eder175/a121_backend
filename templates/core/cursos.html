@@ -41,7 +41,7 @@
         <div class="product-grid">
             <div class="product-card" data-course="ia">
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/course-ia-placeholder.jpg' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
+                    <img src="{% static 'images/IA.png' %}" alt="{% trans 'Introdução à IA' %}" class="product-image">
                     <button class="ar-button voice-interaction" data-course="ia">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
                     <div class="ar-scene-container" data-course="ia"></div>
                 </div>
@@ -77,7 +77,7 @@
             </div>
             <div class="product-card" data-course="finance">
                 <div class="product-image-wrapper">
-                    <img src="{% static 'images/course-finance-placeholder.jpg' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
+                    <img src="{% static 'images/financaspessoais.webp' %}" alt="{% trans 'Finanças Pessoais' %}" class="product-image">
                     <button class="ar-button voice-interaction" data-course="finance">{% trans "Ver Prévia Holográfica (Fale para Interagir)" %}</button>
                     <div class="ar-scene-container" data-course="finance"></div>
                 </div>
@@ -333,8 +333,8 @@
         const prediction = model.predict(userData).dataSync()[0];
 
         const suggestions = [
-            { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "{% static 'images/course-ia-placeholder.jpg' %}" },
-            { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "{% static 'images/course-finance-placeholder.jpg' %}" }
+            { title: "Introdução à IA", description: "Perfeito para iniciantes em tecnologia!", price: "199.90 €", image: "{% static 'images/IA.png' %}" },
+            { title: "Finanças Pessoais", description: "Ideal para quem quer organizar suas finanças!", price: "149.90 €", image: "{% static 'images/financaspessoais.webp' %}" }
         ];
 
         const recommendedCourse = prediction > 0.5 ? suggestions[0] : suggestions[1];
