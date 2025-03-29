@@ -6,11 +6,7 @@
 {% endblock %}
 
 {% block extra_head %}
-<!-- Pré-carregar o vídeo para melhorar a performance -->
-<link rel="preload" href="{% static 'videos/videofuturisticteste.mp4' %}" as="video" type="video/mp4">
-<!-- Carregar Three.js e A-Frame para hologramas e AR -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<!-- Removido o <link rel="preload">, pois o preload="auto" no vídeo é suficiente -->
 {% endblock %}
 
 {% block content %}
@@ -39,7 +35,7 @@
         <div class="course-grid">
             <div class="course-card">
                 <div class="course-image-wrapper">
-                    <img src="{% static 'images/A121.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image" loading="lazy">
+                    <img src="{% static 'images/IA.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image" loading="lazy">
                 </div>
                 <h3>{% trans "Introdução à IA para Criadores" %}</h3>
                 <p>{% trans "Aprenda como usar inteligência artificial para criar conteúdo inovador e automatizar processos." %}</p>
@@ -49,7 +45,7 @@
             </div>
             <div class="course-card">
                 <div class="course-image-wrapper">
-                    <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image" loading="lazy">
+                    <img src="{% static 'images/financaspessoais.webp' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image" loading="lazy">
                 </div>
                 <h3>{% trans "Finanças para Criadores de Conteúdo" %}</h3>
                 <p>{% trans "Domine suas finanças pessoais e aprenda a lucrar mais com seus conteúdos." %}</p>
@@ -94,14 +90,8 @@
                 <div class="hologram-product hologram-iphone15"></div>
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image" loading="lazy">
-                    <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
-                    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-                        <a-assets>
-                            <a-asset-item id="iphone15-model" src="{% static 'models/iphone15.glb' %}"></a-asset-item>
-                        </a-assets>
-                        <a-entity gltf-model="#iphone15-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
-                        <a-marker-camera preset="hiro"></a-marker-camera>
-                    </a-scene>
+                    <a href="#" class="ar-button" data-model="iphone15">{% trans "Ver em AR" %}</a>
+                    <div class="ar-scene-container" data-model="iphone15"></div>
                 </div>
                 <h3>{% trans "iPhone 15 Pro Max (512GB)" %}</h3>
                 <p>{% trans "O mais avançado iPhone com câmera revolucionária e desempenho incomparável." %}</p>
@@ -112,14 +102,8 @@
                 <div class="hologram-product hologram-iphone16"></div>
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image" loading="lazy">
-                    <a href="#" class="ar-button">{% trans "Ver em AR" %}</a>
-                    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-                        <a-assets>
-                            <a-asset-item id="iphone16-model" src="{% static 'models/iphone16.glb' %}"></a-asset-item>
-                        </a-assets>
-                        <a-entity gltf-model="#iphone16-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
-                        <a-marker-camera preset="hiro"></a-marker-camera>
-                    </a-scene>
+                    <a href="#" class="ar-button" data-model="iphone16">{% trans "Ver em AR" %}</a>
+                    <div class="ar-scene-container" data-model="iphone16"></div>
                 </div>
                 <h3>{% trans "iPhone 16 Pro Max Titânio Deserto" %}</h3>
                 <p>{% trans "Design futurista com tecnologia de ponta para o futuro." %}</p>
@@ -448,6 +432,11 @@
         background: #00ccff;
         box-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
     }
+    .ar-scene-container {
+        width: 100%;
+        height: 200px;
+        display: none;
+    }
     .product-card h3 {
         font-family: 'Orbitron', sans-serif;
         font-size: 1.6rem;
@@ -631,6 +620,35 @@
 </style>
 
 <script>
+    // Gerenciar cenas A-Frame ativas
+    const activeScenes = new Map();
+
+    function createARScene(model) {
+        const scene = document.createElement('a-scene');
+        scene.setAttribute('embedded', '');
+        scene.setAttribute('arjs', 'trackingMethod: best; sourceType: webcam; debugUIEnabled: false;');
+        scene.setAttribute('renderer', 'colorManagement: true');
+        scene.classList.add('ar-scene');
+        scene.innerHTML = `
+            <a-assets>
+                <a-asset-item id="${model}-model" src="{% static 'models/${model}.glb' %}"></a-asset-item>
+            </a-assets>
+            <a-entity id="${model}-entity" gltf-model="#${model}-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
+            <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+            <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+            <a-marker-camera preset="hiro"></a-marker-camera>
+        `;
+        return scene;
+    }
+
+    function destroyScene(model) {
+        const scene = activeScenes.get(model);
+        if (scene) {
+            scene.parentElement.removeChild(scene);
+            activeScenes.delete(model);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const video = document.getElementById('hero-video');
         video.onerror = () => console.error('Erro ao carregar o vídeo:', video.error);
@@ -666,35 +684,42 @@
         arButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                const scene = button.nextElementSibling;
-                const model = scene.querySelector('a-entity');
-                model.setAttribute('visible', 'true');
+                const model = button.getAttribute('data-model');
+                const container = button.parentElement.querySelector('.ar-scene-container');
+
+                // Destruir outras cenas ativas
+                activeScenes.forEach((_, key) => {
+                    if (key !== model) {
+                        destroyScene(key);
+                    }
+                });
+
+                // Criar nova cena se não existir
+                if (!activeScenes.has(model)) {
+                    const scene = createARScene(model);
+                    container.appendChild(scene);
+                    activeScenes.set(model, scene);
+                }
+
+                container.style.display = 'block';
+                const entity = container.querySelector(`#${model}-entity`);
+                entity.setAttribute('visible', 'true');
             });
         });
 
-        // Hologramas
+        // Hologramas com A-Frame (substituindo Three.js)
         const hologramContainers = document.querySelectorAll('.hologram-product');
         hologramContainers.forEach(container => {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
-
-            const geometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
-            const torusKnot = new THREE.Mesh(geometry, material);
-            scene.add(torusKnot);
-
-            camera.position.z = 2;
-
-            const animate = () => {
-                requestAnimationFrame(animate);
-                torusKnot.rotation.x += 0.01;
-                torusKnot.rotation.y += 0.01;
-                renderer.render(scene, camera);
-            };
-            animate();
+            const scene = document.createElement('a-scene');
+            scene.setAttribute('embedded', '');
+            scene.setAttribute('renderer', 'colorManagement: true');
+            scene.innerHTML = `
+                <a-entity geometry="primitive: torusKnot; radius: 0.5; tube: 0.15" material="color: #00ffcc; wireframe: true" position="0 0 -1" animation="property: rotation; to: 360 360 0; loop: true; dur: 10000"></a-entity>
+                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+                <a-camera position="0 1.6 0"></a-camera>
+            `;
+            container.appendChild(scene);
         });
 
         // Animações de Scroll
