@@ -1,5 +1,9 @@
 # core/views.py
 import json
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -9,7 +13,24 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils.translation import gettext as _
 from core.models import A121CoinSupply, A121Coin, A121CoinTransaction
-import random  # Substituímos TensorFlow por random para simulação
+
+# Criar e treinar um modelo simples de IA emocional com TensorFlow
+def create_emotion_model():
+    model = Sequential([
+        Dense(16, input_dim=2, activation='relu'),
+        Dense(8, activation='relu'),
+        Dense(4, activation='softmax')  # 4 emoções: feliz, curioso, motivado, desafiado
+    ])
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    
+    # Dados simulados para treinamento (interações e tempo de uso)
+    X = np.array([[1, 2], [2, 1], [3, 5], [0, 1], [4, 3], [2, 4]])  # Exemplo: [interações, tempo]
+    y = np.array([0, 1, 2, 3, 0, 2])  # 0: feliz, 1: curioso, 2: motivado, 3: desafiado
+    model.fit(X, y, epochs=50, verbose=0)
+    return model
+
+# Carregar o modelo (simulado, em produção você salvaria e carregaria o modelo treinado)
+emotion_model = create_emotion_model()
 
 # Página inicial
 def index(request):
@@ -177,7 +198,7 @@ def chat_interaction(request):
             user_message = data.get('message', '').lower().strip()
 
             if not user_message:
-                return JsonResponse({'error': 'Mensagem não fornecida'}, status=400也将: 400)
+                return JsonResponse({'error': 'Mensagem não fornecida'}, status=400)
 
             response_message = simulate_grok_response(user_message, request.user)
             amount = 5 if 'lesson_completed' in user_message else 1
@@ -255,10 +276,20 @@ def error_500(request):
     response.status_code = 500
     return response
 
-# Função para IA emocional (simulada sem TensorFlow)
+# Função para IA emocional com TensorFlow
 def get_emotional_state(user):
+    # Simular dados de entrada com base no usuário
+    interactions = A121CoinTransaction.objects.filter(user=user).count()
+    session_time = 5  # Simulação: tempo de sessão em minutos (em produção, você coletaria isso)
+    
+    # Preparar entrada para o modelo
+    input_data = np.array([[interactions, session_time]])
+    prediction = emotion_model.predict(input_data)
+    
+    # Mapear a previsão para emoções
     emotions = ['feliz', 'curioso', 'motivado', 'desafiado']
-    return random.choice(emotions)  # Simulação simples com random
+    predicted_emotion = emotions[np.argmax(prediction)]
+    return predicted_emotion
 
 # Recomendações de cursos com IA
 def get_ai_course_recommendation(user):
