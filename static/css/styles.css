@@ -23,6 +23,40 @@ body {
     z-index: -1;
 }
 
+/* Transição Quântica */
+.quantum-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.quantum-particles {
+    width: 100%;
+    height: 100%;
+}
+
+.quantum-loader {
+    color: #00ffcc;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
 /* Cabeçalho */
 .header {
     position: fixed;
@@ -75,12 +109,6 @@ body {
     text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
 }
 
-.nav-link:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-    text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
-}
-
 .nav-icons {
     display: flex;
     gap: 15px;
@@ -95,11 +123,6 @@ body {
 .nav-icons a:hover {
     color: #00ccff;
     transform: scale(1.2);
-}
-
-.nav-icons a:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
 }
 
 .language-selector, .currency-selector {
@@ -118,15 +141,9 @@ body {
     box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
 }
 
-.language-selector:focus, .currency-selector:focus {
-    outline: none;
-    border-color: #00ccff;
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
-}
-
 /* Conteúdo Principal */
 main {
-    margin-top: 70px; /* Espaço para o header fixo */
+    margin-top: 70px;
 }
 
 /* Mensagens */
@@ -163,7 +180,6 @@ main {
     color: #ff0066;
 }
 
-/* Animação de Fade-In */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -218,27 +234,6 @@ main {
     color: #00ccff;
 }
 
-.modal-content .close:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
-.chat-header {
-    display: flex;
-    align-items: center;
-    background-color: #1a1a1a;
-    padding: 10px;
-    border-bottom: 1px solid #00ffcc;
-    border-radius: 5px 5px 0 0;
-}
-
-.chatbot-icon {
-    border-radius: 50%;
-    margin-right: 10px;
-    width: 40px;
-    height: 40px;
-}
-
 .chat-box {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #00ffcc;
@@ -249,24 +244,6 @@ main {
     margin-bottom: 20px;
     color: #fff;
     font-family: 'Orbitron', sans-serif;
-}
-
-.user-message {
-    background: rgba(0, 204, 255, 0.2);
-    padding: 8px 12px;
-    border-radius: 10px;
-    margin: 5px 0;
-    text-align: right;
-    color: #00ccff;
-}
-
-.ia-message {
-    background: rgba(0, 255, 204, 0.2);
-    padding: 8px 12px;
-    border-radius: 10px;
-    margin: 5px 0;
-    text-align: left;
-    color: #00ffcc;
 }
 
 .chat-input-container {
@@ -307,11 +284,6 @@ main {
     background: #00ccff;
     box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
     transform: translateY(-2px);
-}
-
-.btn-glow:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
 }
 
 /* Chatbot */
@@ -376,11 +348,6 @@ main {
     transform: translateY(-2px);
 }
 
-.chatbot-voice:focus, .chatbot-vr:focus, .chatbot-language:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
 .chatbot-vr-scene {
     display: none;
     position: fixed;
@@ -389,11 +356,6 @@ main {
     width: 100%;
     height: 100%;
     z-index: 3000;
-}
-
-.chatbot-video {
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
 }
 
 /* Botões Flutuantes */
@@ -425,11 +387,6 @@ main {
     transform: translateY(-2px);
 }
 
-.chat-button:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
 .whatsapp-button {
     display: flex;
     align-items: center;
@@ -447,11 +404,6 @@ main {
     box-shadow: 0 0 25px #00ffcc;
 }
 
-.whatsapp-button:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
 .whatsapp-gif {
     width: 40px;
     height: 40px;
@@ -466,16 +418,6 @@ main {
     border-top: 1px solid #00ffcc;
 }
 
-.footer-logo {
-    height: 40px;
-    margin-bottom: 10px;
-    transition: transform 0.3s ease;
-}
-
-.footer-logo:hover {
-    transform: scale(1.1);
-}
-
 .footer p {
     font-family: 'Orbitron', sans-serif;
     color: #00ffcc;
@@ -483,440 +425,366 @@ main {
     font-size: 0.9rem;
 }
 
-/* Seção de Cursos */
-.products {
-    padding: 40px 0;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h2, h3 {
+/* Estilos da Página Inicial */
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    overflow: hidden;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.8);
+}
+
+.hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4.5rem;
     color: #00ffcc;
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    text-shadow: 0 0 25px rgba(0, 255, 204, 0.9);
+    margin-bottom: 20px;
+}
+
+.hero h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 15px 35px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #00ffcc;
+    color: #000;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
+}
+
+.btn-primary:hover {
+    background: #00ccff;
+    box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid #00ffcc;
+    color: #00ffcc;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
+}
+
+.btn-secondary:hover {
+    background: #00ffcc;
+    color: #000;
+    box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
+}
+
+.courses {
+    padding: 100px 0;
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.courses h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    color: #00ffcc;
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+}
+
+.section-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.3rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 35px;
+}
+
+.course-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
+}
+
+.course-image-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.course-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.course-card:hover .course-image {
+    transform: scale(1.05);
+}
+
+.course-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.6rem;
+    color: #00ffcc;
+    margin-bottom: 15px;
+}
+
+.course-card p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.course-price {
+    font-weight: bold;
+    color: #00ffcc;
+}
+
+.btn-course {
+    background: #00ffcc;
+    color: #000;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.btn-course:hover {
+    background: #00ccff;
+    box-shadow: 0 0 25px rgba(0, 204, 255, 0.8);
+}
+
+.testimonials {
+    margin-top: 70px;
+}
+
+.testimonials h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    color: #00ffcc;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 35px;
+}
+
+.testimonial-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: scale(1.05);
+}
+
+.testimonial-card p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.testimonial-card h4 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    color: #00ffcc;
+}
+
+.products {
+    padding: 100px 0;
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.products h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    color: #00ffcc;
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 35px;
 }
 
 .product-card {
-    background: #1a1a1a;
-    border: 2px solid #00ffcc;
-    border-radius: 10px;
-    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #00ffcc;
+    border-radius: 15px;
+    padding: 25px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    transform: translateY(-15px);
+    box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
 }
 
 .product-image-wrapper {
     position: relative;
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .product-image {
     width: 100%;
-    height: 100%;
+    height: 220px;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    border-radius: 10px;
 }
 
-.product-image:hover {
-    transform: scale(1.1);
-}
-
-.ar-button, .btn {
+.ar-button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
     background: #00ffcc;
     color: #000;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px 0;
+    padding: 8px 15px;
     border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 500;
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.ar-button:hover, .btn:hover {
-    background: #00ccff;
-    transform: translateY(-2px);
-}
-
-.ar-button:focus, .btn:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
-.ar-scene {
-    width: 100%;
-    height: 200px;
-    display: none;
-}
-
-.language-selector-course {
-    margin: 10px 0;
-    text-align: left;
-}
-
-.course-language-selector {
-    padding: 5px;
-    border-radius: 5px;
-    background: #333;
-    color: #fff;
-    border: 1px solid #00ffcc;
-    font-family: 'Orbitron', sans-serif;
-}
-
-.course-language-selector:focus {
-    outline: none;
-    border-color: #00ccff;
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
-}
-
-.translated-content {
-    margin-top: 10px;
-    text-align: left;
-    color: #00ccff;
-}
-
-/* Carteira A121Coin */
-.a121coin-wallet {
-    background: #1a1a1a;
-    border: 2px solid #00ffcc;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.nft-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-}
-
-.nft-item {
-    background: #333;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-.nft-item:hover {
-    transform: scale(1.05);
-}
-
-/* IA Emocional */
-.ai-emotional-experience {
-    background: #1a1a1a;
-    border: 2px solid #00ffcc;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Recomendações de IA */
-.ai-recommendations {
-    background: #1a1a1a;
-    border: 2px solid #00ffcc;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Gamificação */
-.gamification {
-    background: #1a1a1a;
-    border: 2px solid #00ffcc;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.holographic-reward {
-    margin-top: 20px;
-}
-
-/* Páginas de Cadastro e Login */
-.auth-section {
-    padding: 40px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 70px); /* Ajusta para o header fixo */
-}
-
-.auth-section.excited {
-    background: linear-gradient(135deg, #00ffcc, #ff00cc);
-    transition: background 0.5s ease;
-}
-
-.auth-container {
-    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-    border: 2px solid #00ffcc;
-    border-radius: 10px;
-    padding: 30px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.auth-container h2 {
-    color: #00ffcc;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-}
-
-.auth-container .subtitle {
-    color: #00ccff;
-    margin-bottom: 20px;
-    font-size: 1rem;
-}
-
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.auth-form label {
-    text-align: left;
-    color: #00ffcc;
-    font-size: 0.9rem;
-}
-
-.auth-form input {
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #00ffcc;
-    border-radius: 5px;
-    color: #fff;
-    font-family: 'Orbitron', sans-serif;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.auth-form input:focus {
-    outline: none;
-    border-color: #00ccff;
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
-}
-
-.auth-form button {
-    background: #00ffcc;
-    color: #000;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.auth-form button:hover {
-    background: #00ccff;
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
-}
-
-.auth-form button:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
-.auth-links {
-    margin-top: 15px;
-}
-
-.auth-links a {
-    color: #00ffcc;
     text-decoration: none;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.auth-links a:hover {
-    color: #00ccff;
-    text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
-}
-
-.auth-links a:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
-/* Botões de Login Avançado */
-.btn-biometric, .btn-mind-login {
-    background: #ff00cc;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
     font-family: 'Orbitron', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.btn-biometric:hover, .btn-mind-login:hover {
-    background: #cc00ff;
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(204, 0, 255, 0.5);
+.ar-button:hover {
+    background: #00ccff;
+    box-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
 }
 
-.btn-biometric:focus, .btn-mind-login:focus {
-    outline: 2px solid #00ccff;
-    outline-offset: 2px;
-}
-
-/* Transição Quântica */
-.quantum-transition {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: none;
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.quantum-particles {
-    width: 100%;
-    height: 100%;
-}
-
-.quantum-loader {
-    color: #00ffcc;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-/* Assistente Holográfico */
-.assistant-hologram {
-    margin: 20px 0;
-}
-
-.assistant-ar-scene {
+.ar-scene-container {
     width: 100%;
     height: 200px;
+    display: none;
 }
 
-/* Login em VR */
-.vr-login-scene {
-    width: 100%;
-    height: 400px;
-}
-
-/* Autenticação Blockchain */
-.blockchain-auth {
-    margin-top: 20px;
-    padding: 10px;
-    background: rgba(0, 255, 204, 0.2);
-    border: 1px solid #00ffcc;
-    border-radius: 5px;
-    text-align: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.blockchain-auth p {
-    margin: 5px 0;
+.product-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.6rem;
     color: #00ffcc;
-    font-size: 0.9rem;
+    margin-bottom: 15px;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .header .container {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .nav ul {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-
-    .nav-icons {
-        justify-content: center;
-    }
-
-    .auth-container {
-        padding: 20px;
-        max-width: 90%;
-    }
-
-    .modal-content {
-        width: 90%;
-        padding: 15px;
-    }
-
-    .chatbot-hologram {
-        width: 100%;
-        max-width: 300px;
-        height: 350px;
-    }
-
-    .product-grid {
-        grid-template-columns: 1fr;
-    }
+.product-card p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 15px;
 }
 
-@media (max-width: 480px) {
-    .header .logo {
-        height: 40px;
-    }
-
-    .nav-link {
-        font-size: 0.9rem;
-    }
-
-    .nav-icons a {
-        font-size: 1rem;
-    }
-
-    .auth-form input, .auth-form button {
-        padding: 8px;
-    }
-
-    .btn-glow {
-        padding: 8px 15px;
-    }
+.product-price {
+    font-weight: bold;
+    color: #00ffcc;
 }
+
+.btn-product {
+    background: #00ffcc;
+    color: #000;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.btn-product:hover {
+    background: #00ccff;
+    box-shadow: 0 0 25px rgba(0, 204, 255, 0.8);
+}
+
+.mmn {
+    padding: 100px 0;
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.mmn h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    color: #00ffcc;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.mmn-content {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mmn-info {
+    flex: 1;
+    min-width: 320px;
+}
+
+.mmn-info h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: #00ffcc;
+    margin-bottom: 25px;
+}
+
+.mmn-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mmn-info li {
+    font-family: 'Roboto', sans-serif;

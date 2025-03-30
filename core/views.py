@@ -1,40 +1,59 @@
 # core/views.py
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from core.models import A121CoinSupply, A121Coin, A121CoinTransaction
+import tensorflow as tf  # Para IA emocional simulada
+import numpy as np
 
 # Página inicial
 def index(request):
-    return render(request, 'core/index.html')
+    context = {
+        'welcome_message': _("Bem-vindo à Revolução A121! O futuro começa aqui."),
+        'quantum_transition': True,  # Ativa transição quântica na página inicial
+    }
+    return render(request, 'core/index.html', context)
 
 # Página de cursos
 def cursos(request):
-    return render(request, 'core/cursos.html')
+    context = {
+        'courses': [
+            {'title': 'Introdução à IA para Criadores', 'description': 'Aprenda como usar IA para criar conteúdo inovador.', 'price': 249.90, 'duration': '12 horas'},
+            {'title': 'Finanças para Criadores de Conteúdo', 'description': 'Domine suas finanças e lucre mais.', 'price': 199.90, 'duration': '10 horas'},
+            {'title': 'Leilões Lucrativos', 'description': 'Descubra como ganhar dinheiro com leilões.', 'price': 299.90, 'duration': '15 horas'},
+        ],
+        'ai_recommendation': get_ai_course_recommendation(request.user) if request.user.is_authenticated else None,
+    }
+    return render(request, 'core/cursos.html', context)
 
 # Cadastro de novos usuários
 def cadastro(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('senha')
-        # Verificar se o usuário ou email já existe
+        password = request.POST.get('password')  # Ajustado para 'password'
+
+        # Validação avançada
+        if len(password) < 8:
+            messages.error(request, _('A senha deve ter pelo menos 8 caracteres.'))
+            return render(request, 'core/cadastro.html')
         if User.objects.filter(username=username).exists():
-            messages.error(request, 'Nome de usuário já está em uso.')
+            messages.error(request, _('Nome de usuário já está em uso.'))
             return render(request, 'core/cadastro.html')
         if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email já está em uso.')
+            messages.error(request, _('Email já está em uso.'))
             return render(request, 'core/cadastro.html')
-        # Criar o usuário
+
         try:
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
-            messages.success(request, 'Usuário cadastrado com sucesso! Faça login.')
+            messages.success(request, _('Usuário cadastrado com sucesso! Faça login.'))
             return redirect('core:login')
         except Exception as e:
             messages.error(request, f'Erro ao cadastrar: {str(e)}')
@@ -45,19 +64,20 @@ def cadastro(request):
 def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        password = request.POST.get('senha')
-        # Autenticar usando email como identificador
+        password = request.POST.get('password')  # Ajustado para 'password'
+
         try:
             user = User.objects.get(email=email)
             user = authenticate(request, username=user.username, password=password)
         except User.DoesNotExist:
             user = None
+
         if user is not None:
             auth_login(request, user)
-            messages.success(request, 'Login realizado com sucesso!')
+            messages.success(request, _('Login realizado com sucesso!'))
             return redirect('core:dashboard')
         else:
-            messages.error(request, 'Email ou senha inválidos.')
+            messages.error(request, _('E-mail ou senha inválidos.'))
             return render(request, 'core/login.html')
     return render(request, 'core/login.html')
 
@@ -66,19 +86,19 @@ def signup(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('senha')
-        # Verificar se o usuário ou email já existe
+        password = request.POST.get('password')  # Ajustado para 'password'
+
         if User.objects.filter(username=username).exists():
-            messages.error(request, 'Nome de usuário já está em uso.')
+            messages.error(request, _('Nome de usuário já está em uso.'))
             return render(request, 'core/signup.html')
         if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email já está em uso.')
+            messages.error(request, _('Email já está em uso.'))
             return render(request, 'core/signup.html')
-        # Criar o usuário
+
         try:
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
-            messages.success(request, 'Usuário registrado com sucesso! Faça login.')
+            messages.success(request, _('Usuário registrado com sucesso! Faça login.'))
             return redirect('core:login')
         except Exception as e:
             messages.error(request, f'Erro ao registrar: {str(e)}')
@@ -88,37 +108,59 @@ def signup(request):
 # Dashboard (acessível apenas para usuários logados)
 @login_required
 def dashboard(request):
-    return render(request, 'core/dashboard.html')
+    context = {
+        'user': request.user,
+        'a121coin_balance': A121Coin.objects.filter(user=request.user).first().balance if A121Coin.objects.filter(user=request.user).exists() else 0,
+        'emotional_state': get_emotional_state(request.user),  # IA emocional
+    }
+    return render(request, 'core/dashboard.html', context)
 
 # Escritório (acessível apenas para usuários logados)
 @login_required
 def escritorio(request):
-    return render(request, 'core/escritorio.html')
+    context = {
+        'transactions': A121CoinTransaction.objects.filter(user=request.user).order_by('-date')[:10],
+        'holographic_rewards': True,  # Ativa recompensas holográficas
+    }
+    return render(request, 'core/escritorio.html', context)
 
 # Página de ganhar pontos (acessível apenas para usuários logados)
 @login_required
 def ganhar_pontos(request):
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'complete_lesson':
+            coin, created = A121Coin.objects.get_or_create(user=request.user, defaults={'balance': 0})
+            coin.balance += 5
+            coin.save()
+            A121CoinTransaction.objects.create(user=request.user, amount=5, description='Lição concluída')
+            messages.success(request, _('Você ganhou 5 A121Coin por completar uma lição!'))
+            return redirect('core:ganhar_pontos')
     return render(request, 'core/ganhar_pontos.html')
 
 # Detalhes do produto
 def product_detail(request, product_id):
+    products = {
+        'iphone15': {'title': 'iPhone 15 Pro Max', 'price': 1399.00, 'description': 'Tecnologia revolucionária.'},
+        'iphone16': {'title': 'iPhone 16 Pro Max', 'price': 1499.00, 'description': 'O futuro nas suas mãos.'},
+    }
     context = {
-        'product_id': product_id,
+        'product': products.get(product_id, {'title': 'Produto não encontrado', 'price': 0, 'description': ''}),
+        'ar_enabled': True,  # Ativa visualização em AR
     }
     return render(request, 'core/product_detail.html', context)
 
 # Mudança de moeda
 def change_currency(request):
     if request.method == 'POST':
-        currency = request.POST.get('currency', 'EUR')
+        currency = request.POST.get('currency')
         request.session['currency'] = currency
         return JsonResponse({'success': True})
-    return JsonResponse({'error': 'Requisição inválida'}, status=400)
+    return JsonResponse({'success': False, 'error': 'Método inválido'}, status=400)
 
 # Obter taxas de câmbio
 def get_exchange_rate(request):
     base = request.GET.get('base', 'EUR')
-    # Taxas de câmbio simuladas (substitua por uma chamada de API real, se necessário)
     rates = {
         'EUR': {'EUR': 1.0, 'USD': 1.1, 'BRL': 5.5},
         'USD': {'EUR': 0.91, 'USD': 1.0, 'BRL': 5.0},
@@ -126,74 +168,58 @@ def get_exchange_rate(request):
     }
     return JsonResponse({'rates': rates.get(base, rates['EUR'])})
 
-# Interação com o chat (acessível apenas para usuários logados)
+# Interação com o chat (API para o chatbot)
 @csrf_exempt
 @login_required
 def chat_interaction(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            user_message = data.get("message", "").lower().strip()
+            user_message = data.get('message', '').lower().strip()
 
             if not user_message:
-                return JsonResponse({"error": "Mensagem não fornecida"}, status=400)
+                return JsonResponse({'error': 'Mensagem não fornecida'}, status=400)
 
-            # Simulação de respostas do Grok (substitui o Dialogflow)
             response_message = simulate_grok_response(user_message, request.user)
+            amount = 5 if 'lesson_completed' in user_message else 1
 
-            # Adicionar A121Coin por interação (gamificação)
-            if "lesson_completed" in user_message:
-                # Recompensa por completar uma lição
-                amount = 5
-            else:
-                # Recompensa por interação normal
-                amount = 1
-
-            # Registrar a transação de A121Coin
             transaction = A121CoinTransaction.objects.create(
                 user=request.user,
                 amount=amount,
-                description=f"Interação com o chat: {user_message[:50]}"
+                description=f'Interação com o chat: {user_message[:50]}'
             )
-
-            # Calcular o saldo total de A121Coin do usuário
             total_balance = sum(t.amount for t in A121CoinTransaction.objects.filter(user=request.user))
 
             return JsonResponse({
-                "response": response_message,
-                "a121coin_balance": total_balance
+                'response': response_message,
+                'a121coin_balance': total_balance,
+                'emotional_state': get_emotional_state(request.user),  # IA emocional
             }, status=200)
 
         except Exception as e:
-            return JsonResponse({"error": f"Erro interno: {str(e)}"}, status=500)
-
-    return JsonResponse({"error": "Método não permitido"}, status=405)
+            return JsonResponse({'error': f'Erro interno: {str(e)}'}, status=500)
+    return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 # Simulação de respostas do Grok
 def simulate_grok_response(message, user):
-    """
-    Simula respostas do Grok com base na mensagem do usuário.
-    Em um ambiente real, isso seria uma chamada à API da xAI.
-    """
-    if "curso" in message:
-        return "Olá! Vejo que você está interessado em cursos. Na A121 Evolution, temos cursos incríveis como 'Introdução à IA para Criadores' e 'Finanças para Criadores de Conteúdo'. Qual você gostaria de explorar?"
-    elif "inglês" in message or "idioma" in message:
-        return "Você quer aprender inglês? Posso te ajudar com isso! Vamos começar com uma frase simples: 'Hello! How are you?' Tente repetir ou me peça mais exemplos!"
-    elif "iphone" in message or "produto" in message:
-        return "Você está interessado nos nossos iPhones exclusivos! Temos o iPhone 15 Pro Max e o iPhone 16 Pro Max Titânio Deserto. Qual você gostaria de saber mais? Ou prefere visualizar em realidade aumentada?"
-    elif "mmn" in message or "negócio" in message:
-        return "Nosso programa de Marketing Multinível é revolucionário! Você pode ganhar comissões de até 50% por indicação direta e bônus por equipes de até 7 níveis. Quer se juntar agora?"
-    elif "lesson_completed" in message:
-        return "Parabéns por completar a lição! Você ganhou 5 A121Coin como recompensa. Continue interagindo para ganhar mais!"
+    if 'curso' in message:
+        return _('Olá! Temos cursos incríveis como "Introdução à IA para Criadores". Qual você gostaria de explorar?')
+    elif 'inglês' in message or 'idioma' in message:
+        return _('Vamos aprender inglês! Diga: "Hello! How are you?"')
+    elif 'iphone' in message or 'produto' in message:
+        return _('Temos o iPhone 15 Pro Max e o iPhone 16 Pro Max Titânio Deserto. Qual você gostaria de visualizar em AR?')
+    elif 'mmn' in message or 'negócio' in message:
+        return _('Nosso MMN oferece comissões de até 50% por indicação direta. Quer se juntar agora?')
+    elif 'lesson_completed' in message:
+        return _('Parabéns! Você ganhou 5 A121Coin por completar a lição.')
     else:
-        return "Olá! Sou o Grok, criado pela xAI. Como posso te ajudar hoje? Você pode me perguntar sobre cursos, iPhones, nosso programa de MMN ou até aprender idiomas comigo!"
+        return _('Olá! Sou o Grok, criado pela xAI. Como posso te ajudar hoje?')
 
-# Tradução de vídeo (nova funcionalidade)
+# Tradução de vídeo
 @csrf_exempt
 def translate_video(request):
     if request.method == 'POST':
         try:
-            # Simulação de tradução de vídeo (substitua por lógica real no futuro)
             return JsonResponse({
                 'translated_audio_url': 'https://example.com/translated-audio.mp4',
                 'translated_text': 'Texto traduzido (simulação).'
@@ -205,5 +231,44 @@ def translate_video(request):
 # Logout de usuários
 def logout(request):
     auth_logout(request)
-    messages.success(request, 'Você foi desconectado com sucesso.')
+    messages.success(request, _('Você foi desconectado com sucesso.'))
     return redirect('core:index')
+
+# Página de erro 404 personalizada
+def error_404(request, exception=None):
+    context = {
+        'error_message': _('Oops! Parece que você entrou em uma dimensão paralela.'),
+        'error_code': '404',
+        'vr_scene': True,
+    }
+    response = render(request, 'core/error_404.html', context)
+    response.status_code = 404
+    return response
+
+# Página de erro 500 personalizada
+def error_500(request):
+    context = {
+        'error_message': _('Erro no núcleo quântico do sistema. Nossos engenheiros estão trabalhando para restaurar o equilíbrio.'),
+        'error_code': '500',
+        'vr_scene': True,
+    }
+    response = render(request, 'core/error_500.html', context)
+    response.status_code = 500
+    return response
+
+# Função para IA emocional (simulada com TensorFlow)
+def get_emotional_state(user):
+    # Simulação de análise emocional com TensorFlow
+    # Em um ambiente real, usaríamos um modelo treinado
+    emotions = ['feliz', 'curioso', 'motivado', 'desafiado']
+    return np.random.choice(emotions)
+
+# Recomendações de cursos com IA
+def get_ai_course_recommendation(user):
+    # Simulação de recomendação com IA
+    courses = [
+        'Introdução à IA para Criadores',
+        'Finanças para Criadores de Conteúdo',
+        'Leilões Lucrativos',
+    ]
+    return np.random.choice(courses)

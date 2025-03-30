@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block extra_head %}
-<!-- Removido o <link rel="preload">, pois o preload="auto" no vídeo é suficiente -->
 {% endblock %}
 
 {% block content %}
@@ -17,12 +16,12 @@
         {% trans "Seu navegador não suporta vídeos." %}
     </video>
     <div class="container">
-        <h1 id="hero-title">{% trans "A121 Evolution" %}</h1>
-        <h2>{% trans "Faça Parte da Revolução Global do Futuro" %}</h2>
-        <p>{% trans "Transforme sua vida com tecnologia, inovação e oportunidades ilimitadas. O futuro começa com você!" %}</p>
+        <h1 id="hero-title" class="animate-title">{% trans "A121 Evolution" %}</h1>
+        <h2 class="animate-subtitle">{% trans "Faça Parte da Revolução Global do Futuro" %}</h2>
+        <p class="animate-text">{% trans "Transforme sua vida com tecnologia, inovação e oportunidades ilimitadas. O futuro começa com você!" %}</p>
         <div class="hero-buttons">
-            <a href="{% url 'core:cursos' %}" class="btn btn-primary">{% trans "Explore Nossos Cursos" %}</a>
-            <a href="{% url 'core:index' %}#mmn" class="btn btn-secondary">{% trans "Descubra Nosso Negócio" %}</a>
+            <a href="{% url 'core:cursos' %}" class="btn btn-primary animate-btn">{% trans "Explore Nossos Cursos" %}</a>
+            <a href="{% url 'core:index' %}#mmn" class="btn btn-secondary animate-btn">{% trans "Descubra Nosso Negócio" %}</a>
         </div>
     </div>
 </section>
@@ -30,48 +29,30 @@
 <!-- Seção de Cursos -->
 <section class="courses section-transition" id="cursos" aria-labelledby="courses-title">
     <div class="container">
-        <h2 id="courses-title">{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
-        <p class="section-subtitle">{% trans "Domine finanças, IA e leilões para transformar sua vida e seus negócios." %}</p>
+        <h2 id="courses-title" class="animate-title">{% trans "Cursos Exclusivos para Criadores de Conteúdo" %}</h2>
+        <p class="section-subtitle animate-text">{% trans "Domine finanças, IA e leilões para transformar sua vida e seus negócios." %}</p>
         <div class="course-grid">
-            <div class="course-card">
+            {% for course in courses %}
+            <div class="course-card animate-card">
                 <div class="course-image-wrapper">
-                    <img src="{% static 'images/IA.png' %}" alt="{% trans 'Introdução à IA' %}" class="course-image" loading="lazy">
+                    <img src="{% static 'images/'|add:course.title|slugify|add:'.png' %}" alt="{{ course.title }}" class="course-image" loading="lazy">
                 </div>
-                <h3>{% trans "Introdução à IA para Criadores" %}</h3>
-                <p>{% trans "Aprenda como usar inteligência artificial para criar conteúdo inovador e automatizar processos." %}</p>
-                <p>{% trans "Preço" %}: <span class="course-price" data-price="249.90">249.90 €</span></p>
-                <p>{% trans "Duração" %}: 12 {% trans "horas" %}</p>
+                <h3>{{ course.title }}</h3>
+                <p>{{ course.description }}</p>
+                <p>{% trans "Preço" %}: <span class="course-price" data-price="{{ course.price }}">{{ course.price }} €</span></p>
+                <p>{% trans "Duração" %}: {{ course.duration }}</p>
                 <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
             </div>
-            <div class="course-card">
-                <div class="course-image-wrapper">
-                    <img src="{% static 'images/financaspessoais.webp' %}" alt="{% trans 'Finanças para Criadores' %}" class="course-image" loading="lazy">
-                </div>
-                <h3>{% trans "Finanças para Criadores de Conteúdo" %}</h3>
-                <p>{% trans "Domine suas finanças pessoais e aprenda a lucrar mais com seus conteúdos." %}</p>
-                <p>{% trans "Preço" %}: <span class="course-price" data-price="199.90">199.90 €</span></p>
-                <p>{% trans "Duração" %}: 10 {% trans "horas" %}</p>
-                <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
-            </div>
-            <div class="course-card">
-                <div class="course-image-wrapper">
-                    <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'Leilões Lucrativos' %}" class="course-image" loading="lazy">
-                </div>
-                <h3>{% trans "Leilões Lucrativos" %}</h3>
-                <p>{% trans "Descubra como ganhar dinheiro com leilões online e físicos, passo a passo." %}</p>
-                <p>{% trans "Preço" %}: <span class="course-price" data-price="299.90">299.90 €</span></p>
-                <p>{% trans "Duração" %}: 15 {% trans "horas" %}</p>
-                <a href="{% url 'core:cadastro' %}" class="btn btn-course">{% trans "Inscrever-se Agora" %}</a>
-            </div>
+            {% endfor %}
         </div>
         <div class="testimonials">
-            <h3>{% trans "O que Nossos Alunos Dizem" %}</h3>
+            <h3 class="animate-title">{% trans "O que Nossos Alunos Dizem" %}</h3>
             <div class="testimonial-grid">
-                <div class="testimonial-card">
+                <div class="testimonial-card animate-card">
                     <p>{% trans "“O curso de IA mudou minha forma de criar conteúdo. Hoje, automatizo tudo e ganho mais!”" %}</p>
                     <h4>{% trans "João Silva, Criador de Conteúdo" %}</h4>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card animate-card">
                     <p>{% trans "“Aprendi a investir com o curso de finanças. Minha renda triplicou em 6 meses!”" %}</p>
                     <h4>{% trans "Maria Oliveira, Empreendedora" %}</h4>
                 </div>
@@ -83,10 +64,10 @@
 <!-- Seção de Produtos -->
 <section class="products section-transition" id="produtos" aria-labelledby="products-title">
     <div class="container">
-        <h2 id="products-title">{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
-        <p class="section-subtitle">{% trans "Tecnologia de ponta para quem busca o futuro. Visualize em Realidade Aumentada!" %}</p>
+        <h2 id="products-title" class="animate-title">{% trans "iPhones Exclusivos A121 Evolution" %}</h2>
+        <p class="section-subtitle animate-text">{% trans "Tecnologia de ponta para quem busca o futuro. Visualize em Realidade Aumentada!" %}</p>
         <div class="product-grid">
-            <div class="product-card" data-product="iphone15">
+            <div class="product-card animate-card" data-product="iphone15">
                 <div class="hologram-product hologram-iphone15"></div>
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/iPhone 15 Pro Max (512GB).jpg' %}" alt="{% trans 'iPhone 15 Pro Max' %}" class="product-image" loading="lazy">
@@ -98,7 +79,7 @@
                 <p>{% trans "Preço" %}: <span class="product-price" data-price="1399.00">1399.00 €</span></p>
                 <a href="#" class="btn btn-product view-product" data-product="iphone15">{% trans "Comprar Agora" %}</a>
             </div>
-            <div class="product-card" data-product="iphone16">
+            <div class="product-card animate-card" data-product="iphone16">
                 <div class="hologram-product hologram-iphone16"></div>
                 <div class="product-image-wrapper">
                     <img src="{% static 'images/iPhone 16 Pro Max Titanio Deserto.jpg' %}" alt="{% trans 'iPhone 16 Pro Max' %}" class="product-image" loading="lazy">
@@ -117,26 +98,26 @@
 <!-- Seção de Marketing Multinível -->
 <section class="mmn section-transition" id="mmn" aria-labelledby="mmn-title">
     <div class="container">
-        <h2 id="mmn-title">{% trans "Marketing Multinível A121 Evolution" %}</h2>
-        <p class="section-subtitle">{% trans "Transforme sua vida financeira com nosso plano de MMN revolucionário!" %}</p>
+        <h2 id="mmn-title" class="animate-title">{% trans "Marketing Multinível A121 Evolution" %}</h2>
+        <p class="section-subtitle animate-text">{% trans "Transforme sua vida financeira com nosso plano de MMN revolucionário!" %}</p>
         <div class="mmn-content">
             <div class="mmn-info">
-                <h3>{% trans "Por que Escolher Nosso MMN?" %}</h3>
+                <h3 class="animate-title">{% trans "Por que Escolher Nosso MMN?" %}</h3>
                 <ul>
                     <li>{% trans "Comissões de até 50% por indicação direta." %}</li>
                     <li>{% trans "Bônus por equipes de até 7 níveis." %}</li>
                     <li>{% trans "Treinamento exclusivo para líderes." %}</li>
                     <li>{% trans "Pagamentos semanais e transparentes." %}</li>
                 </ul>
-                <a href="{% url 'core:cadastro' %}" class="btn btn-mmn">{% trans "Junte-se Agora" %}</a>
+                <a href="{% url 'core:cadastro' %}" class="btn btn-mmn animate-btn">{% trans "Junte-se Agora" %}</a>
             </div>
             <div class="mmn-testimonials">
-                <h3>{% trans "Histórias de Sucesso" %}</h3>
-                <div class="testimonial-card">
+                <h3 class="animate-title">{% trans "Histórias de Sucesso" %}</h3>
+                <div class="testimonial-card animate-card">
                     <p>{% trans "“Em 3 meses, ganhei €10.000 com o MMN da A121. Minha vida mudou!”" %}</p>
                     <h4>{% trans "Carlos Mendes, Líder de Equipe" %}</h4>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card animate-card">
                     <p>{% trans "“O treinamento da A121 me transformou em um líder. Hoje, minha equipe fatura milhões!”" %}</p>
                     <h4>{% trans "Ana Costa, Empreendedora" %}</h4>
                 </div>
@@ -148,8 +129,8 @@
 <!-- Seção de Cadastro Avançado -->
 <section class="cadastro-section section-transition" id="cadastro" aria-labelledby="cadastro-title">
     <div class="cadastro-container">
-        <h2 id="cadastro-title" class="title-glow">{% trans "Junte-se à Revolução A121" %}</h2>
-        <p class="subtitle">{% trans "Registre-se agora e desbloqueie um mundo de oportunidades!" %}</p>
+        <h2 id="cadastro-title" class="title-glow animate-title">{% trans "Junte-se à Revolução A121" %}</h2>
+        <p class="subtitle animate-text">{% trans "Registre-se agora e desbloqueie um mundo de oportunidades!" %}</p>
         <form class="cadastro-form" method="post" id="cadastro-form">
             {% csrf_token %}
             {% for field in form %}
@@ -161,7 +142,7 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <button type="submit" class="btn-glow">{% trans "Registrar-se" %}</button>
+            <button type="submit" class="btn-glow animate-btn">{% trans "Registrar-se" %}</button>
         </form>
         <p class="form-footer">{% trans "Já tem uma conta?" %} <a href="{% url 'core:login' %}" class="link-glow">{% trans "Faça Login" %}</a></p>
     </div>
@@ -170,8 +151,8 @@
 <!-- Seção de Login -->
 <section class="login-section section-transition" id="login" aria-labelledby="login-title">
     <div class="login-container">
-        <h2 id="login-title" class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
-        <p class="subtitle">{% trans "Faça login para acessar suas oportunidades!" %}</p>
+        <h2 id="login-title" class="title-glow animate-title">{% trans "Conecte-se à A121 Evolution" %}</h2>
+        <p class="subtitle animate-text">{% trans "Faça login para acessar suas oportunidades!" %}</p>
         <form class="cadastro-form" method="post" id="login-form">
             {% csrf_token %}
             {% for field in form %}
@@ -183,558 +164,43 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <button type="submit" class="btn-glow">{% trans "Entrar" %}</button>
+            <button type="submit" class="btn-glow animate-btn">{% trans "Entrar" %}</button>
         </form>
         <p class="form-footer">{% trans "Não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Registre-se" %}</a></p>
     </div>
 </section>
+{% endblock %}
 
-<style>
-    .hero {
-        position: relative;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        overflow: hidden;
-    }
-    .hero-video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-        filter: brightness(0.8);
-    }
-    .hero h1 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 4.5rem;
-        color: #00ffcc;
-        text-shadow: 0 0 25px rgba(0, 255, 204, 0.9);
-        margin-bottom: 20px;
-    }
-    .hero h2 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2.8rem;
-        color: #fff;
-        text-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
-        margin-bottom: 20px;
-    }
-    .hero p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.6rem;
-        color: #fff;
-        text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
-        margin-bottom: 30px;
-    }
-    .hero-buttons {
-        display: flex;
-        gap: 25px;
-        justify-content: center;
-    }
-    .btn {
-        padding: 15px 35px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-family: 'Orbitron', sans-serif;
-        transition: all 0.3s ease;
-    }
-    .btn-primary {
-        background: #00ffcc;
-        color: #000;
-        box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
-    }
-    .btn-primary:hover {
-        background: #00ccff;
-        box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
-    }
-    .btn-secondary {
-        background: transparent;
-        border: 2px solid #00ffcc;
-        color: #00ffcc;
-        box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
-    }
-    .btn-secondary:hover {
-        background: #00ffcc;
-        color: #000;
-        box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
-    }
-    .courses {
-        padding: 100px 0;
-        background: rgba(0, 0, 0, 0.95);
-    }
-    .courses h2 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2.8rem;
-        color: #00ffcc;
-        text-align: center;
-        margin-bottom: 25px;
-        text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
-    }
-    .section-subtitle {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.3rem;
-        color: #fff;
-        text-align: center;
-        margin-bottom: 50px;
-    }
-    .course-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 35px;
-    }
-    .course-card {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid #00ffcc;
-        border-radius: 15px;
-        padding: 25px;
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .course-card:hover {
-        transform: translateY(-15px);
-        box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
-    }
-    .course-image-wrapper {
-        position: relative;
-        margin-bottom: 20px;
-    }
-    .course-image {
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 10px;
-        transition: transform 0.3s ease;
-    }
-    .course-card:hover .course-image {
-        transform: scale(1.05);
-    }
-    .course-card h3 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.6rem;
-        color: #00ffcc;
-        margin-bottom: 15px;
-    }
-    .course-card p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.1rem;
-        color: #fff;
-        margin-bottom: 15px;
-    }
-    .course-price {
-        font-weight: bold;
-        color: #00ffcc;
-    }
-    .btn-course {
-        background: #00ffcc;
-        color: #000;
-        padding: 12px 25px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-family: 'Orbitron', sans-serif;
-        transition: all 0.3s ease;
-    }
-    .btn-course:hover {
-        background: #00ccff;
-        box-shadow: 0 0 25px rgba(0, 204, 255, 0.8);
-    }
-    .testimonials {
-        margin-top: 70px;
-    }
-    .testimonials h3 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2.2rem;
-        color: #00ffcc;
-        text-align: center;
-        margin-bottom: 35px;
-    }
-    .testimonial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 35px;
-    }
-    .testimonial-card {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid #00ffcc;
-        border-radius: 15px;
-        padding: 25px;
-        text-align: center;
-        transition: transform 0.3s ease;
-    }
-    .testimonial-card:hover {
-        transform: scale(1.05);
-    }
-    .testimonial-card p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.1rem;
-        color: #fff;
-        margin-bottom: 15px;
-    }
-    .testimonial-card h4 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.3rem;
-        color: #00ffcc;
-    }
-    .products {
-        padding: 100px 0;
-        background: rgba(0, 0, 0, 0.95);
-    }
-    .products h2 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2.8rem;
-        color: #00ffcc;
-        text-align: center;
-        margin-bottom: 25px;
-    }
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 35px;
-    }
-    .product-card {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid #00ffcc;
-        border-radius: 15px;
-        padding: 25px;
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .product-card:hover {
-        transform: translateY(-15px);
-        box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
-    }
-    .product-image-wrapper {
-        position: relative;
-        margin-bottom: 20px;
-    }
-    .product-image {
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-    .ar-button {
-        position: absolute;
-        bottom: 15px;
-        right: 15px;
-        background: #00ffcc;
-        color: #000;
-        padding: 8px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-family: 'Orbitron', sans-serif;
-        transition: all 0.3s ease;
-    }
-    .ar-button:hover {
-        background: #00ccff;
-        box-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
-    }
-    .ar-scene-container {
-        width: 100%;
-        height: 200px;
-        display: none;
-    }
-    .product-card h3 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.6rem;
-        color: #00ffcc;
-        margin-bottom: 15px;
-    }
-    .product-card p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.1rem;
-        color: #fff;
-        margin-bottom: 15px;
-    }
-    .product-price {
-        font-weight: bold;
-        color: #00ffcc;
-    }
-    .btn-product {
-        background: #00ffcc;
-        color: #000;
-        padding: 12px 25px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-family: 'Orbitron', sans-serif;
-        transition: all 0.3s ease;
-    }
-    .btn-product:hover {
-        background: #00ccff;
-        box-shadow: 0 0 25px rgba(0, 204, 255, 0.8);
-    }
-    .mmn {
-        padding: 100px 0;
-        background: rgba(0, 0, 0, 0.95);
-    }
-    .mmn h2 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2.8rem;
-        color: #00ffcc;
-        text-align: center;
-        margin-bottom: 25px;
-    }
-    .mmn-content {
-        display: flex;
-        gap: 50px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .mmn-info {
-        flex: 1;
-        min-width: 320px;
-    }
-    .mmn-info h3 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2rem;
-        color: #00ffcc;
-        margin-bottom: 25px;
-    }
-    .mmn-info ul {
-        list-style: none;
-        padding: 0;
-    }
-    .mmn-info li {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.1rem;
-        color: #fff;
-        margin-bottom: 15px;
-        position: relative;
-        padding-left: 25px;
-    }
-    .mmn-info li:before {
-        content: '✔';
-        position: absolute;
-        left: 0;
-        color: #00ffcc;
-    }
-    .btn-mmn {
-        display: inline-block;
-        background: #00ffcc;
-        color: #000;
-        padding: 15px 35px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-family: 'Orbitron', sans-serif;
-        transition: all 0.3s ease;
-        margin-top: 25px;
-    }
-    .btn-mmn:hover {
-        background: #00ccff;
-        box-shadow: 0 0 35px rgba(0, 204, 255, 0.9);
-    }
-    .mmn-testimonials {
-        flex: 1;
-        min-width: 320px;
-    }
-    .mmn-testimonials h3 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2rem;
-        color: #00ffcc;
-        margin-bottom: 25px;
-    }
-    .cadastro-section, .login-section {
-        padding: 100px 0;
-        background: rgba(0, 0, 0, 0.95);
-        text-align: center;
-    }
-    .cadastro-container, .login-container {
-        max-width: 550px;
-        margin: 0 auto;
-    }
-    .title-glow {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2.8rem;
-        color: #00ffcc;
-        text-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
-        margin-bottom: 25px;
-    }
-    .subtitle {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.3rem;
-        color: #fff;
-        margin-bottom: 35px;
-    }
-    .cadastro-form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-    .form-field label {
-        font-family: 'Roboto', sans-serif;
-        color: #00ffcc;
-        margin-bottom: 5px;
-        display: block;
-    }
-    .input-glow {
-        padding: 12px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid #00ffcc;
-        border-radius: 5px;
-        color: #fff;
-        font-family: 'Roboto', sans-serif;
-        transition: all 0.3s ease;
-    }
-    .input-glow:focus {
-        outline: none;
-        border-color: #00ccff;
-        box-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
-    }
-    .cadastro-form button {
-        padding: 15px;
-        background: #00ffcc;
-        color: #000;
-        border: none;
-        border-radius: 5px;
-        font-family: 'Orbitron', sans-serif;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .cadastro-form button:hover {
-        background: #00ccff;
-        box-shadow: 0 0 25px rgba(0, 204, 255, 0.9);
-    }
-    .form-footer {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.1rem;
-        color: #fff;
-        margin-top: 25px;
-    }
-    .link-glow {
-        color: #00ffcc;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    .link-glow:hover {
-        color: #00ccff;
-        text-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
-    }
-    .error {
-        color: #ff6666;
-        font-size: 0.9rem;
-        margin-top: 5px;
-    }
-</style>
-
+{% block extra_js %}
 <script>
-    // Gerenciar cenas A-Frame ativas
-    const activeScenes = new Map();
+document.addEventListener('DOMContentLoaded', () => {
+    // Animações com GSAP
+    gsap.from(".animate-title", { opacity: 0, y: 50, duration: 1, stagger: 0.3 });
+    gsap.from(".animate-subtitle", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+    gsap.from(".animate-text", { opacity: 0, y: 50, duration: 1, delay: 0.7 });
+    gsap.from(".animate-btn", { opacity: 0, scale: 0.8, duration: 1, stagger: 0.2, delay: 1 });
+    gsap.from(".animate-card", { opacity: 0, y: 100, duration: 1, stagger: 0.3, scrollTrigger: { trigger: ".course-grid", start: "top 80%" } });
 
-    function createARScene(model) {
-        const scene = document.createElement('a-scene');
-        scene.setAttribute('embedded', '');
-        scene.setAttribute('arjs', 'trackingMethod: best; sourceType: webcam; debugUIEnabled: false;');
-        scene.setAttribute('renderer', 'colorManagement: true');
-        scene.classList.add('ar-scene');
-        scene.innerHTML = `
-            <a-assets>
-                <a-asset-item id="${model}-model" src="{% static 'models/${model}.glb' %}"></a-asset-item>
-            </a-assets>
-            <a-entity id="${model}-entity" gltf-model="#${model}-model" scale="0.1 0.1 0.1" position="0 0 -1" visible="false"></a-entity>
-            <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
-            <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
-            <a-marker-camera preset="hiro"></a-marker-camera>
-        `;
-        return scene;
-    }
+    // Transição Quântica
+    const quantumTransition = document.getElementById('quantum-transition');
+    setTimeout(() => {
+        quantumTransition.style.display = 'none';
+    }, 3000);
 
-    function destroyScene(model) {
-        const scene = activeScenes.get(model);
-        if (scene) {
-            scene.parentElement.removeChild(scene);
-            activeScenes.delete(model);
+    particlesJS('quantum-particles', {
+        particles: {
+            number: { value: 100, density: { enable: true, value_area: 800 } },
+            color: { value: '#00ffcc' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.8, random: true },
+            size: { value: 5, random: true },
+            move: { enable: true, speed: 10, direction: 'none', random: true }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: { onhover: { enable: false }, onclick: { enable: false } }
         }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const video = document.getElementById('hero-video');
-        video.onerror = () => console.error('Erro ao carregar o vídeo:', video.error);
-        video.onloadeddata = () => console.log('Vídeo carregado com sucesso!');
-
-        // Conversão de Moedas
-        const currencySelector = document.getElementById('currency-selector');
-        const prices = document.querySelectorAll('.course-price, .product-price');
-
-        async function updatePrices(currency) {
-            try {
-                const response = await fetch(`/get_exchange_rate/?base=${currency}`);
-                const rates = await response.json();
-                prices.forEach(price => {
-                    const basePrice = parseFloat(price.getAttribute('data-price'));
-                    const convertedPrice = (basePrice * rates.rates[currency]).toFixed(2);
-                    price.textContent = `${convertedPrice} ${currency}`;
-                });
-            } catch (error) {
-                console.error('Erro ao atualizar preços:', error);
-            }
-        }
-
-        if (currencySelector) {
-            currencySelector.addEventListener('change', (e) => {
-                updatePrices(e.target.value);
-            });
-            updatePrices(currencySelector.value);
-        }
-
-        // Realidade Aumentada
-        const arButtons = document.querySelectorAll('.ar-button');
-        arButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const model = button.getAttribute('data-model');
-                const container = button.parentElement.querySelector('.ar-scene-container');
-
-                // Destruir outras cenas ativas
-                activeScenes.forEach((_, key) => {
-                    if (key !== model) {
-                        destroyScene(key);
-                    }
-                });
-
-                // Criar nova cena se não existir
-                if (!activeScenes.has(model)) {
-                    const scene = createARScene(model);
-                    container.appendChild(scene);
-                    activeScenes.set(model, scene);
-                }
-
-                container.style.display = 'block';
-                const entity = container.querySelector(`#${model}-entity`);
-                entity.setAttribute('visible', 'true');
-            });
-        });
-
-        // Hologramas com A-Frame (substituindo Three.js)
-        const hologramContainers = document.querySelectorAll('.hologram-product');
-        hologramContainers.forEach(container => {
-            const scene = document.createElement('a-scene');
-            scene.setAttribute('embedded', '');
-            scene.setAttribute('renderer', 'colorManagement: true');
-            scene.innerHTML = `
-                <a-entity geometry="primitive: torusKnot; radius: 0.5; tube: 0.15" material="color: #00ffcc; wireframe: true" position="0 0 -1" animation="property: rotation; to: 360 360 0; loop: true; dur: 10000"></a-entity>
-                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
-                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
-                <a-camera position="0 1.6 0"></a-camera>
-            `;
-            container.appendChild(scene);
-        });
-
-        // Animações de Scroll
-        const sections = document.querySelectorAll('.section-transition');
-        const observerOptions = {
-            threshold: 0.1
-        };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-        sections.forEach(section => observer.observe(section));
     });
+});
 </script>
 {% endblock %}
