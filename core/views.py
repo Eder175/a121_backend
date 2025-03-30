@@ -128,14 +128,17 @@ def signup(request):
 # Dashboard (acessível apenas para usuários logados)
 @login_required
 def dashboard(request):
+    # Calcular leaderboard
+    leaderboard = A121Coin.objects.all().order_by('-balance')[:5]  # Top 5 usuários
     context = {
         'user': request.user,
         'a121coin_balance': A121Coin.objects.filter(user=request.user).first().balance if A121Coin.objects.filter(user=request.user).exists() else 0,
         'emotional_state': get_emotional_state(request.user),  # IA emocional
+        'leaderboard': leaderboard,  # Adicionando o leaderboard ao contexto
     }
     return render(request, 'core/dashboard.html', context)
 
-# Escritório (acessível apenas para usuários logados)
+# Escritório (acessível apenas para usuários planetas)
 @login_required
 def escritorio(request):
     context = {

@@ -8,8 +8,93 @@
 {% block extra_head %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<!-- TensorFlow.js para IA Neural -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<!-- A-Frame para AR e VR -->
+<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+<!-- AR.js para Realidade Aumentada -->
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+<style>
+    .vendor-dashboard {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #ffffff;
+        padding: 40px 20px;
+        min-height: 100vh;
+        font-family: 'SF Pro Display', sans-serif;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    h2, h3 {
+        color: #00ffcc;
+        text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    }
+    .a121coin-wallet, .nft-marketplace, .sales-analysis, .profit-simulator, .ai-emotional-experience, .gamification, .leaderboard-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .a121coin-wallet:hover, .nft-marketplace:hover, .sales-analysis:hover, .profit-simulator:hover, .ai-emotional-experience:hover, .gamification:hover, .leaderboard-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
+    }
+    .nft-grid, .sales-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .nft-item, .sales-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    .nft-item:hover, .sales-card:hover {
+        transform: scale(1.05);
+    }
+    .btn, .cta-button, .ar-button {
+        background: linear-gradient(45deg, #00ffcc, #00b7eb);
+        color: #1a1a2e;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .btn:hover, .cta-button:hover, .ar-button:hover {
+        background: linear-gradient(45deg, #00b7eb, #00ffcc);
+        transform: scale(1.05);
+    }
+    a-scene {
+        width: 100%;
+        height: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .profit-simulator-scene {
+        height: 300px;
+    }
+    .leaderboard-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .leaderboard-section li {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .leaderboard-section li:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -20,9 +105,24 @@
         <!-- Carteira Virtual A121Coin -->
         <section class="a121coin-wallet">
             <h3>{% trans "Sua Carteira A121Coin" %}</h3>
-            <p id="a121coin-balance">{% trans "Saldo:" %} 0 A121Coin</p>
+            <p id="a121coin-balance">{% trans "Saldo:" %} {{ a121coin_balance }} A121Coin</p>
             <p id="a121coin-nfts">{% trans "Seus NFTs:" %} 0</p>
             <div id="nft-gallery" class="nft-gallery"></div>
+        </section>
+
+        <!-- Leaderboard -->
+        <section class="leaderboard-section">
+            <h3>{% trans "Leaderboard - Top 5 Usuários" %}</h3>
+            <ul>
+                {% for entry in leaderboard %}
+                    <li>
+                        <span>{{ entry.user.username }}</span>
+                        <span>{{ entry.balance }} A121Coin</span>
+                    </li>
+                {% empty %}
+                    <li>{% trans "Nenhum dado no leaderboard ainda." %}</li>
+                {% endfor %}
+            </ul>
         </section>
 
         <!-- Mercado de NFTs -->
@@ -33,11 +133,12 @@
                     <p>{% trans "Certificado de IA (NFT)" %}</p>
                     <p>{% trans "Preço:" %} 5 A121Coin</p>
                     <button class="btn buy-nft" data-nft="cert-ia" data-price="5">{% trans "Comprar" %}</button>
-                    <a-scene embedded>
+                    <button class="ar-button view-ar" data-nft="cert-ia">{% trans "Ver em AR" %}</button>
+                    <a-scene embedded arjs="trackingMethod: best;" id="ar-scene-cert-ia" style="display: none;">
                         <a-assets>
                             <a-asset-item id="cert-ia-hologram" src="{% static 'models/cert-ia-hologram.glb' %}"></a-asset-item>
                         </a-assets>
-                        <a-entity gltf-model="#cert-ia-hologram" scale="0.05 0.05 0.05" position="0 0 -1"></a-entity>
+                        <a-entity gltf-model="#cert-ia-hologram" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
                         <a-marker-camera preset="hiro"></a-marker-camera>
                     </a-scene>
                 </div>
@@ -45,11 +146,12 @@
                     <p>{% trans "Certificado de Finanças (NFT)" %}</p>
                     <p>{% trans "Preço:" %} 5 A121Coin</p>
                     <button class="btn buy-nft" data-nft="cert-finance" data-price="5">{% trans "Comprar" %}</button>
-                    <a-scene embedded>
+                    <button class="ar-button view-ar" data-nft="cert-finance">{% trans "Ver em AR" %}</button>
+                    <a-scene embedded arjs="trackingMethod: best;" id="ar-scene-cert-finance" style="display: none;">
                         <a-assets>
                             <a-asset-item id="cert-finance-hologram" src="{% static 'models/cert-finance-hologram.glb' %}"></a-asset-item>
                         </a-assets>
-                        <a-entity gltf-model="#cert-finance-hologram" scale="0.05 0.05 0.05" position="0 0 -1"></a-entity>
+                        <a-entity gltf-model="#cert-finance-hologram" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
                         <a-marker-camera preset="hiro"></a-marker-camera>
                     </a-scene>
                 </div>
@@ -71,11 +173,11 @@
         <section class="profit-simulator">
             <h3>{% trans "Simulador de Lucros em AR" %}</h3>
             <button class="ar-button" id="launch-profit-simulator">{% trans "Visualizar Projeção de Lucros" %}</button>
-            <a-scene embedded class="profit-simulator-scene" style="display: none;">
+            <a-scene embedded arjs="trackingMethod: best;" class="profit-simulator-scene" style="display: none;">
                 <a-assets>
                     <a-asset-item id="profit-hologram" src="{% static 'models/profit-hologram.glb' %}"></a-asset-item>
                 </a-assets>
-                <a-entity id="profit-hologram-entity" gltf-model="#profit-hologram" scale="0.1 0.1 0.1" position="0 0 -1">
+                <a-entity id="profit-hologram-entity" gltf-model="#profit-hologram" scale="0.1 0.1 0.1" position="0 0 0">
                     <a-text id="profit-text" value="Projeção: 25000 A121Coin" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
                 </a-entity>
                 <a-marker-camera preset="hiro"></a-marker-camera>
@@ -85,13 +187,13 @@
         <!-- IA Emocional -->
         <section class="ai-emotional-experience">
             <h3>{% trans "A IA está analisando suas emoções..." %}</h3>
-            <p id="emotional-feedback">{% trans "Você parece focado! Vamos sugerir uma estratégia de vendas!" %}</p>
+            <p id="emotional-feedback">{% trans "Seu estado emocional:" %} {{ emotional_state }}</p>
         </section>
 
         <!-- Gamificação com A121Coin -->
         <section class="gamification">
             <h3>{% trans "Ganhe A121Coin com Suas Vendas!" %}</h3>
-            <p id="gamification-tokens">{% trans "Você tem 0 A121Coin. Aumente suas vendas para ganhar mais!" %}</p>
+            <p id="gamification-tokens">{% trans "Você tem" %} {{ a121coin_balance }} A121Coin. {% trans "Aumente suas vendas para ganhar mais!" %}</p>
         </section>
     </div>
 </section>
@@ -100,7 +202,7 @@
 {% block extra_js %}
 <script>
 // Estado do Usuário (Persistente entre Páginas)
-let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
+let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : {{ a121coin_balance }};
 let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
 
 // Atualizar Carteira Virtual
@@ -115,11 +217,11 @@ function updateWallet() {
         nftGallery.innerHTML += `
             <div class="nft-item">
                 <p>{% trans "NFT ID:" %} ${nft}</p>
-                <a-scene embedded>
+                <a-scene embedded arjs="trackingMethod: best;">
                     <a-assets>
                         <a-asset-item id="reward-hologram-${nft}" src="{% static 'models/reward-hologram-${nft}.glb' %}"></a-asset-item>
                     </a-assets>
-                    <a-entity gltf-model="#reward-hologram-${nft}" scale="0.05 0.05 0.05" position="0 0 -1"></a-entity>
+                    <a-entity gltf-model="#reward-hologram-${nft}" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
                     <a-marker-camera preset="hiro"></a-marker-camera>
                 </a-scene>
             </div>
@@ -145,21 +247,16 @@ document.querySelectorAll('.buy-nft').forEach(button => {
     });
 });
 
-// IA Emocional (Simulação)
-let userEngagement = 0;
-function trackUserEngagement() {
-    const feedbackElement = document.getElementById('emotional-feedback');
-    document.addEventListener('click', () => {
-        userEngagement += 1;
-        if (userEngagement > 5) {
-            feedbackElement.textContent = "{% trans 'Você está muito engajado! Que tal aumentar suas vendas com uma nova estratégia?' %}";
-        } else if (userEngagement > 2) {
-            feedbackElement.textContent = "{% trans 'Você parece focado! Vamos sugerir uma análise de vendas!' %}";
-        }
+// Visualizar NFTs em AR
+document.querySelectorAll('.view-ar').forEach(button => {
+    button.addEventListener('click', () => {
+        const nftId = button.getAttribute('data-nft');
+        const arScene = document.getElementById(`ar-scene-${nftId}`);
+        arScene.style.display = 'block';
     });
-}
+});
 
-// Análise de Vendas com IA Neural (Simulação com TensorFlow.js)
+// Análise de Vendas (Simulação)
 async function loadSalesAnalysis() {
     const salesByCountry = document.getElementById('sales-by-country');
     const aiSuggestion = document.getElementById('ai-sales-suggestion');
@@ -173,16 +270,6 @@ async function loadSalesAnalysis() {
         { country: "Japão", sales: 2000 }
     ];
 
-    // Modelo de IA Neural
-    const model = tf.sequential();
-    model.add(tf.layers.dense({ units: 10, inputShape: [2], activation: 'relu' }));
-    model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
-    model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy' });
-
-    // Simulação de previsão de vendas
-    const userData = tf.tensor2d([[userEngagement, salesData.reduce((sum, data) => sum + data.sales, 0)]], [1, 2]);
-    const prediction = model.predict(userData).dataSync()[0];
-
     // Exibir Vendas por País
     salesData.forEach(data => {
         const card = document.createElement('div');
@@ -194,13 +281,14 @@ async function loadSalesAnalysis() {
         salesByCountry.appendChild(card);
     });
 
-    // Sugestão da IA
-    aiSuggestion.textContent = prediction > 0.5 ?
+    // Sugestão da IA (baseada em vendas)
+    const totalSales = salesData.reduce((sum, data) => sum + data.sales, 0);
+    aiSuggestion.textContent = totalSales > 15000 ?
         "{% trans 'A IA sugere: Aumente o marketing no Brasil, onde as vendas estão crescendo!' %}" :
         "{% trans 'A IA sugere: Foque nos EUA para maximizar seus lucros!' %}";
 
     // Atualizar Vendas Globais
-    globalSales.textContent = salesData.reduce((sum, data) => sum + data.sales, 0);
+    globalSales.textContent = totalSales.toFixed(2);
 }
 
 document.getElementById('update-sales').addEventListener('click', () => {
@@ -220,7 +308,8 @@ document.getElementById('launch-profit-simulator').addEventListener('click', () 
 function updateGamification() {
     const tokensElement = document.getElementById('gamification-tokens');
     tokensElement.textContent = `{% trans "Você tem" %} ${userA121Coin} A121Coin. {% trans "Aumente suas vendas para ganhar mais!" %}`;
-    if (parseFloat(document.getElementById('global-sales').textContent) >= 20000) {
+    const globalSales = parseFloat(document.getElementById('global-sales').textContent);
+    if (globalSales >= 20000) {
         userA121Coin += 10;
         updateWallet();
         alert("{% trans 'Parabéns! Você atingiu a meta de vendas e ganhou 10 A121Coin!' %}");
@@ -229,7 +318,6 @@ function updateGamification() {
 
 // Inicializar Funcionalidades
 document.addEventListener('DOMContentLoaded', () => {
-    trackUserEngagement();
     loadSalesAnalysis();
     updateWallet();
     updateGamification();
