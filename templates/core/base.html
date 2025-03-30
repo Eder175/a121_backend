@@ -4,83 +4,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http: https:; script-src 'self' 'unsafe-inline' https://aframe.io https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' ws: wss: https://rpc.testnet.a121chain.com;">
+    <meta name="description" content="A121 Evolution - A Revolução do Futuro. Transforme sua vida com tecnologia, cursos e oportunidades de negócio.">
+    <meta name="keywords" content="A121, tecnologia, iPhones, cursos, marketing multinível, realidade aumentada, futuro">
+    <meta name="author" content="A121 Evolution Team">
+    <meta name="robots" content="index, follow">
+    <!-- Ajustar Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://aframe.io https://unpkg.com https://cdn.jsdelivr.net https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.aframe.io; connect-src 'self' http://127.0.0.1:8000 https://cdn.aframe.io blob:; img-src 'self' data: https://cdn.aframe.io; media-src 'self' blob:; object-src 'none';">
     <title>{% block title %}{% trans "A121 Evolution - A Revolução do Futuro" %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js" defer></script>
-    {% block extra_head %}{% endblock %}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <!-- A-Frame e AR.js para Realidade Aumentada e VR -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-ar@0.9.0/dist/aframe-ar.min.js"></script>
+    
+    <!-- Three.js Carregado Localmente -->
+    <script src="{% static 'js/three.min.js' %}"></script>
+    
+    <!-- TensorFlow.js para IA -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    
+    {% block extra_head %}
+    {% endblock %}
 </head>
 <body>
+    <!-- Partículas de Fundo Avançadas -->
     <div id="particles-js" class="particles-background"></div>
+
+    <!-- Holograma (usando Three.js) -->
+    <div id="hologram-container"></div>
+
+    <!-- Cabeçalho -->
     <header class="header">
         <div class="container">
             <img src="{% static 'images/A121.png' %}" alt="{% trans 'A121 Evolution' %}" class="logo">
             <nav class="nav">
                 <ul>
-                    <li><a href="{% url 'core:index' %}" class="nav-link">{% trans "A Revolução" %}</a></li>
-                    <li><a href="{% url 'core:cursos' %}" class="nav-link">{% trans "Cursos" %}</a></li>
+                    <li><a href="{% url 'core:index' %}" class="nav-link" data-section="hero">{% trans "A Revolução" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#produtos" class="nav-link" data-section="products">{% trans "iPhones" %}</a></li>
+                    <li><a href="{% url 'core:cursos' %}" class="nav-link" data-section="courses">{% trans "Cursos" %}</a></li>
+                    <li><a href="{% url 'core:index' %}#mmn" class="nav-link" data-section="mmn">{% trans "Negócio" %}</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'core:chat' %}" class="nav-link">{% trans "Chat" %}</a></li>
-                        <li><a href="{% url 'core:logout' %}" class="nav-link">{% trans "Sair" %}</a></li>
+                        <li><a href="{% url 'core:dashboard' %}" class="nav-link">{% trans "Dashboard" %}</a></li>
+                        <li><a href="{% url 'core:ganhar_pontos' %}" class="nav-link">{% trans "Ganhar Pontos" %}</a></li>
+                        <li><a href="{% url 'core:escritorio' %}" class="nav-link">{% trans "Escritório" %}</a></li>
+                        <li><a href="{% url 'logout' %}" class="nav-link"> W{% trans "Sair" %}</a></li>
                     {% else %}
+                        <li><a href="{% url 'core:cadastro' %}" class="nav-link">{% trans "Junte-se" %}</a></li>
                         <li><a href="{% url 'core:login' %}" class="nav-link">{% trans "Conecte-se" %}</a></li>
                     {% endif %}
                 </ul>
+                <div class="nav-icons">
+                    <a href="#search"><i class="fas fa-search"></i></a>
+                    <a href="#cart"><i class="fas fa-shopping-cart"></i></a>
+                </div>
                 <select id="language-selector" class="language-selector">
-                    <option value="pt-br">Português</option>
-                    <option value="en">English</option>
+                    <option value="pt-br" {% if LANGUAGE_CODE == 'pt-br' %}selected{% endif %}>Português</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
                 </select>
                 <select id="currency-selector" class="currency-selector">
-                    <option value="EUR">€ (EUR)</option>
-                    <option value="USD">$ (USD)</option>
+                    <option value="EUR" {% if request.session.currency == 'EUR' %}selected{% endif %}>€ (EUR)</option>
+                    <option value="USD" {% if request.session.currency == 'USD' %}selected{% endif %}>$ (USD)</option>
+                    <option value="BRL" {% if request.session.currency == 'BRL' %}selected{% endif %}>R$ (BRL)</option>
                 </select>
             </nav>
         </div>
     </header>
-    <main>{% block content %}{% endblock %}</main>
-    <div class="chatbot-container">
-        <div class="chatbot-hologram">
-            <a-scene embedded renderer="colorManagement: true">
-                <a-sphere id="chatbot-hologram-entity" color="#00ffcc" radius="0.3" position="0 0 -1" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
-                    <a-text id="chatbot-text" value="Olá! Sou o A121Bot!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
-                </a-sphere>
-                <a-camera position="0 1.6 0"></a-camera>
-            </a-scene>
+
+    <!-- Mensagens (para exibir alertas de sucesso, erro, etc.) -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         </div>
-        <div class="chatbot-messages" id="chatbot-messages"></div>
-        <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale...' %}">
-        <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
-        <button id="chatbot-vr" class="chatbot-vr">{% trans "VR" %}</button>
+    {% endif %}
+
+    <!-- Conteúdo principal -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Modal de Chat com IA Avançada -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <div class="chat-header">
+                <img src="{% static 'images/chatbot-icon.png' %}" alt="Chatbot Icon" class="chatbot-icon" width="40" height="40">
+                <h2>{% trans "Chat com IA A121" %}</h2>
+            </div>
+            <div id="chatBox" class="chat-box"></div>
+            <div class="chat-input-container">
+                <input type="text" id="userInput" placeholder="{% trans 'Digite sua mensagem...' %}" class="input-glow">
+                <button id="sendMessage" class="btn-glow">{% trans "Enviar" %}</button>
+            </div>
+        </div>
     </div>
+
+    <!-- Chatbot Revolucionário -->
+    <div class="chatbot-container" id="chatbot-container">
+        <div class="chatbot-hologram">
+            <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" class="chatbot-ar-scene">
+                <a-sphere id="chatbot-hologram-entity" color="#00ffcc" radius="0.3" position="0 0 -1" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+                    <a-text id="chatbot-text" value="Olá! Sou o A121Bot. Fale comigo!" align="center" position="0 0.5 0" color="#00ffcc"></a-text>
+                </a-sphere>
+                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+                <a-marker-camera preset="hiro"></a-marker-camera>
+            </a-scene>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <p>{% trans "A121Bot: Olá! Como posso te ajudar hoje?" %}</p>
+            </div>
+            <video controls class="chatbot-video" style="width: 100%; margin-bottom: 10px;">
+                <source src="{% static 'videos/Robo A121.mp4' %}" type="video/mp4">
+                {% trans "Seu navegador não suporta o elemento de vídeo." %}
+            </video>
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="{% trans 'Digite ou fale sua mensagem...' %}">
+            <div>
+                <button id="chatbot-voice" class="chatbot-voice">{% trans "Falar" %}</button>
+                <button id="chatbot-vr" class="chatbot-vr">{% trans "Interagir em VR" %}</button>
+                <button id="chatbot-language" class="chatbot-language">{% trans "Aprender Idiomas" %}</button>
+            </div>
+        </div>
+        <div id="chatbot-vr-scene" class="chatbot-vr-scene"></div>
+    </div>
+
+    <!-- Botões Flutuantes -->
+    <div class="floating-buttons">
+        <button id="chat-button" class="chat-button">{% trans "Bate-papo com IA" %}</button>
+        <a href="https://wa.me/1234567890" class="whatsapp-button">
+            <img src="{% static 'images/whatsapp-icon.gif' %}" alt="{% trans 'Fale Conosco via WhatsApp' %}" class="whatsapp-gif">
+        </a>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <img src="{% static 'images/A121.png' %}" alt="{% trans 'A121 Evolution' %}" class="footer-logo">
+                <p>© {% now "Y" %} {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            particlesJS('particles-js', { particles: { number: { value: 200 }, color: { value: '#00ffcc' } } });
-            const ws = new WebSocket('ws://localhost:8000/ws/chat/');
-            ws.onmessage = (e) => {
-                const data = JSON.parse(e.data);
-                document.getElementById('chatbot-messages').innerHTML += `<p>A121Bot: ${data.message}</p>`;
+        // Inicializar Partículas
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 200, density: { enable: true, value_area: 800 } },
+                color: { value: '#00ffcc' },
+                shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } },
+                opacity: { value: 0.7, random: true },
+                size: { value: 5, random: true },
+                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 },
+                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 150, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // Chatbot Revolucionário
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotText = document.getElementById('chatbot-text');
+        const chatbotVrScene = document.getElementById('chatbot-vr-scene');
+        let detectedLanguage = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+        let languageLessonActive = false;
+        let currentLesson = null;
+
+        // Reconhecimento de Voz
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = detectedLanguage;
+        recognition.continuous = false;
+
+        document.getElementById('chatbot-voice').addEventListener('click', () => {
+            recognition.start();
+        });
+
+        recognition.onresult = (event) => {
+            const message = event.results[0][0].transcript;
+            chatbotInput.value = message;
+            processMessage(message);
+        };
+
+        // Modo VR
+        document.getElementById('chatbot-vr').addEventListener('click', () => {
+            const scene = document.createElement('a-scene');
+            scene.setAttribute('vr-mode-ui', 'enabled: true');
+            scene.setAttribute('embedded', '');
+            scene.innerHTML = `
+                <a-sky color="#000"></a-sky>
+                <a-sphere id="vr-chatbot" color="#00ffcc" radius="0.5" position="0 1.6 -3" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+                    <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 1 0" color="#00ffcc"></a-text>
+                </a-sphere>
+                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+                <a-entity camera look-controls position="0 1.6 0"></a-entity>
+            `;
+            chatbotVrScene.appendChild(scene);
+            chatbotVrScene.style.display = 'block';
+
+            const vrChatbotText = document.getElementById('vr-chatbot-text');
+            vrChatbotText.setAttribute('value', 'Bem-vindo ao modo VR! Fale comigo!');
+        });
+
+        chatbotVrScene.addEventListener('click', (e) => {
+            if (e.target === chatbotVrScene) {
+                chatbotVrScene.style.display = 'none';
+                chatbotVrScene.innerHTML = '';
+            }
+        });
+
+        // Modo de Aprendizado de Idiomas
+        document.getElementById('chatbot-language').addEventListener('click', () => {
+            languageLessonActive = true;
+            currentLesson = {
+                language: 'en', // Padrão: Inglês
+                topic: 'technology',
+                level: 'beginner',
+                step: 0,
+                phrases: [
+                    { en: "Hello! Let's talk about technology.", pt: "Olá! Vamos falar sobre tecnologia." },
+                    { en: "Do you like using computers?", pt: "Você gosta de usar computadores?" },
+                    { en: "Technology makes our lives easier.", pt: "A tecnologia facilita nossas vidas." }
+                ]
             };
-            document.getElementById('chatbot-voice').addEventListener('click', () => {
-                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                recognition.start();
-                recognition.onresult = (e) => {
-                    ws.send(JSON.stringify({ message: e.results[0][0].transcript }));
-                };
+            chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês:" %} ${currentLesson.phrases[0].en}</p>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        });
+
+        // Detectar Idioma da Mensagem
+        function detectLanguage(message) {
+            const lowerMessage = message.toLowerCase();
+            const languageKeywords = {
+                'pt-br': ['olá', 'oi', 'tecnologia', 'cursos', 'finanças'],
+                'en': ['hello', 'hi', 'technology', 'courses', 'finance'],
+                'es': ['hola', 'tecnología', 'cursos', 'finanzas'],
+                'fr': ['bonjour', 'technologie', 'cours', 'finances'],
+                'de': ['hallo', 'technologie', 'kurse', 'finanzen']
+            };
+
+            for (const [lang, keywords] of Object.entries(languageKeywords)) {
+                if (keywords.some(keyword => lowerMessage.includes(keyword))) {
+                    return lang;
+                }
+            }
+            return 'pt-br'; // Padrão: Português
+        }
+
+        // Função para obter o CSRF Token
+        function getCsrfToken() {
+            const name = 'csrftoken';
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Processar Mensagens
+        async function processMessage(message, targetElement = chatbotMessages) {
+            // Adicionar mensagem do usuário
+            targetElement.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
+            targetElement.scrollTop = targetElement.scrollHeight;
+
+            // Detectar idioma da mensagem
+            detectedLanguage = detectLanguage(message);
+            recognition.lang = detectedLanguage;
+
+            // Modo de Aprendizado de Idiomas
+            if (languageLessonActive) {
+                let lessonResponse = '';
+                if (currentLesson.step < currentLesson.phrases.length) {
+                    const expectedPhrase = currentLesson.phrases[currentLesson.step].en;
+                    if (message.toLowerCase().trim() === expectedPhrase.toLowerCase().trim()) {
+                        lessonResponse = `{% trans "A121Bot: Correto! A tradução em português é:" %} ${currentLesson.phrases[currentLesson.step].pt}`;
+                        currentLesson.step++;
+                        if (currentLesson.step < currentLesson.phrases.length) {
+                            lessonResponse += ` {% trans "Próxima frase:" %} ${currentLesson.phrases[currentLesson.step].en}`;
+                        } else {
+                            lessonResponse += ` {% trans "Parabéns! Você completou a lição. Ganhou 5 A121Coin!" %}`;
+                            languageLessonActive = false;
+                            currentLesson = null;
+
+                            // Enviar solicitação ao backend para adicionar 5 A121Coin
+                            try {
+                                const response = await fetch("{% url 'core:chat_interaction' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': getCsrfToken(),
+                                    },
+                                    body: JSON.stringify({ message: 'lesson_completed' }),
+                                });
+
+                                const data = await response.json();
+                                if (response.ok) {
+                                    const a121coinBalance = data.a121coin_balance;
+                                    targetElement.innerHTML += `<p>{% trans "Saldo total de A121Coin:" %} ${a121coinBalance}</p>`;
+                                }
+                            } catch (error) {
+                                console.error('Erro ao registrar A121Coin:', error);
+                            }
+                        }
+                    } else {
+                        lessonResponse = `{% trans "A121Bot: Quase! A frase correta é:" %} ${expectedPhrase}. {% trans "Tente novamente!" %}`;
+                    }
+                }
+                targetElement.innerHTML += `<p>${lessonResponse}</p>`;
+                targetElement.scrollTop = targetElement.scrollHeight;
+                chatbotText.setAttribute('value', lessonResponse);
+
+                const vrChatbotText = document.getElementById('vr-chatbot-text');
+                if (vrChatbotText) {
+                    vrChatbotText.setAttribute('value', lessonResponse);
+                }
+                return;
+            }
+
+            // Enviar mensagem ao backend (integração com Grok)
+            try {
+                const response = await fetch("{% url 'core:chat_interaction' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                    body: JSON.stringify({ message: message }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const responseMessage = data.response;
+                    const a121coinBalance = data.a121coin_balance;
+
+                    // Atualizar Holograma
+                    chatbotText.setAttribute('value', responseMessage);
+
+                    // Atualizar texto em VR, se ativo
+                    const vrChatbotText = document.getElementById('vr-chatbot-text');
+                    if (vrChatbotText) {
+                        vrChatbotText.setAttribute('value', responseMessage);
+                    }
+
+                    // Adicionar resposta do Chatbot
+                    targetElement.innerHTML += `<p>{% trans "A121Bot:" %} ${responseMessage}</p>`;
+                    targetElement.innerHTML += `<p>{% trans "Saldo total de A121Coin:" %} ${a121coinBalance}</p>`;
+                } else {
+                    targetElement.innerHTML += `<p>{% trans "A121Bot: Erro ao processar sua mensagem. Tente novamente!" %}</p>`;
+                    console.error('Erro:', data.error);
+                }
+            } catch (error) {
+                targetElement.innerHTML += `<p>{% trans "A121Bot: Erro de conexão. Tente novamente!" %}</p>`;
+                console.error('Erro de conexão:', error);
+            }
+            targetElement.scrollTop = targetElement.scrollHeight;
+        }
+
+        // Enviar Mensagem ao Pressionar Enter no Chatbot
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+                processMessage(chatbotInput.value.trim());
+                chatbotInput.value = '';
+            }
+        });
+
+        // Inicializar Chatbot e Modal
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modal');
+            const chatButton = document.getElementById('chat-button');
+            const closeModal = document.querySelector('.modal-content .close');
+            const sendMessageButton = document.getElementById('sendMessage');
+            const userInput = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const chatbotContainer = document.getElementById('chatbot-container');
+
+            // Mostrar o chat automaticamente ao carregar a página
+            chatbotContainer.style.display = 'block';
+            modal.style.display = 'flex';
+
+            // Abrir o modal ao clicar no botão "Bate-papo com IA"
+            chatButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.style.display = 'flex';
+                chatbotContainer.style.display = 'block';
             });
-            document.getElementById('chatbot-vr').addEventListener('click', () => {
-                const scene = document.createElement('a-scene');
-                scene.setAttribute('vr-mode-ui', 'enabled: true');
-                scene.innerHTML = `
-                    <a-sky color="#000022"></a-sky>
-                    <a-sphere position="0 1.6 -3" color="#00ffcc" radius="0.5"></a-sphere>
-                    <a-camera position="0 1.6 0"></a-camera>
-                `;
-                document.body.appendChild(scene);
+
+            // Fechar o modal ao clicar no botão de fechar
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+                chatbotContainer.style.display = 'none';
             });
+
+            // Fechar o modal ao clicar fora dele
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    chatbotContainer.style.display = 'none';
+                }
+            });
+
+            // Enviar mensagem no modal usando a mesma função processMessage
+            sendMessageButton.addEventListener('click', () => {
+                const message = userInput.value.trim();
+                if (message) {
+                    processMessage(message, chatBox);
+                    userInput.value = '';
+                }
+            });
+
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessageButton.click();
+                }
+            });
+
+            // Mensagem inicial do chatbot
+            chatbotMessages.innerHTML = `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
+            chatBox.innerHTML = `<p>{% trans "A121Bot: Bem-vindo à A121 Evolution! Fale comigo para explorar cursos, ganhar A121Coin ou NFTs!" %}</p>`;
+        });
+
+        // Definir a moeda padrão como EUR
+        document.addEventListener('DOMContentLoaded', () => {
+            const currencySelector = document.getElementById('currency-selector');
+            if (!currencySelector.value) {
+                currencySelector.value = 'EUR';
+                currencySelector.dispatchEvent(new Event('change'));
+            }
         });
     </script>
-    {% block extra_js %}{% endblock %}
+    
+    {% block extra_js %}
+    {% endblock %}
 </body>
 </html>
