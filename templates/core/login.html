@@ -2,178 +2,128 @@
 {% load i18n static %}
 
 {% block title %}
-{% trans "Conecte-se à A121 Revolution" %}
+{% trans "A121 Evolution - Login do Futuro Cósmico" %}
+{% endblock %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<style>
+    .quantum-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: none; z-index: 9999; }
+    .quantum-particles { width: 100%; height: 100%; }
+</style>
 {% endblock %}
 
 {% block content %}
-<!-- Transição Quântica -->
+<div id="particles-js" class="particles-background"></div>
 <div class="quantum-transition" id="quantum-transition">
     <div id="quantum-particles" class="quantum-particles"></div>
-    <div class="quantum-loader">
-        <span>{% trans "Processando autenticação..." %}</span>
-    </div>
+    <div class="quantum-loader">{% trans "Processando autenticação..." %}</div>
 </div>
-
-<section class="auth-section">
-    <div class="auth-container">
-        <h2>{% trans "Conecte-se à A121 Revolution" %}</h2>
-        <p class="subtitle">{% trans "Acesse o futuro cósmico agora!" %}</p>
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+<section class="login-section">
+    <div class="container">
+        <div class="login-container">
+            <h2 class="title-glow">{% trans "Conecte-se à A121 Evolution" %}</h2>
+            <p class="subtitle">{% trans "Acesse o futuro cósmico agora!" %}</p>
+            <div class="a121coin-wallet">
+                <h3>{% trans "Sua Carteira A121Coin" %}</h3>
+                <p id="a121coin-balance">{% trans "Saldo:" %} 0 A121Coin</p>
+                <p id="a121coin-nfts">{% trans "Seus NFTs:" %} 0</p>
             </div>
-        {% endif %}
-
-        <!-- Carteira Virtual A121Coin -->
-        <div class="a121coin-wallet">
-            <h3>{% trans "Sua Carteira A121Coin" %}</h3>
-            <p id="a121coin-balance">{% trans "Saldo:" %} 0 A121Coin</p>
-            <p id="a121coin-nfts">{% trans "Seus NFTs:" %} 0</p>
-        </div>
-
-        <!-- IA Emocional -->
-        <div class="ai-emotional-experience">
-            <h3>{% trans "A IA está analisando suas emoções..." %}</h3>
-            <p id="emotional-feedback">{% trans "Você parece pronto para se conectar ao futuro!" %}</p>
-        </div>
-
-        <!-- Formulário de Login -->
-        <form method="post" class="auth-form" id="login-form">
-            {% csrf_token %}
-            <label for="email">{% trans "Email" %}</label>
-            <input type="email" id="email" name="email" required>
-            <label for="senha">{% trans "Senha" %}</label>
-            <input type="password" id="senha" name="senha" required>
-            <button type="submit" id="submit-button">{% trans "Entrar" %}</button>
-        </form>
-
-        <!-- Opção de Autenticação Biométrica -->
-        <button class="btn btn-biometric btn-glow" id="biometric-login">{% trans "Login com Reconhecimento de Voz" %}</button>
-
-        <!-- Opção de Login por Pensamento -->
-        <button class="btn btn-mind-login btn-glow" id="mind-login">{% trans "Login com Pensamento (Interface Cérebro-Máquina)" %}</button>
-        <p id="mind-login-instruction" style="display: none;">{% trans "Foco no botão 'ENTRAR' por 5 segundos para logar!" %}</p>
-
-        <div class="auth-links">
-            <p>{% trans "Não tem uma conta?" %} <a href="{% url 'core:cadastro' %}">{% trans "Junte-se" %}</a></p>
-        </div>
-
-        <!-- Hash de Autenticação Blockchain -->
-        <div class="blockchain-auth" id="blockchain-auth" style="display: none;">
-            <p>{% trans "Autenticação Segura via A121Chain" %}</p>
-            <p id="auth-hash"></p>
+            <div class="ai-emotional-experience">
+                <h3>{% trans "A IA está analisando suas emoções..." %}</h3>
+                <p id="emotional-feedback">{% trans "Você parece pronto para se conectar ao futuro!" %}</p>
+            </div>
+            <form method="POST" class="login-form" id="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">{% trans "E-mail" %}</label>
+                    <input type="email" id="email" name="email" required class="input-glow">
+                </div>
+                <div class="form-group">
+                    <label for="senha">{% trans "Senha" %}</label>
+                    <input type="password" id="senha" name="senha" required class="input-glow">
+                </div>
+                <button type="submit" class="btn btn-primary btn-glow" id="submit-button">{% trans "ENTRAR" %}</button>
+                <p class="form-footer">{% trans "Ainda não tem uma conta?" %} <a href="{% url 'core:cadastro' %}" class="link-glow">{% trans "Cadastre-se" %}</a></p>
+            </form>
+            <button class="btn btn-vr" id="vr-login">{% trans "Login em Realidade Virtual Cósmica" %}</button>
+            <button class="btn btn-biometric" id="biometric-login">{% trans "Login com Voz" %}</button>
+            <button class="btn btn-mind-login" id="mind-login">{% trans "Login com Pensamento" %}</button>
+            <p id="mind-login-instruction" style="display: none;">{% trans "Foco no botão 'ENTRAR' por 5 segundos para logar!" %}</p>
+            <div class="blockchain-auth" id="blockchain-auth" style="display: none;">
+                <p>{% trans "Autenticação Segura via A121Chain" %}</p>
+                <p id="auth-hash"></p>
+            </div>
         </div>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-<script src="{% static 'js/main.js' %}"></script>
 <script>
-// Estado do Usuário (Persistente entre Páginas)
-let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : 0;
-let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
+    document.addEventListener('DOMContentLoaded', () => {
+        particlesJS('particles-js', { particles: { number: { value: 200 }, color: { value: '#00ffcc' }, move: { enable: true, speed: 6 } } });
 
-// Atualizar Carteira Virtual
-function updateWallet() {
-    const balanceElement = document.getElementById('a121coin-balance');
-    const nftsElement = document.getElementById('a121coin-nfts');
-    balanceElement.textContent = `{% trans "Saldo:" %} ${userA121Coin} A121Coin`;
-    nftsElement.textContent = `{% trans "Seus NFTs:" %} ${userNFTs.length}`;
-}
+        let userEngagement = 0;
+        document.addEventListener('click', () => {
+            userEngagement++;
+            const feedback = document.getElementById('emotional-feedback');
+            if (userEngagement > 5) feedback.textContent = "{% trans 'Você está muito animado! Vamos tornar sua experiência ainda mais incrível!' %}";
+            else if (userEngagement > 2) feedback.textContent = "{% trans 'Você parece focado! Vamos te ajudar a se conectar rapidamente!' %}";
+        });
 
-// IA Emocional (Simulação)
-let userEngagement = 0;
-function trackUserEngagement() {
-    const feedbackElement = document.getElementById('emotional-feedback');
-    document.addEventListener('click', () => {
-        userEngagement += 1;
-        if (userEngagement > 5) {
-            feedbackElement.textContent = "{% trans 'Você está muito animado! Vamos tornar sua experiência ainda mais incrível!' %}";
-            document.querySelector('.auth-section').classList.add('excited');
-        } else if (userEngagement > 2) {
-            feedbackElement.textContent = "{% trans 'Você parece focado! Vamos te ajudar a se conectar rapidamente!' %}";
-        }
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+        document.getElementById('biometric-login').addEventListener('click', () => {
+            recognition.start();
+            recognition.onresult = (event) => {
+                if (event.results[0][0].transcript.toLowerCase().includes('entrar')) {
+                    document.getElementById('login-form').submit();
+                }
+            };
+        });
+
+        let focusTime = 0;
+        document.getElementById('mind-login').addEventListener('click', () => {
+            document.getElementById('mind-login-instruction').style.display = 'block';
+            const interval = setInterval(() => {
+                if (document.activeElement === document.getElementById('submit-button')) {
+                    focusTime++;
+                    if (focusTime >= 5) {
+                        document.getElementById('login-form').submit();
+                        clearInterval(interval);
+                    }
+                }
+            }, 1000);
+        });
+
+        document.getElementById('vr-login').addEventListener('click', () => {
+            const scene = document.createElement('a-scene');
+            scene.setAttribute('vr-mode-ui', 'enabled: true');
+            scene.innerHTML = `
+                <a-assets><video id="cosmic-skybox" src="{% static 'videos/futuristic_background.mp4' %}" autoplay loop></video></a-assets>
+                <a-sky src="#cosmic-skybox"></a-sky>
+                <a-camera position="0 1.6 0"></a-camera>
+            `;
+            document.body.appendChild(scene);
+        });
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const quantumTransition = document.getElementById('quantum-transition');
+            quantumTransition.style.display = 'flex';
+            particlesJS('quantum-particles', {
+                particles: { number: { value: 500 }, color: { value: '#ff00cc' }, move: { enable: true, speed: 10 } }
+            });
+            setTimeout(() => {
+                const authHash = `0x${Math.random().toString(16).substr(2, 40)}`;
+                document.getElementById('blockchain-auth').style.display = 'block';
+                document.getElementById('auth-hash').textContent = `Hash: ${authHash}`;
+                setTimeout(() => document.getElementById('login-form').submit(), 2000);
+            }, 2000);
+        });
     });
-}
-
-// Autenticação Biométrica com Reconhecimento de Voz (Simulação)
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
-recognition.continuous = false;
-
-document.getElementById('biometric-login').addEventListener('click', () => {
-    recognition.start();
-    recognition.onresult = (event) => {
-        const command = event.results[0][0].transcript.toLowerCase();
-        if (command.includes('login') || command.includes('entrar')) {
-            document.getElementById('login-form').submit();
-        } else {
-            alert('Comando não reconhecido. Tente dizer "login" ou "entrar".');
-        }
-    };
-    recognition.onerror = (event) => {
-        console.error('Erro no reconhecimento de voz:', event.error);
-        alert('Erro no reconhecimento de voz. Tente novamente.');
-    };
-});
-
-// Login com Pensamento (Simulação de Interface Cérebro-Máquina)
-let focusTime = 0;
-document.getElementById('mind-login').addEventListener('click', () => {
-    const instruction = document.getElementById('mind-login-instruction');
-    instruction.style.display = 'block';
-    const submitButton = document.getElementById('submit-button');
-    const interval = setInterval(() => {
-        if (document.activeElement === submitButton) {
-            focusTime += 1;
-            if (focusTime >= 5) {
-                document.getElementById('login-form').submit();
-                clearInterval(interval);
-            }
-        } else {
-            focusTime = 0;
-        }
-    }, 1000);
-});
-
-// Transição Quântica ao Fazer Login
-document.getElementById('login-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    console.log("Formulário enviado! Iniciando transição quântica...");
-    const quantumTransition = document.getElementById('quantum-transition');
-    quantumTransition.style.display = 'flex';
-    particlesJS('quantum-particles', {
-        particles: {
-            number: { value: 500, density: { enable: true, value_area: 800 } },
-            color: { value: '#ff00cc' },
-            shape: { type: 'circle' },
-            opacity: { value: 0.7, random: true },
-            size: { value: 3, random: true },
-            move: { enable: true, speed: 10, direction: 'none', random: true, out_mode: 'out' }
-        }
-    });
-    setTimeout(() => {
-        const authHash = `0x${Math.random().toString(16).substr(2, 40)}`;
-        document.getElementById('blockchain-auth').style.display = 'block';
-        document.getElementById('auth-hash').textContent = `Hash: ${authHash}`;
-        setTimeout(() => {
-            document.getElementById('login-form').submit();
-        }, 2000);
-    }, 2000);
-});
-
-// Inicializar Funcionalidades
-document.addEventListener('DOMContentLoaded', () => {
-    trackUserEngagement();
-    updateWallet();
-});
 </script>
 {% endblock %}
