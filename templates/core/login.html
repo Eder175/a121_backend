@@ -49,67 +49,13 @@
             </form>
             <button class="btn btn-vr" id="vr-login">{% trans "Login em Realidade Virtual Cósmica" %}</button>
             <button class="btn btn-biometric" id="biometric-login">{% trans "Login com Voz" %}</button>
-            <button class="btn btn-mind-login" id="mind-login">{% trans "Login com Pensamento" %}</button>
+            <button class="btn btn-mind-login" id="mind-login">{% trans "Login com Pensamento Cérebro-Máquina" %}</button>
             <p id="mind-login-instruction" style="display: none;">{% trans "Foco no botão 'ENTRAR' por 5 segundos para logar!" %}</p>
             <div class="blockchain-auth" id="blockchain-auth" style="display: none;">
                 <p>{% trans "Autenticação Segura via A121Chain" %}</p>
                 <p id="auth-hash"></p>
             </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
-
-{% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        particlesJS('particles-js', { particles: { number: { value: 200 }, color: { value: '#00ffcc' }, move: { enable: true, speed: 6 } } });
-
-        let userEngagement = 0;
-        document.addEventListener('click', () => {
-            userEngagement++;
-            const feedback = document.getElementById('emotional-feedback');
-            if (userEngagement > 5) feedback.textContent = "{% trans 'Você está muito animado! Vamos tornar sua experiência ainda mais incrível!' %}";
-            else if (userEngagement > 2) feedback.textContent = "{% trans 'Você parece focado! Vamos te ajudar a se conectar rapidamente!' %}";
-        });
-
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
-        document.getElementById('biometric-login').addEventListener('click', () => {
-            recognition.start();
-            recognition.onresult = (event) => {
-                if (event.results[0][0].transcript.toLowerCase().includes('entrar')) {
-                    document.getElementById('login-form').submit();
-                }
-            };
-        });
-
-        let focusTime = 0;
-        document.getElementById('mind-login').addEventListener('click', () => {
-            document.getElementById('mind-login-instruction').style.display = 'block';
-            const interval = setInterval(() => {
-                if (document.activeElement === document.getElementById('submit-button')) {
-                    focusTime++;
-                    if (focusTime >= 5) {
-                        document.getElementById('login-form').submit();
-                        clearInterval(interval);
-                    }
-                }
-            }, 1000);
-        });
-
-        document.getElementById('vr-login').addEventListener('click', () => {
-            const scene = document.createElement('a-scene');
-            scene.setAttribute('vr-mode-ui', 'enabled: true');
-            scene.innerHTML = `
-                <a-assets><video id="cosmic-skybox" src="{% static 'videos/futuristic_background.mp4' %}" autoplay loop></video></a-assets>
-                <a-sky src="#cosmic-skybox"></a-sky>
-                <a-camera position="0 1.6 0"></a-camera>
-            `;
-            document.body.appendChild(scene);
-        });
-
+        </პ: 'blockchain-auth', 'blockchain-cert-container', 'btn', 'btn-ai-preview', 'btn-biometric', 'btn-blockchain-cert', 'btn-glow', 'btn-primary', 'btn-vr', 'cadastro-container', 'cadastro-form', 'cadastro-section', 'chat-messages', 'chat-section', 'chatbot-container', 'chatbot-hologram', 'chatbot-input', 'chatbot-messages', 'chatbot-voice', 'chatbot-vr', 'container', 'course-language-selector', 'emotional-feedback', 'form-footer', 'form-group', 'gamification', 'gamification-tokens', 'header', 'holographic-reward', 'input-glow', 'language-selector', 'language-selector-course', 'link-glow', 'login-container', 'login-form', 'login-section', 'nav', 'nav-link', 'nft-gallery', 'nft-item', 'particles-background', 'product-card', 'product-grid', 'product-image', 'product-image-wrapper', 'products', 'quantum-loader', 'quantum-particles', 'quantum-transition', 'subtitle', 'title-glow', 'translated-content', 'voice-interaction', 'vr-scene']
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const quantumTransition = document.getElementById('quantum-transition');

@@ -1,1 +1,62 @@
-Coloque o código de chat.html aqui
+{% extends 'core/base.html' %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Chat A121 Evolution" %}
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+<style>
+    .chat-section { background: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 15px; }
+    .chat-messages { max-height: 400px; overflow-y: auto; background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="chat-section">
+    <div class="container">
+        <h2>{% trans "Chat com IA A121" %}</h2>
+        <div id="chat-messages" class="chat-messages"></div>
+        <input type="text" id="chat-input" class="input-glow" placeholder="{% trans 'Digite sua mensagem...' %}">
+        <button id="send-chat" class="btn-glow">{% trans "Enviar" %}</button>
+        <button id="voice-chat" class="btn-glow">{% trans "Falar" %}</button>
+        <button id="vr-chat" class="btn-glow">{% trans "VR" %}</button>
+        <a-scene embedded id="vr-scene" style="display: none;">
+            <a-sphere position="0 1.6 -3" color="#00ffcc" radius="0.5"></a-sphere>
+            <a-camera position="0 1.6 0"></a-camera>
+        </a-scene>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ws = new WebSocket('ws://localhost:8000/ws/chat/');
+        const messages = document.getElementById('chat-messages');
+        ws.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            messages.innerHTML += `<p>A121Bot: ${data.message}</p>`;
+        };
+        document.getElementById('send-chat').addEventListener('click', () => {
+            const input = document.getElementById('chat-input');
+            if (input.value.trim()) {
+                ws.send(JSON.stringify({ message: input.value }));
+                messages.innerHTML += `<p>Você: ${input.value}</p>`;
+                input.value = '';
+            }
+        });
+        document.getElementById('voice-chat').addEventListener('click', () => {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.start();
+            recognition.onresult = (e) => {
+                ws.send(JSON.stringify({ message: e.results[0][0].transcript }));
+            };
+        });
+        document.getElementById('vr-chat').addEventListener('click', () => {
+            document.getElementById('vr-scene').style.display = 'block';
+        });
+    });
+</script>
+{% endblock %}

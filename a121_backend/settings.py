@@ -81,6 +81,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-SECURE_SSL_REDIRECT = env('SECURE_SSL_REDIRECT', default=True)
-CSRF_COOKIE_SECURE = env('CSRF_COOKIE_SECURE', default=True)
-SESSION_COOKIE_SECURE = env('SESSION_COOKIE_SECURE', default=True)
+# Ajustes para HTTPS no ambiente de desenvolvimento
+SECURE_SSL_REDIRECT = False  # Desativado no ambiente de desenvolvimento
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False

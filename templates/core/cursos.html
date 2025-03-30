@@ -93,11 +93,7 @@
                     </select>
                 </div>
                 <div class="translated-content" id="translated-content-finance">
-                    <p>{% trans "Prévia do Vídeo Traduzido:" %}</p>
-                    <audio id="translated-audio-finance" controls style="display: none;"></audio>
-                    <p id="translated-text-finance"></p>
-                    <p>{% trans "Material em PDF Traduzido:" %}</p>
-                    <a id="translated-pdf-finance" href="#" style="display: none;">{% trans "Baixar PDF Traduzido" %}</a>
+                    <p>{% trans "Prévia do Vídeo Traduzido:" %}</p>\n                    <audio id="translated-audio-finance" controls style="display: none;"></audio>\n                    <p id="translated-text-finance"></p>\n                    <p>{% trans "Material em PDF Traduzido:" %}</p>\n                    <a id="translated-pdf-finance" href="#" style="display: none;">{% trans "Baixar PDF Traduzido" %}</a>
                 </div>
                 <a href="{% url 'core:cadastro' %}" class="btn">{% trans "Inscrever-se" %}</a>
                 <button class="btn btn-ai-preview" data-course="finance">{% trans "Gerar Prévia com IA Neural" %}</button>
