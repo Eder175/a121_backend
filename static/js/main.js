@@ -1,4 +1,6 @@
-// Inicializar Partículas
+// static/js/main.js
+
+// Inicializar Partículas de Fundo
 if (typeof particlesJS !== 'undefined') {
     particlesJS('particles-js', {
         particles: {
@@ -64,11 +66,12 @@ if (!modal || !chatButton || !closeModal || !sendMessageButton || !userInput || 
         }
     });
 
-    sendMessageButton.addEventListener('click', () => {
+    sendMessageButton.addEventListener('click', async () => {
         const message = userInput.value.trim();
         if (message) {
-            processMessage(message, chatBox);
+            chatBox.innerHTML += `<p><strong>Você:</strong> ${message}</p>`;
             userInput.value = '';
+            await processMessage(message, chatBox);
         }
     });
 
@@ -102,10 +105,13 @@ if (!chatbotMessages || !chatbotInput || !chatbotText || !chatbotVrScene || !cha
         recognition = new SpeechRecognition();
         recognition.lang = detectedLanguage;
         recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
 
         chatbotVoiceButton.addEventListener('click', () => {
             try {
                 recognition.start();
+                chatbotVoiceButton.textContent = 'Ouvindo...';
             } catch (error) {
                 console.error('Erro ao iniciar o reconhecimento de voz:', error);
                 chatbotMessages.innerHTML += '<p>A121Bot: Erro ao iniciar o reconhecimento de voz. Verifique as permissões do microfone.</p>';
@@ -115,12 +121,18 @@ if (!chatbotMessages || !chatbotInput || !chatbotText || !chatbotVrScene || !cha
         recognition.onresult = (event) => {
             const message = event.results[0][0].transcript;
             chatbotInput.value = message;
+            chatbotVoiceButton.textContent = 'Falar';
             processMessage(message);
         };
 
         recognition.onerror = (event) => {
             console.error('Erro no reconhecimento de voz:', event.error);
-            chatbotMessages.innerHTML += '<p>A121Bot: Erro no reconhecimento de voz. Tente novamente.</p>';
+            chatbotMessages.innerHTML += `<p>A121Bot: Erro no reconhecimento de voz: ${event.error}. Tente novamente.</p>`;
+            chatbotVoiceButton.textContent = 'Falar';
+        };
+
+        recognition.onend = () => {
+            chatbotVoiceButton.textContent = 'Falar';
         };
     } else {
         console.warn('SpeechRecognition não é suportado neste navegador.');
@@ -128,6 +140,7 @@ if (!chatbotMessages || !chatbotInput || !chatbotText || !chatbotVrScene || !cha
         chatbotVoiceButton.textContent = 'Falar (Não Suportado)';
     }
 
+    // Modo VR Interativo
     chatbotVrButton.addEventListener('click', () => {
         const scene = document.createElement('a-scene');
         scene.setAttribute('vr-mode-ui', 'enabled: true');
@@ -153,6 +166,7 @@ if (!chatbotMessages || !chatbotInput || !chatbotText || !chatbotVrScene || !cha
         }
     });
 
+    // Aprendizado de Idiomas Interativo
     chatbotLanguageButton.addEventListener('click', () => {
         languageLessonActive = true;
         currentLesson = {
@@ -166,7 +180,7 @@ if (!chatbotMessages || !chatbotInput || !chatbotText || !chatbotVrScene || !cha
                 { en: "Technology makes our lives easier.", pt: "A tecnologia facilita a nossa vida." }
             ]
         };
-        chatbotMessages.innerHTML += `<p>A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês: ${currentLesson.phrases[0].en}</p>`;
+        chatbotMessages.innerHTML += `<p>A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês: "${currentLesson.phrases[0].en}"</p>`;
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     });
 
@@ -178,6 +192,7 @@ if (!chatbotMessages || !chatbotInput || !chatbotText || !chatbotVrScene || !cha
     });
 }
 
+// Detecção de Idioma
 function detectLanguage(message) {
     const lowerMessage = message.toLowerCase();
     const languageKeywords = {
@@ -195,6 +210,7 @@ function detectLanguage(message) {
     return 'pt-br';
 }
 
+// Processar Mensagens do Chatbot
 async function processMessage(message, targetElement = chatbotMessages) {
     if (!targetElement) {
         console.error('Elemento alvo para mensagens não encontrado.');
@@ -209,6 +225,7 @@ async function processMessage(message, targetElement = chatbotMessages) {
         recognition.lang = detectedLanguage;
     }
 
+    // Modo de Aprendizado de Idiomas
     if (languageLessonActive && currentLesson) {
         let lessonResponse = '';
         if (currentLesson.step < currentLesson.phrases.length) {
@@ -244,7 +261,7 @@ async function processMessage(message, targetElement = chatbotMessages) {
                     }
                 }
             } else {
-                lessonResponse = `A121Bot: Quase! A frase correta é: ${expectedPhrase}. Tente novamente!`;
+                lessonResponse = `A121Bot: Quase! A frase correta é: "${expectedPhrase}". Tente novamente!`;
             }
         }
         targetElement.innerHTML += `<p>${lessonResponse}</p>`;
@@ -257,6 +274,7 @@ async function processMessage(message, targetElement = chatbotMessages) {
         return;
     }
 
+    // Interação Normal com o Chatbot
     try {
         const response = await fetch('/chat/', {
             method: 'POST',
@@ -278,7 +296,7 @@ async function processMessage(message, targetElement = chatbotMessages) {
             targetElement.innerHTML += `<p>A121Bot: ${responseMessage}</p>`;
             targetElement.innerHTML += `<p>Saldo total de A121Coin: ${a121coinBalance}</p>`;
         } else {
-            targetElement.innerHTML += `<p>A121Bot: Erro ao processar sua mensagem. Tente novamente!</p>`;
+            targetElement.innerHTML += `<p>A121Bot: Erro ao processar sua mensagem: ${data.error}. Tente novamente!</p>`;
         }
     } catch (error) {
         console.error('Erro ao processar mensagem:', error);
@@ -287,28 +305,38 @@ async function processMessage(message, targetElement = chatbotMessages) {
     targetElement.scrollTop = targetElement.scrollHeight;
 }
 
+// Mudança de Idioma
+const languageSelector = document.getElementById('language-selector');
+if (languageSelector) {
+    languageSelector.addEventListener('change', (event) => {
+        const lang = event.target.value;
+        window.location.href = `/i18n/setlang/?lang=${lang}&next=${window.location.pathname}`;
+    });
+}
+
 // Mudança de Moeda com Taxa de Câmbio
 const currencySelector = document.getElementById('currency-selector');
 if (currencySelector) {
-    currencySelector.addEventListener('change', function () {
+    currencySelector.addEventListener('change', async function () {
         const selectedCurrency = this.value;
-        fetch('/change_currency/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCsrfToken()
-            },
-            body: 'currency=' + selectedCurrency
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    console.error('Erro ao mudar moeda:', data.error);
-                }
-            })
-            .catch(error => console.error('Erro ao mudar moeda:', error));
+        try {
+            const response = await fetch('/change_currency/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken(),
+                },
+                body: JSON.stringify({ currency: selectedCurrency }),
+            });
+            const data = await response.json();
+            if (data.success) {
+                location.reload();
+            } else {
+                console.error('Erro ao mudar moeda:', data.error);
+            }
+        } catch (error) {
+            console.error('Erro ao mudar moeda:', error);
+        }
     });
 }
 
@@ -341,15 +369,21 @@ document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function (e) {
         e.preventDefault();
         const sectionId = this.getAttribute('data-section');
-        const section = document.getElementById(sectionId);
-        if (section) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            window.scrollTo({ top: section.offsetTop - 80, behavior: 'smooth' });
-        } else {
-            const url = this.getAttribute('href');
-            loadSection(url);
+        const url = this.getAttribute('href');
+
+        if (sectionId) {
+            // Scroll suave para seções na mesma página
+            const section = document.getElementById(sectionId);
+            if (section) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                window.scrollTo({ top: section.offsetTop - 80, behavior: 'smooth' });
+                return;
+            }
         }
+
+        // Carregamento dinâmico para outras páginas
+        loadSection(url);
     });
 });
 
@@ -369,25 +403,30 @@ function loadSection(url) {
         return;
     }
 
-    main.style.opacity = '0';
-    main.innerHTML = '<p>Carregando...</p>'; // Feedback visual
-
-    fetch(url)
-        .then(response => response.text())
-        .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const newContent = doc.querySelector('main').innerHTML;
-            setTimeout(() => {
-                main.innerHTML = newContent;
-                main.style.opacity = '1';
-            }, 500);
-        })
-        .catch(error => {
-            console.error('Erro ao carregar seção:', error);
-            main.innerHTML = '<p>Erro ao carregar a seção. Tente novamente.</p>';
-            main.style.opacity = '1';
-        });
+    // Animação de transição
+    gsap.to(main, {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+            main.innerHTML = '<p>Carregando...</p>'; // Feedback visual
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContent = doc.querySelector('main').innerHTML;
+                    main.innerHTML = newContent;
+                    gsap.fromTo(main, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+                    // Reaplicar GSAP ScrollTrigger para novos elementos
+                    applyScrollAnimations();
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar seção:', error);
+                    main.innerHTML = '<p>Erro ao carregar a seção. Tente novamente.</p>';
+                    gsap.to(main, { opacity: 1, duration: 0.5 });
+                });
+        }
+    });
 }
 
 function loadProductDetails(productId) {
@@ -430,38 +469,63 @@ function loadProductDetails(productId) {
         `;
         main.innerHTML = '';
         main.appendChild(productSection);
-        setTimeout(() => {
-            productSection.classList.add('active');
-        }, 100);
+        gsap.fromTo(productSection, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1 });
     } else {
         main.innerHTML = '<p>Produto não encontrado.</p>';
+        gsap.to(main, { opacity: 1, duration: 0.5 });
     }
 }
 
-// Animações de Scroll e Inicialização
-document.addEventListener('DOMContentLoaded', () => {
-    // Animação com GSAP para a logo
-    if (typeof gsap !== 'undefined') {
-        gsap.to(".logo", { duration: 1, y: 20, repeat: -1, yoyo: true });
-    } else {
-        console.error('GSAP não está carregado. Verifique se o script gsap.min.js foi incluído.');
-    }
+// Animações com GSAP e ScrollTrigger
+function applyScrollAnimations() {
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Observador de interseção para animações de scroll
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
+    // Animação para a logo
+    gsap.to(".logo", { duration: 1, y: 20, repeat: -1, yoyo: true });
+
+    // Animações para elementos com classes específicas
+    gsap.from(".animate-title", { opacity: 0, y: 50, duration: 1, stagger: 0.3 });
+    gsap.from(".animate-subtitle", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+    gsap.from(".animate-text", { opacity: 0, y: 50, duration: 1, delay: 0.7 });
+    gsap.from(".animate-btn", { opacity: 0, scale: 0.8, duration: 1, stagger: 0.2, delay: 1 });
+    gsap.from(".animate-card", {
+        opacity: 0,
+        y: 100,
+        duration: 1,
+        stagger: 0.3,
+        scrollTrigger: {
+            trigger: ".course-grid",
+            start: "top 80%"
+        }
+    });
+}
+
+// Inicializar Animações e Mensagens
+document.addEventListener('DOMContentLoaded', () => {
+    // Aplicar animações iniciais
+    applyScrollAnimations();
+
+    // Transição Quântica
+    const quantumTransition = document.getElementById('quantum-transition');
+    if (quantumTransition) {
+        particlesJS('quantum-particles', {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: '#00ffcc' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.8, random: true },
+                size: { value: 5, random: true },
+                move: { enable: true, speed: 10, direction: 'none', random: true }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: false }, onclick: { enable: false } }
             }
         });
-    }, observerOptions);
-    const sections = document.querySelectorAll('.section-transition');
-    sections.forEach(section => observer.observe(section));
+        setTimeout(() => {
+            quantumTransition.style.display = 'none';
+        }, 3000);
+    }
 
     // Inicializar mensagens do chatbot
     if (chatbotMessages) {

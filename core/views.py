@@ -9,8 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils.translation import gettext as _
 from core.models import A121CoinSupply, A121Coin, A121CoinTransaction
-import tensorflow as tf  # Para IA emocional simulada
-import numpy as np
+import random  # Substituímos TensorFlow por random para simulação
 
 # Página inicial
 def index(request):
@@ -37,7 +36,7 @@ def cadastro(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('password')  # Ajustado para 'password'
+        password = request.POST.get('password')
 
         # Validação avançada
         if len(password) < 8:
@@ -64,7 +63,7 @@ def cadastro(request):
 def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        password = request.POST.get('password')  # Ajustado para 'password'
+        password = request.POST.get('password')
 
         try:
             user = User.objects.get(email=email)
@@ -86,7 +85,7 @@ def signup(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('password')  # Ajustado para 'password'
+        password = request.POST.get('password')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, _('Nome de usuário já está em uso.'))
@@ -178,7 +177,7 @@ def chat_interaction(request):
             user_message = data.get('message', '').lower().strip()
 
             if not user_message:
-                return JsonResponse({'error': 'Mensagem não fornecida'}, status=400)
+                return JsonResponse({'error': 'Mensagem não fornecida'}, status=400也将: 400)
 
             response_message = simulate_grok_response(user_message, request.user)
             amount = 5 if 'lesson_completed' in user_message else 1
@@ -256,19 +255,16 @@ def error_500(request):
     response.status_code = 500
     return response
 
-# Função para IA emocional (simulada com TensorFlow)
+# Função para IA emocional (simulada sem TensorFlow)
 def get_emotional_state(user):
-    # Simulação de análise emocional com TensorFlow
-    # Em um ambiente real, usaríamos um modelo treinado
     emotions = ['feliz', 'curioso', 'motivado', 'desafiado']
-    return np.random.choice(emotions)
+    return random.choice(emotions)  # Simulação simples com random
 
 # Recomendações de cursos com IA
 def get_ai_course_recommendation(user):
-    # Simulação de recomendação com IA
     courses = [
         'Introdução à IA para Criadores',
         'Finanças para Criadores de Conteúdo',
         'Leilões Lucrativos',
     ]
-    return np.random.choice(courses)
+    return random.choice(courses)  # Simulação simples com random
