@@ -138,7 +138,7 @@ def dashboard(request):
     }
     return render(request, 'core/dashboard.html', context)
 
-# Escritório (acessível apenas para usuários planetas)
+# Escritório (acessível apenas para usuários logados)
 @login_required
 def escritorio(request):
     context = {
@@ -228,7 +228,7 @@ def simulate_grok_response(message, user):
     if 'curso' in message:
         return _('Olá! Temos cursos incríveis como "Introdução à IA para Criadores". Qual você gostaria de explorar?')
     elif 'inglês' in message or 'idioma' in message:
-        return _('Vamos aprender inglês! Diga: "Hello! How are you?"')
+        return _('Vamos aprender inglês! Diga: "Paulo: "Hello! How are you?"')
     elif 'iphone' in message or 'produto' in message:
         return _('Temos o iPhone 15 Pro Max e o iPhone 16 Pro Max Titânio Deserto. Qual você gostaria de visualizar em AR?')
     elif 'mmn' in message or 'negócio' in message:
