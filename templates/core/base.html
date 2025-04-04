@@ -5,80 +5,376 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A121 Evolution - A Revolução do Futuro. Transforme sua vida com tecnologia, cursos e oportunidades de negócio.">
-    <meta name="keywords" content="A121, tecnologia, iPhones, cursos, marketing multinível, realidade aumentada, futuro">
+    <meta name="keywords" content="A121, tecnologia, iPhones, cursos, marketing multinível, realidade aumentada, realidade virtual, futuro">
     <meta name="author" content="A121 Evolution Team">
     <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://aframe.io https://unpkg.com https://cdn.jsdelivr.net https://kit.fontawesome.com https://cdn.jsdelivr.net/npm/webxr-polyfill@latest; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.aframe.io; connect-src 'self' ws: wss: http://127.0.0.1:8000 https://cdn.aframe.io blob: https://api.x.ai; img-src 'self' data: https://cdn.aframe.io; media-src 'self' blob:; object-src 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://aframe.io https://unpkg.com https://cdn.jsdelivr.net https://kit.fontawesome.com https://cdn.jsdelivr.net/npm/webxr-polyfill@latest; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.aframe.io; connect-src 'self' ws: wss: http://127.0.0.1:8080 https://cdn.aframe.io blob: https://api.x.ai; img-src 'self' data: https://cdn.aframe.io; media-src 'self' blob:; object-src 'none';">
+    <link rel="manifest" href="{% url 'manifest' %}">
+    <meta name="theme-color" content="#00ffcc">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>{% block title %}{% trans "A121 Evolution - A Revolução do Futuro" %}{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&family=SF+Pro+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <!-- A-Frame para Realidade Aumentada e VR -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-    <!-- WebXR para VR Avançada -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
-    <!-- TensorFlow.js para IA -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-    <!-- Leap Motion para gestos -->
     <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     {% block extra_head %}{% endblock %}
     <style>
-        body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Roboto', sans-serif; overflow-x: hidden; }
-        .quantum-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .header { position: fixed; top: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; padding: 10px 0; box-shadow: 0 0 30px #00ffcc; }
-        .header .container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .header .logo { height: 50px; filter: drop-shadow(0 0 10px #00ffcc); }
-        .nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
-        .nav-link { color: #00ffcc; text-decoration: none; font-family: 'Orbitron', sans-serif; transition: all 0.3s ease; text-shadow: 0 0 10px #00ffcc; }
-        .nav-link:hover { color: #00ccff; text-shadow: 0 0 20px #00ccff; }
-        .nav-icons { display: flex; gap: 15px; }
-        .nav-icons a { color: #00ffcc; font-size: 1.2rem; transition: all 0.3s ease; }
-        .nav-icons a:hover { color: #00ccff; }
-        .language-selector, .currency-selector { background: rgba(255, 255, 255, 0.1); border: 1px solid #00ffcc; color: #fff; padding: 5px; border-radius: 5px; font-family: 'Roboto', sans-serif; }
-        main { margin-top: 70px; }
-        .messages { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1000; }
-        .alert { background: rgba(0, 255, 204, 0.2); border: 1px solid #00ffcc; padding: 10px 20px; border-radius: 5px; margin-bottom: 10px; font-family: 'Roboto', sans-serif; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-content { background: rgba(0, 0, 0, 0.9); border: 2px solid #00ffcc; border-radius: 15px; padding: 20px; width: 400px; max-height: 80vh; overflow-y: auto; position: relative; box-shadow: 0 0 50px rgba(0, 255, 204, 0.5); }
-        .modal-content h2 { font-family: 'Orbitron', sans-serif; color: #00ffcc; margin-bottom: 20px; text-shadow: 0 0 15px #00ffcc; }
-        .modal-content .close { position: absolute; top: 10px; right: 15px; color: #00ffcc; font-size: 1.5rem; cursor: pointer; }
-        .chat-box { background: rgba(255, 255, 255, 0.1); border: 1px solid #00ffcc; border-radius: 10px; padding: 10px; max-height: 300px; overflow-y: auto; margin-bottom: 20px; color: #fff; font-family: 'Roboto', sans-serif; }
-        .chat-input-container { display: flex; gap: 10px; }
-        .input-glow { flex: 1; padding: 10px; background: rgba(255, 255, 255, 0.1); border: 1px solid #00ffcc; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; transition: all 0.3s ease; }
-        .input-glow:focus { outline: none; border-color: #00ccff; box-shadow: 0 0 10px rgba(0, 204, 255, 0.5); }
-        .btn-glow { padding: 10px 20px; background: #00ffcc; color: #000; border: none; border-radius: 5px; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: all 0.3s ease; }
-        .btn-glow:hover { background: #00ccff; box-shadow: 0 0 20px rgba(0, 204, 255, 0.5); }
-        .chatbot-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; transition: all 0.3s ease; }
-        .chatbot-hologram { width: 350px; height: 450px; border-radius: 15px; overflow: hidden; box-shadow: 0 0 30px rgba(0, 255, 204, 0.5); }
-        .chatbot-messages { background: rgba(0, 0, 0, 0.8); color: #00ffcc; padding: 10px; border-radius: 10px; max-height: 200px; overflow-y: auto; margin-bottom: 10px; font-family: 'Roboto', sans-serif; }
-        .chatbot-input { width: 100%; padding: 5px; background: rgba(255, 255, 255, 0.1); border: 1px solid #00ffcc; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; }
-        .chatbot-input:focus { outline: none; border-color: #00ccff; box-shadow: 0 0 10px rgba(0, 204, 255, 0.5); }
-        .chatbot-voice, .chatbot-vr, .chatbot-language { margin-top: 5px; padding: 5px 10px; background: #00ffcc; color: #000; border: none; border-radius: 5px; cursor: pointer; font-family: 'Orbitron', sans-serif; transition: background 0.3s ease; }
-        .chatbot-voice:hover, .chatbot-vr:hover, .chatbot-language:hover { background: #00ccff; }
-        .chatbot-vr-scene { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3000; }
-        .floating-buttons { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .chat-button, .whatsapp-button { padding: 10px 20px; background: #00ffcc; color: #000; text-decoration: none; border-radius: 5px; font-family: 'Orbitron', sans-serif; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0, 255, 204, 0.5); }
-        .chat-button:hover, .whatsapp-button:hover { background: #00ccff; box-shadow: 0 0 30px rgba(0, 204, 255, 0.8); }
-        .whatsapp-gif { width: 40px; height: 40px; }
-        .footer { background: rgba(0, 0, 0, 0.8); padding: 20px 0; text-align: center; }
-        .footer p { font-family: 'Roboto', sans-serif; color: #00ffcc; margin: 0; }
-        /* Efeitos Quânticos */
-        .quantum-transition { opacity: 0; transition: opacity 0.5s ease; }
-        .quantum-transition.active { opacity: 1; }
-        /* Hologramas Dinâmicos */
-        .hologram-product { position: relative; width: 300px; height: 300px; margin: 20px auto; }
-        .hologram-product a-entity { animation: float 3s ease-in-out infinite; }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+        .quantum-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 0 40px #00ffcc;
+            backdrop-filter: blur(10px);
+        }
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        .header .logo {
+            height: 60px;
+            filter: drop-shadow(0 0 15px #00ffcc);
+            transition: transform 0.3s ease;
+        }
+        .header .logo:hover {
+            transform: scale(1.1);
+        }
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-link {
+            color: #00ffcc;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+        .nav-link:hover {
+            color: #00ccff;
+            text-shadow: 0 0 20px #00ccff;
+            transform: translateY(-2px);
+        }
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-icons a {
+            color: #00ffcc;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .nav-icons a:hover {
+            color: #00ccff;
+            transform: scale(1.2);
+        }
+        .language-selector, .currency-selector {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid #00ffcc;
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .language-selector:hover, .currency-selector:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #00ccff;
+        }
+        main {
+            margin-top: 90px;
+        }
+        .messages {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+        .alert {
+            background: rgba(0, 255, 204, 0.3);
+            border: 1px solid #00ffcc;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            padding: 30px;
+            width: 450px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 60px rgba(0, 255, 204, 0.7);
+        }
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffcc;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px #00ffcc;
+        }
+        .modal-content .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #00ffcc;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-content .close:hover {
+            color: #00ccff;
+        }
+        .chat-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid #00ffcc;
+            border-radius: 15px;
+            padding: 15px;
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 25px;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+        .chat-input-container {
+            display: flex;
+            gap: 15px;
+        }
+        .input-glow {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid #00ffcc;
+            color: #fff;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .input-glow:focus {
+            outline: none;
+            border-color: #00ccff;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
+        }
+        .btn-glow {
+            padding: 12px 25px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            background: #00ccff;
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.7);
+        }
+        .chatbot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .chatbot-hologram {
+            width: 400px;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
+        }
+        .chatbot-messages {
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ffcc;
+            padding: 15px;
+            border-radius: 15px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .chatbot-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid #00ffcc;
+            color: #fff;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .chatbot-input:focus {
+            outline: none;
+            border-color: #00ccff;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
+        }
+        .chatbot-voice, .chatbot-vr, .chatbot-language {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            transition: background 0.3s ease;
+        }
+        .chatbot-voice:hover, .chatbot-vr:hover, .chatbot-language:hover {
+            background: #00ccff;
+        }
+        .chatbot-vr-scene {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3000;
+        }
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .chat-button, .whatsapp-button {
+            padding: 15px 30px;
+            background: #00ffcc;
+            color: #000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
+        }
+        .chat-button:hover, .whatsapp-button:hover {
+            background: #00ccff;
+            box-shadow: 0 0 40px rgba(0, 204, 255, 0.9);
+            transform: scale(1.05);
+        }
+        .whatsapp-gif {
+            width: 50px;
+            height: 50px;
+        }
+        .footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #00ffcc;
+        }
+        .footer p {
+            font-family: 'Roboto', sans-serif;
+            color: #00ffcc;
+            margin: 0;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+        .quantum-transition {
+            opacity: 0;
+            transition: opacity 0.7s ease;
+        }
+        .quantum-transition.active {
+            opacity: 1;
+        }
+        .hologram-product {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 30px auto;
+        }
+        .hologram-product a-entity {
+            animation: float 4s ease-in-out infinite;
+        }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-30px); }
         }
-        /* Autenticação Neural */
-        .neural-login { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); border: 2px solid #00ffcc; padding: 20px; border-radius: 15px; z-index: 4000; }
-        .neural-login h2 { font-family: 'Orbitron', sans-serif; color: #00ffcc; text-shadow: 0 0 15px #00ffcc; }
-        .neural-login p { font-family: 'Roboto', sans-serif; color: #fff; }
-        .neural-login button { padding: 10px 20px; background: #00ffcc; color: #000; border: none; border-radius: 5px; cursor: pointer; font-family: 'Orbitron', sans-serif; }
-        .neural-login button:hover { background: #00ccff; }
+        .neural-login {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #00ffcc;
+            padding: 30px;
+            border-radius: 20px;
+            z-index: 4000;
+            box-shadow: 0 0 60px rgba(0, 255, 204, 0.7);
+        }
+        .neural-login h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffcc;
+            text-shadow: 0 0 20px #00ffcc;
+        }
+        .neural-login p {
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+        }
+        .neural-login button {
+            padding: 12px 25px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            transition: background 0.3s ease;
+        }
+        .neural-login button:hover {
+            background: #00ccff;
+        }
     </style>
 </head>
 <body>
@@ -93,13 +389,13 @@
                     <li><a href="{% url 'core:cursos' %}" class="nav-link" data-section="courses">{% trans "Cursos" %}</a></li>
                     <li><a href="{% url 'core:index' %}#mmn" class="nav-link" data-section="mmn">{% trans "Negócio" %}</a></li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'core:dashboard' %}" class="nav-link">{% trans "Painel" %}</a></li>
-                    <li><a href="{% url 'core:ganhar_pontos' %}" class="nav-link">{% trans "Ganhar Pontos" %}</a></li>
-                    <li><a href="{% url 'core:escritorio' %}" class="nav-link">{% trans "Escritório" %}</a></li>
-                    <li><a href="{% url 'core:logout' %}" class="nav-link">{% trans "Sair" %}</a></li>
+                        <li><a href="{% url 'core:dashboard' %}" class="nav-link">{% trans "Painel" %}</a></li>
+                        <li><a href="{% url 'core:ganhar_pontos' %}" class="nav-link">{% trans "Ganhar Pontos" %}</a></li>
+                        <li><a href="{% url 'core:escritorio' %}" class="nav-link">{% trans "Escritório" %}</a></li>
+                        <li><a href="{% url 'core:logout' %}" class="nav-link">{% trans "Sair" %}</a></li>
                     {% else %}
-                    <li><a href="{% url 'core:cadastro' %}" class="nav-link">{% trans "Junte-se" %}</a></li>
-                    <li><a href="{% url 'core:login' %}" class="nav-link">{% trans "Conecte-se" %}</a></li>
+                        <li><a href="{% url 'core:cadastro' %}" class="nav-link">{% trans "Junte-se" %}</a></li>
+                        <li><a href="{% url 'core:login' %}" class="nav-link">{% trans "Conecte-se" %}</a></li>
                     {% endif %}
                 </ul>
                 <div class="nav-icons">
@@ -184,24 +480,76 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script>
-        // Partículas Quânticas Dinâmicas
+        window.aframeInitialized = window.aframeInitialized || false;
+
+        if (!window.aframeInitialized) {
+            window.aframeInitialized = true;
+            console.log("A-Frame inicializado com sucesso.");
+        } else {
+            console.warn("A-Frame já foi inicializado. Evitando múltiplas inicializações.");
+        }
+
         particlesJS('quantum-particles', {
-            particles: { number: { value: 200, density: { enable: true, value_area: 800 } }, color: { value: '#00ffcc' }, shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } }, opacity: { value: 0.7, random: true }, size: { value: 5, random: true }, line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 }, move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out' } },
-            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } }, modes: { repulse: { distance: 150, duration: 0.4 }, push: { particles_nb: 4 } } },
+            particles: {
+                number: { value: 250, density: { enable: true, value_area: 800 } },
+                color: { value: '#00ffcc' },
+                shape: { type: 'circle', stroke: { width: 1, color: '#00ffcc' } },
+                opacity: { value: 0.8, random: true },
+                size: { value: 6, random: true },
+                line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.5, width: 1 },
+                move: { enable: true, speed: 8, direction: 'none', random: false, straight: false, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
             retina_detect: true
         });
 
-        // IA Emocional Simulada
-        let userEngagement = 0;
+        let userEngagement = localStorage.getItem('userEngagement') ? parseInt(localStorage.getItem('userEngagement')) : 0;
+        let userTimeSpent = localStorage.getItem('userTimeSpent') ? parseInt(localStorage.getItem('userTimeSpent')) : 0;
+        let userInteractions = localStorage.getItem('userInteractions') ? parseInt(localStorage.getItem('userInteractions')) : 0;
+
+        async function loadEmotionModel() {
+            const model = tf.sequential();
+            model.add(tf.layers.dense({ units: 32, inputShape: [3], activation: 'relu' }));
+            model.add(tf.layers.dense({ units: 16, activation: 'relu' }));
+            model.add(tf.layers.dense({ units: 8, activation: 'relu' }));
+            model.add(tf.layers.dense({ units: 4, activation: 'softmax' }));
+            model.compile({ optimizer: 'adam', loss: 'sparseCategoricalCrossentropy', metrics: ['accuracy'] });
+            return model;
+        }
+
+        async function predictEmotion() {
+            const model = await loadEmotionModel();
+            const input = tf.tensor2d([[userEngagement, userTimeSpent, userInteractions]], [1, 3]);
+            const prediction = model.predict(input);
+            const result = await prediction.data();
+            const emotionalStates = ['Feliz', 'Neutro', 'Frustrado', 'Empolgado'];
+            return emotionalStates[result.indexOf(Math.max(...result))];
+        }
+
         document.addEventListener('click', () => {
             userEngagement++;
-            const feedback = userEngagement > 10 ? "Você está vibrando com a revolução!" : "Bem-vindo ao futuro!";
-            document.getElementById('chatbot-text')?.setAttribute('value', feedback);
+            localStorage.setItem('userEngagement', userEngagement);
+            updateChatbotFeedback();
         });
 
-        // Autenticação Neural por Voz
+        setInterval(() => {
+            userTimeSpent++;
+            localStorage.setItem('userTimeSpent', userTimeSpent);
+        }, 1000);
+
+        async function updateChatbotFeedback() {
+            const feedback = await predictEmotion();
+            document.getElementById('chatbot-text')?.setAttribute('value', `Seu estado emocional: ${feedback}`);
+        }
+
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'pt-br';
+        recognition.lang = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+        recognition.continuous = false;
+
         document.getElementById('neural-voice-login')?.addEventListener('click', () => {
             recognition.start();
             recognition.onresult = (event) => {
@@ -212,7 +560,6 @@
             };
         });
 
-        // Autenticação Neural por Gestos (usando Leap Motion)
         Leap.loop((frame) => {
             if (frame.hands.length > 0) {
                 const hand = frame.hands[0];
@@ -222,6 +569,201 @@
                 }
             }
         });
+
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotText = document.getElementById('chatbot-text');
+        const chatbotVrScene = document.getElementById('chatbot-vr-scene');
+        let detectedLanguage = '{{ LANGUAGE_CODE|default:"pt-br" }}';
+        let languageLessonActive = false;
+        let currentLesson = null;
+
+        document.getElementById('chatbot-voice').addEventListener('click', () => {
+            recognition.start();
+        });
+
+        recognition.onresult = (event) => {
+            const message = event.results[0][0].transcript;
+            chatbotInput.value = message;
+            processMessage(message);
+            userInteractions++;
+            localStorage.setItem('userInteractions', userInteractions);
+        };
+
+        document.getElementById('chatbot-vr').addEventListener('click', () => {
+            const scene = document.createElement('a-scene');
+            scene.setAttribute('vr-mode-ui', 'enabled: true');
+            scene.setAttribute('embedded', '');
+            scene.setAttribute('renderer', 'colorManagement: true');
+            scene.innerHTML = `
+                <a-sky color="#000022"></a-sky>
+                <a-sphere id="vr-chatbot" color="#00ffcc" radius="0.5" position="0 1.6 -3" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+                    <a-text id="vr-chatbot-text" value="Bem-vindo ao modo VR! Fale comigo!" align="center" position="0 1 0" color="#00ffcc"></a-text>
+                </a-sphere>
+                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+                <a-entity camera look-controls position="0 1.6 0"></a-entity>
+            `;
+            chatbotVrScene.appendChild(scene);
+            chatbotVrScene.style.display = 'block';
+            userInteractions++;
+            localStorage.setItem('userInteractions', userInteractions);
+        });
+
+        chatbotVrScene.addEventListener('click', (e) => {
+            if (e.target === chatbotVrScene) {
+                chatbotVrScene.style.display = 'none';
+                chatbotVrScene.innerHTML = '';
+            }
+        });
+
+        document.getElementById('chatbot-language').addEventListener('click', () => {
+            languageLessonActive = true;
+            currentLesson = {
+                language: 'en',
+                topic: 'technology',
+                level: 'beginner',
+                step: 0,
+                phrases: [
+                    { en: "Hello! Let's talk about technology.", pt: "Olá! Vamos falar sobre tecnologia." },
+                    { en: "Do you like using computers?", pt: "Você gosta de usar computadores?" },
+                    { en: "Technology makes our lives easier.", pt: "A tecnologia facilita nossas vidas." }
+                ]
+            };
+            chatbotMessages.innerHTML += `<p>{% trans "A121Bot: Vamos começar uma lição de inglês sobre tecnologia! Diga ou escreva a frase em inglês:" %} ${currentLesson.phrases[0].en}</p>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            userInteractions++;
+            localStorage.setItem('userInteractions', userInteractions);
+        });
+
+        function detectLanguage(message) {
+            const lowerMessage = message.toLowerCase();
+            const languageKeywords = {
+                'pt-br': ['olá', 'oi', 'tecnologia', 'cursos', 'finanças'],
+                'en': ['hello', 'hi', 'technology', 'courses', 'finance'],
+                'es': ['hola', 'tecnología', 'cursos', 'finanzas'],
+                'fr': ['bonjour', 'technologie', 'cours', 'finances'],
+                'de': ['hallo', 'technologie', 'kurse', 'finanzen']
+            };
+            for (const [lang, keywords] of Object.entries(languageKeywords)) {
+                if (keywords.some(keyword => lowerMessage.includes(keyword))) {
+                    return lang;
+                }
+            }
+            return 'pt-br';
+        }
+
+        function getCsrfToken() {
+            const name = 'csrftoken';
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        async function processMessage(message, targetElement = chatbotMessages) {
+            targetElement.innerHTML += `<p>{% trans "Você:" %} ${message}</p>`;
+            targetElement.scrollTop = targetElement.scrollHeight;
+
+            detectedLanguage = detectLanguage(message);
+            recognition.lang = detectedLanguage;
+
+            if (languageLessonActive) {
+                let lessonResponse = '';
+                if (currentLesson.step < currentLesson.phrases.length) {
+                    const expectedPhrase = currentLesson.phrases[currentLesson.step].en;
+                    if (message.toLowerCase().trim() === expectedPhrase.toLowerCase().trim()) {
+                        lessonResponse = `{% trans "A121Bot: Correto! A tradução em português é:" %} ${currentLesson.phrases[currentLesson.step].pt}`;
+                        currentLesson.step++;
+                        if (currentLesson.step < currentLesson.phrases.length) {
+                            lessonResponse += ` {% trans "Próxima frase:" %} ${currentLesson.phrases[currentLesson.step].en}`;
+                        } else {
+                            lessonResponse += ` {% trans "Parabéns! Você completou a lição. Ganhou 5 A121Coin!" %}`;
+                            languageLessonActive = false;
+                            currentLesson = null;
+                            try {
+                                const response = await fetch("{% url 'core:chat_interaction' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': getCsrfToken(),
+                                    },
+                                    body: JSON.stringify({ message: 'lesson_completed' }),
+                                });
+                                const data = await response.json();
+                                if (response.ok) {
+                                    const a121coinBalance = data.a121coin_balance;
+                                    targetElement.innerHTML += `<p>{% trans "Saldo total de A121Coin:" %} ${a121coinBalance}</p>`;
+                                }
+                            } catch (error) {
+                                console.error('Erro ao registrar A121Coin:', error);
+                            }
+                        }
+                    } else {
+                        lessonResponse = `{% trans "A121Bot: Quase! A frase correta é:" %} ${expectedPhrase}. {% trans "Tente novamente!" %}`;
+                    }
+                }
+                targetElement.innerHTML += `<p>${lessonResponse}</p>`;
+                targetElement.scrollTop = targetElement.scrollHeight;
+                chatbotText.setAttribute('value', lessonResponse);
+                const vrChatbotText = document.getElementById('vr-chatbot-text');
+                if (vrChatbotText) {
+                    vrChatbotText.setAttribute('value', lessonResponse);
+                }
+                return;
+            }
+
+            try {
+                const response = await fetch("{% url 'core:chat_interaction' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                    body: JSON.stringify({ message: message }),
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    const responseMessage = data.response;
+                    const a121coinBalance = data.a121coin_balance;
+                    chatbotText.setAttribute('value', responseMessage);
+                    const vrChatbotText = document.getElementById('vr-chatbot-text');
+                    if (vrChatbotText) {
+                        vrChatbotText.setAttribute('value', responseMessage);
+                    }
+                    targetElement.innerHTML += `<p>{% trans "A121Bot:" %} ${responseMessage}</p>`;
+                    targetElement.innerHTML += `<p>{% trans "Saldo total de A121Coin:" %} ${a121coinBalance}</p>`;
+                } else {
+                    targetElement.innerHTML += `<p>{% trans "A121Bot: Erro ao processar sua mensagem. Tente novamente!" %}</p>`;
+                }
+            } catch (error) {
+                targetElement.innerHTML += `<p>{% trans "A121Bot: Erro de conexão. Tente novamente!" %}</p>`;
+            }
+            targetElement.scrollTop = targetElement.scrollHeight;
+        }
+
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+                processMessage(chatbotInput.value.trim());
+                chatbotInput.value = '';
+                userInteractions++;
+                localStorage.setItem('userInteractions', userInteractions);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateChatbotFeedback();
+        });
+
+        {% block extra_js %}{% endblock %}
     </script>
 </body>
 </html>

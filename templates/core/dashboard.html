@@ -8,10 +8,9 @@
 {% block extra_head %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<!-- A-Frame para AR e VR -->
-<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-<!-- AR.js para Realidade Aumentada -->
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
 <style>
     .vendor-dashboard {
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -19,86 +18,111 @@
         padding: 40px 20px;
         min-height: 100vh;
         font-family: 'SF Pro Display', sans-serif;
+        position: relative;
+        overflow: hidden;
+    }
+    .quantum-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "images/quantum-pattern.png" %}') repeat;
+        opacity: 0.1;
+        z-index: 0;
     }
     .container {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
+        position: relative;
+        z-index: 1;
     }
     h2, h3 {
         color: #00ffcc;
-        text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        text-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+        font-family: 'Orbitron', sans-serif;
     }
-    .a121coin-wallet, .nft-marketplace, .sales-analysis, .profit-simulator, .ai-emotional-experience, .gamification, .leaderboard-section {
+    .a121coin-wallet, .nft-marketplace, .sales-analysis, .profit-simulator, .ai-emotional-experience, .gamification, .leaderboard-section, .vr-experience {
         background: rgba(255, 255, 255, 0.05);
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 30px;
-        box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 40px;
+        box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .a121coin-wallet:hover, .nft-marketplace:hover, .sales-analysis:hover, .profit-simulator:hover, .ai-emotional-experience:hover, .gamification:hover, .leaderboard-section:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
+    .a121coin-wallet:hover, .nft-marketplace:hover, .sales-analysis:hover, .profit-simulator:hover, .ai-emotional-experience:hover, .gamification:hover, .leaderboard-section:hover, .vr-experience:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 40px rgba(0, 255, 204, 0.5);
     }
     .nft-grid, .sales-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
     }
     .nft-item, .sales-card {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        padding: 15px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 15px;
+        padding: 20px;
         text-align: center;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, background 0.3s ease;
     }
     .nft-item:hover, .sales-card:hover {
-        transform: scale(1.05);
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.25);
     }
-    .btn, .cta-button, .ar-button {
+    .btn, .cta-button, .ar-button, .vr-button {
         background: linear-gradient(45deg, #00ffcc, #00b7eb);
         color: #1a1a2e;
         border: none;
-        padding: 10px 20px;
-        border-radius: 25px;
+        padding: 12px 25px;
+        border-radius: 30px;
         font-weight: bold;
         cursor: pointer;
-        transition: background 0.3s ease, transform 0.3s ease;
+        transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .btn:hover, .cta-button:hover, .ar-button:hover {
+    .btn:hover, .cta-button:hover, .ar-button:hover, .vr-button:hover {
         background: linear-gradient(45deg, #00b7eb, #00ffcc);
-        transform: scale(1.05);
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.7);
     }
     a-scene {
         width: 100%;
-        height: 200px;
-        border-radius: 10px;
+        height: 250px;
+        border-radius: 15px;
         overflow: hidden;
+        border: 2px solid #00ffcc;
     }
-    .profit-simulator-scene {
-        height: 300px;
+    .profit-simulator-scene, .vr-experience-scene {
+        height: 350px;
     }
     .leaderboard-section ul {
         list-style: none;
         padding: 0;
     }
     .leaderboard-section li {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        transition: background 0.3s ease;
     }
     .leaderboard-section li:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.3);
+    }
+    .emotional-feedback {
+        font-size: 1.2rem;
+        color: #00ffcc;
+        text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <section class="vendor-dashboard">
+    <div class="quantum-overlay"></div>
     <div class="container">
         <h2>{% trans "Dashboard de Vendedores - A121 Evolution" %}</h2>
 
@@ -138,7 +162,7 @@
                         <a-assets>
                             <a-asset-item id="cert-ia-hologram" src="{% static 'models/cert-ia-hologram.glb' %}"></a-asset-item>
                         </a-assets>
-                        <a-entity gltf-model="#cert-ia-hologram" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+                        <a-entity gltf-model="#cert-ia-hologram" scale="0.05 0.05 0.05" position="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-entity>
                         <a-marker-camera preset="hiro"></a-marker-camera>
                     </a-scene>
                 </div>
@@ -151,7 +175,7 @@
                         <a-assets>
                             <a-asset-item id="cert-finance-hologram" src="{% static 'models/cert-finance-hologram.glb' %}"></a-asset-item>
                         </a-assets>
-                        <a-entity gltf-model="#cert-finance-hologram" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+                        <a-entity gltf-model="#cert-finance-hologram" scale="0.05 0.05 0.05" position="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-entity>
                         <a-marker-camera preset="hiro"></a-marker-camera>
                     </a-scene>
                 </div>
@@ -164,7 +188,7 @@
             <p>{% trans "Vendas Globais:" %} <span id="global-sales">17999,80</span></p>
             <div id="sales-by-country" class="sales-grid">
                 <!-- Preenchido por JavaScript -->
-            </ become>
+            </div>
             <p id="ai-sales-suggestion">{% trans "A IA está analisando suas vendas..." %}</p>
             <button class="cta-button" id="update-sales">{% trans "Atualizar Vendas" %}</button>
         </section>
@@ -184,10 +208,27 @@
             </a-scene>
         </section>
 
+        <!-- Experiência em VR -->
+        <section class="vr-experience">
+            <h3>{% trans "Experiência em VR - Escritório Virtual" %}</h3>
+            <button class="vr-button" id="launch-vr-experience">{% trans "Entrar no Escritório Virtual" %}</button>
+            <a-scene embedded vr-mode-ui="enabled: true" class="vr-experience-scene" style="display: none;">
+                <a-assets>
+                    <a-asset-item id="office-hologram" src="{% static 'models/office-hologram.glb' %}"></a-asset-item>
+                </a-assets>
+                <a-entity gltf-model="#office-hologram" scale="0.5 0.5 0.5" position="0 1.6 -3" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+                    <a-text value="Bem-vindo ao seu escritório virtual!" align="center" position="0 1 0" color="#00ffcc"></a-text>
+                </a-entity>
+                <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+                <a-entity light="type: directional; intensity: 0.5;" position="1 1 1"></a-entity>
+                <a-camera position="0 1.6 0" look-controls></a-camera>
+            </a-scene>
+        </section>
+
         <!-- IA Emocional -->
         <section class="ai-emotional-experience">
             <h3>{% trans "A IA está analisando suas emoções..." %}</h3>
-            <p id="emotional-feedback">{% trans "Seu estado emocional:" %} {{ emotional_state }}</p>
+            <p class="emotional-feedback" id="emotional-feedback">{% trans "Seu estado emocional:" %} {{ emotional_state }}</p>
         </section>
 
         <!-- Gamificação com A121Coin -->
@@ -204,6 +245,9 @@
 // Estado do Usuário (Persistente entre Páginas)
 let userA121Coin = localStorage.getItem('userA121Coin') ? parseInt(localStorage.getItem('userA121Coin')) : {{ a121coin_balance }};
 let userNFTs = localStorage.getItem('userNFTs') ? JSON.parse(localStorage.getItem('userNFTs')) : [];
+let userEngagement = localStorage.getItem('userEngagement') ? parseInt(localStorage.getItem('userEngagement')) : 0;
+let userTimeSpent = localStorage.getItem('userTimeSpent') ? parseInt(localStorage.getItem('userTimeSpent')) : 0;
+let userInteractions = localStorage.getItem('userInteractions') ? parseInt(localStorage.getItem('userInteractions')) : 0;
 
 // Atualizar Carteira Virtual
 function updateWallet() {
@@ -221,7 +265,7 @@ function updateWallet() {
                     <a-assets>
                         <a-asset-item id="reward-hologram-${nft}" src="{% static 'models/reward-hologram-${nft}.glb' %}"></a-asset-item>
                     </a-assets>
-                    <a-entity gltf-model="#reward-hologram-${nft}" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
+                    <a-entity gltf-model="#reward-hologram-${nft}" scale="0.05 0.05 0.05" position="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-entity>
                     <a-marker-camera preset="hiro"></a-marker-camera>
                 </a-scene>
             </div>
@@ -240,6 +284,8 @@ document.querySelectorAll('.buy-nft').forEach(button => {
             userA121Coin -= price;
             userNFTs.push(nftId);
             updateWallet();
+            userInteractions++;
+            localStorage.setItem('userInteractions', userInteractions);
             alert(`{% trans "NFT comprado com sucesso! ID:" %} ${nftId}`);
         } else {
             alert("{% trans 'Você não tem A121Coin suficiente para comprar este NFT!' %}");
@@ -253,16 +299,17 @@ document.querySelectorAll('.view-ar').forEach(button => {
         const nftId = button.getAttribute('data-nft');
         const arScene = document.getElementById(`ar-scene-${nftId}`);
         arScene.style.display = 'block';
+        userInteractions++;
+        localStorage.setItem('userInteractions', userInteractions);
     });
 });
 
-// Análise de Vendas (Simulação)
+// Análise de Vendas (Simulação com IA)
 async function loadSalesAnalysis() {
     const salesByCountry = document.getElementById('sales-by-country');
     const aiSuggestion = document.getElementById('ai-sales-suggestion');
     const globalSales = document.getElementById('global-sales');
 
-    // Simulação de dados de vendas
     const salesData = [
         { country: "Brasil", sales: 5000 },
         { country: "EUA", sales: 7000 },
@@ -270,7 +317,6 @@ async function loadSalesAnalysis() {
         { country: "Japão", sales: 2000 }
     ];
 
-    // Exibir Vendas por País
     salesData.forEach(data => {
         const card = document.createElement('div');
         card.className = 'sales-card';
@@ -281,18 +327,18 @@ async function loadSalesAnalysis() {
         salesByCountry.appendChild(card);
     });
 
-    // Sugestão da IA (baseada em vendas)
     const totalSales = salesData.reduce((sum, data) => sum + data.sales, 0);
     aiSuggestion.textContent = totalSales > 15000 ?
         "{% trans 'A IA sugere: Aumente o marketing no Brasil, onde as vendas estão crescendo!' %}" :
         "{% trans 'A IA sugere: Foque nos EUA para maximizar seus lucros!' %}";
 
-    // Atualizar Vendas Globais
     globalSales.textContent = totalSales.toFixed(2);
 }
 
 document.getElementById('update-sales').addEventListener('click', () => {
     loadSalesAnalysis();
+    userInteractions++;
+    localStorage.setItem('userInteractions', userInteractions);
 });
 
 // Simulador de Lucros em AR
@@ -300,8 +346,18 @@ document.getElementById('launch-profit-simulator').addEventListener('click', () 
     const profitScene = document.querySelector('.profit-simulator-scene');
     const profitText = document.getElementById('profit-text');
     profitScene.style.display = 'block';
-    const projectedProfit = userA121Coin * 1.5 + 10000; // Simulação de projeção
+    const projectedProfit = userA121Coin * 1.5 + 10000;
     profitText.setAttribute('value', `Projeção: ${projectedProfit.toFixed(2)} A121Coin`);
+    userInteractions++;
+    localStorage.setItem('userInteractions', userInteractions);
+});
+
+// Experiência em VR
+document.getElementById('launch-vr-experience').addEventListener('click', () => {
+    const vrScene = document.querySelector('.vr-experience-scene');
+    vrScene.style.display = 'block';
+    userInteractions++;
+    localStorage.setItem('userInteractions', userInteractions);
 });
 
 // Gamificação com A121Coin
@@ -316,11 +372,25 @@ function updateGamification() {
     }
 }
 
+// Rastreamento de Tempo e Engajamento
+function trackUserActivity() {
+    setInterval(() => {
+        userTimeSpent += 1;
+        localStorage.setItem('userTimeSpent', userTimeSpent);
+    }, 1000);
+
+    document.addEventListener('click', () => {
+        userEngagement++;
+        localStorage.setItem('userEngagement', userEngagement);
+    });
+}
+
 // Inicializar Funcionalidades
 document.addEventListener('DOMContentLoaded', () => {
     loadSalesAnalysis();
     updateWallet();
     updateGamification();
+    trackUserActivity();
 });
 </script>
 {% endblock %}
