@@ -20,6 +20,8 @@
     <script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
     <!-- TensorFlow.js para IA -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <!-- Leap Motion para gestos -->
+    <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
     {% block extra_head %}{% endblock %}
     <style>
         body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Roboto', sans-serif; overflow-x: hidden; }
@@ -64,6 +66,19 @@
         /* Efeitos Quânticos */
         .quantum-transition { opacity: 0; transition: opacity 0.5s ease; }
         .quantum-transition.active { opacity: 1; }
+        /* Hologramas Dinâmicos */
+        .hologram-product { position: relative; width: 300px; height: 300px; margin: 20px auto; }
+        .hologram-product a-entity { animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        /* Autenticação Neural */
+        .neural-login { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); border: 2px solid #00ffcc; padding: 20px; border-radius: 15px; z-index: 4000; }
+        .neural-login h2 { font-family: 'Orbitron', sans-serif; color: #00ffcc; text-shadow: 0 0 15px #00ffcc; }
+        .neural-login p { font-family: 'Roboto', sans-serif; color: #fff; }
+        .neural-login button { padding: 10px 20px; background: #00ffcc; color: #000; border: none; border-radius: 5px; cursor: pointer; font-family: 'Orbitron', sans-serif; }
+        .neural-login button:hover { background: #00ccff; }
     </style>
 </head>
 <body>
@@ -154,6 +169,12 @@
             <img src="{% static 'images/whatsapp-icon.gif' %}" alt="{% trans 'Fale Conosco via WhatsApp' %}" class="whatsapp-gif">
         </a>
     </div>
+    <div id="neural-login" class="neural-login">
+        <h2>{% trans "Autenticação Neural" %}</h2>
+        <p>{% trans "Use sua voz ou gestos para fazer login!" %}</p>
+        <button id="neural-voice-login">{% trans "Login por Voz" %}</button>
+        <button id="neural-gesture-login">{% trans "Login por Gestos" %}</button>
+    </div>
     <footer class="footer">
         <div class="container">
             <p>© {% now "Y" %} {% trans "Revolução A121" %}. {% trans "Todos os direitos reservados." %}</p>
@@ -178,7 +199,29 @@
             document.getElementById('chatbot-text')?.setAttribute('value', feedback);
         });
 
-        // Inicialização do Chatbot (movido para main.js)
+        // Autenticação Neural por Voz
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'pt-br';
+        document.getElementById('neural-voice-login')?.addEventListener('click', () => {
+            recognition.start();
+            recognition.onresult = (event) => {
+                const command = event.results[0][0].transcript.toLowerCase();
+                if (command.includes('login')) {
+                    window.location.href = "{% url 'core:dashboard' %}";
+                }
+            };
+        });
+
+        // Autenticação Neural por Gestos (usando Leap Motion)
+        Leap.loop((frame) => {
+            if (frame.hands.length > 0) {
+                const hand = frame.hands[0];
+                if (hand.pinchStrength > 0.8) {
+                    document.getElementById('neural-login').style.display = 'none';
+                    window.location.href = "{% url 'core:dashboard' %}";
+                }
+            }
+        });
     </script>
 </body>
 </html>

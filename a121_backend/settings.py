@@ -10,7 +10,7 @@ import environ
 
 # Inicializar o gerenciador de variáveis de ambiente
 env = environ.Env(
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),  # Alterado para True por padrão
     SECRET_KEY=(str, None),
     NGROK_HOST=(str, None),
     EMAIL_HOST_PASSWORD=(str, None),
@@ -28,7 +28,7 @@ SECRET_KEY = env('SECRET_KEY', default='qYLDi7xImARDcLIAW7MNz2rD3Z9nvXEaN7qn2zbj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'warthog-inviting-rabbit.ngrok-free.app']
 if 'NGROK_HOST' in os.environ:
     ALLOWED_HOSTS.append(os.environ['NGROK_HOST'])
 
@@ -66,11 +66,11 @@ MIDDLEWARE = [
 ]
 
 # Configurações do Content Security Policy (CSP)
-CSP_DEFAULT_SRC = ("'self'", "https:")
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "https://aframe.io", "https://unpkg.com", "https://cdn.jsdelivr.net", "https://kit.fontawesome.com")
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "https://aframe.io", "https://unpkg.com", "https://cdn.jsdelivr.net", "https://kit.fontawesome.com", "https://js.leapmotion.com", "https://warthog-inviting-rabbit.ngrok-free.app")
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com", "https://cdn.aframe.io")
-CSP_CONNECT_SRC = ("'self'", "http://127.0.0.1:8000", "https://cdn.aframe.io", "blob:")
+CSP_CONNECT_SRC = ("'self'", "ws:", "wss:", "http://127.0.0.1:8000", "http://localhost:8000", "https://cdn.aframe.io", "blob:", "https://warthog-inviting-rabbit.ngrok-free.app", "wss://warthog-inviting-rabbit.ngrok-free.app")
 CSP_IMG_SRC = ("'self'", "data:", "https://cdn.aframe.io")
 CSP_MEDIA_SRC = ("'self'", "blob:")
 CSP_OBJECT_SRC = ("'none'",)
@@ -96,15 +96,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'a121_backend.wsgi.application'
 
-# Database - Configurado para PostgreSQL
+# Database - Configurado para SQLite (temporariamente)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME', default='a121_backend'),
-        'USER': env('DB_USER', default='postgres'),
-        'PASSWORD': env('DB_PASSWORD', default='minhasenha123'),
-        'HOST': env('DB_HOST', default='localhost'),
-        'PORT': env('DB_PORT', default='5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -154,7 +150,7 @@ LOGIN_REDIRECT_URL = 'core:dashboard'
 LOGOUT_REDIRECT_URL = 'core:index'
 
 # Configurações de sessão
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False  # Desativado para desenvolvimento
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -169,12 +165,12 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='gerandoriqueza07@gmail.com')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='gtpd icql xpuh fniq')
 DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER', default='gerandoriqueza07@gmail.com')
 
-# Configurações de segurança para produção
-SECURE_SSL_REDIRECT = False
+# Configurações de segurança para desenvolvimento
+SECURE_SSL_REDIRECT = False  # Desativado para desenvolvimento
 SECURE_HSTS_SECONDS = 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False  # Desativado para desenvolvimento
 CSRF_COOKIE_HTTPONLY = True
 
 # Configuração de cache
@@ -225,3 +221,14 @@ LOGGING = {
         },
     },
 }
+
+# Forçar HTTP no ambiente de desenvolvimento
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+    os.environ['wsgi.url_scheme'] = 'http'
+    os.environ['HTTPS'] = 'off'
