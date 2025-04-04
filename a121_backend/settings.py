@@ -14,6 +14,12 @@ env = environ.Env(
     SECRET_KEY=(str, None),
     NGROK_HOST=(str, None),
     EMAIL_HOST_PASSWORD=(str, None),
+    # Adicionar variáveis para o PostgreSQL
+    DB_NAME=(str, 'a121_db'),
+    DB_USER=(str, 'a121_user'),
+    DB_PASSWORD=(str, 'a121_password'),
+    DB_HOST=(str, 'localhost'),
+    DB_PORT=(str, '5432'),
 )
 
 # Ler o arquivo .env, se existir
@@ -46,6 +52,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_htmx',
     'csp',  # Adicionado para gerenciar Content Security Policy
+    'rest_framework',  # Adicionado para Django REST Framework
     # Apps personalizadas
     'core',
 ]
@@ -67,10 +74,10 @@ MIDDLEWARE = [
 
 # Configurações do Content Security Policy (CSP)
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "https://aframe.io", "https://unpkg.com", "https://cdn.jsdelivr.net", "https://kit.fontawesome.com", "https://js.leapmotion.com", "https://warthog-inviting-rabbit.ngrok-free.app")
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "https://aframe.io", "https://unpkg.com", "https://cdn.jsdelivr.net", "https://kit.fontawesome.com", "https://js.leapmotion.com", "https://warthog-inviting-rabbit.ngrok-free.app", "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs")  # Adicionado TensorFlow.js
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com", "https://cdn.aframe.io")
-CSP_CONNECT_SRC = ("'self'", "ws:", "wss:", "http://127.0.0.1:8000", "http://localhost:8000", "https://cdn.aframe.io", "blob:", "https://warthog-inviting-rabbit.ngrok-free.app", "wss://warthog-inviting-rabbit.ngrok-free.app")
+CSP_CONNECT_SRC = ("'self'", "ws:", "wss:", "http://127.0.0.1:8000", "http://localhost:8000", "https://cdn.aframe.io", "blob:", "https://warthog-inviting-rabbit.ngrok-free.app", "wss://warthog-inviting-rabbit.ngrok-free.app", "https://webxr.io", "wss://webxr.io")  # Adicionado WebXR
 CSP_IMG_SRC = ("'self'", "data:", "https://cdn.aframe.io")
 CSP_MEDIA_SRC = ("'self'", "blob:")
 CSP_OBJECT_SRC = ("'none'",)
@@ -96,11 +103,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'a121_backend.wsgi.application'
 
-# Database - Configurado para SQLite (temporariamente)
+# Database - Configurado para PostgreSQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
 
@@ -162,7 +173,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='gerandoriqueza07@gmail.com')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='gtpd icql xpuh fniq')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Removido o valor padrão para segurança
 DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER', default='gerandoriqueza07@gmail.com')
 
 # Configurações de segurança para desenvolvimento
@@ -173,12 +184,25 @@ SECURE_HSTS_PRELOAD = False
 CSRF_COOKIE_SECURE = False  # Desativado para desenvolvimento
 CSRF_COOKIE_HTTPONLY = True
 
-# Configuração de cache
+# Configuração de cache com Redis
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
+}
+
+# Configuração do Django Channels com Redis
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
 }
 
 # Configuração de logging
